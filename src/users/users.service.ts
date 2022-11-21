@@ -1,12 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from '../app.service';
+import { Injectable } from '@nestjs/common';
+import { UsersRepository } from './users.repository';
 
-@Controller('users')
-export class UsersController {
-  constructor(private readonly appService: AppService) {}
+@Injectable
+export class UsersService {
+  constructor(protected usersRepository: UsersRepository) {}
 
-  @Get()
-  getUsers() {
-    return this.appService.getHello();
-  }
+  findUser;
 }
