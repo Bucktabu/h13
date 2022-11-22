@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+const bcrypt = require('bcrypt')
 import { UserViewModel } from './users/api/dto/userView.model';
 import { BlogViewModel } from './blogs/blogView.model';
 import { PostViewModel } from './posts/postsView.model';

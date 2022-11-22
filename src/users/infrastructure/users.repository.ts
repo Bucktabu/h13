@@ -2,16 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { giveSkipNumber } from '../../helper.functions';
 import { UserScheme } from "./entity/users.scheme";
 import { UserDBModel } from "./entity/userDB.model";
+import { QueryInputModel } from "../api/dto/queryInput.model";
 
 @Injectable()
 export class UsersRepository {
-  async getUsers(query) {
-    console.log(query.searchLoginTerm);
+  async getUsers(query: QueryInputModel) {
+    console.log(query.searchLoginTerm, query.searchEmailTerm);
+
     return UserScheme.find(
       {
         $and: [
-          { login: { $regex: [query.searchLoginTerm], $options: 'i' } },
-          { email: { $regex: [query.searchEmailTerm], $options: 'i' } },
+          { login: { $regex: query.searchLoginTerm, $options: 'i' } },
+          { email: { $regex: query.searchEmailTerm, $options: 'i' } },
         ],
       },
       { _id: false, passwordHash: false, passwordSalt: false, __v: false },

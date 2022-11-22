@@ -1,8 +1,6 @@
 import { UsersRepository } from '../infrastructure/users.repository';
 import { _generateHash, paginationContentPage } from '../../helper.functions';
-import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import add from 'date-fns/add';
 import { EmailConfirmationRepository } from '../../emailConfirmation/infrastructure/emailConfirmation.repository';
 import { EmailManager } from "../../emailTransfer/email.manager";
 import { Injectable } from "@nestjs/common";
@@ -10,6 +8,8 @@ import { UserDBModel } from "../infrastructure/entity/userDB.model";
 import { EmailConfirmationModel } from "../../emailConfirmation/infrastructure/entity/emailConfirmation.model";
 import { UserAccountModel } from "../infrastructure/entity/userAccount.model";
 import { CreateUserInputModel } from "../api/dto/createUserInput.model";
+import  bcrypt from 'bcrypt'
+import add from 'date-fns/add';
 
 @Injectable()
 export class UsersService {
