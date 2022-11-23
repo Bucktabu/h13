@@ -1,6 +1,5 @@
 import { Controller, Delete, HttpCode, HttpStatus } from '@nestjs/common';
 import mongoose from 'mongoose';
-import { UsersRepository } from '../users/infrastructure/users.repository';
 
 @Controller('testing')
 export class TestingController {
