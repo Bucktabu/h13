@@ -31,7 +31,7 @@ export class PostsRepository {
       await PostsScheme.create(newPost);
       return newPost;
     } catch (e) {
-      return null;
+      return null; // TODO при попытке создать пост по блог айди выдает null
     }
   }
 

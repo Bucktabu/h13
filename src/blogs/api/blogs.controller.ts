@@ -37,8 +37,8 @@ export class BlogsController {
   async getBlogById(@Param('id') blogId: string) {
     const blog = await this.blogsService.getBlogById(blogId);
 
-    if (!blogId) {
-      throw new NotFoundException();
+    if (!blog) {
+      throw new NotFoundException(); // TODO don't work
     }
 
     return blog;
@@ -70,7 +70,13 @@ export class BlogsController {
       throw new NotFoundException();
     }
 
-    return this.postsService.createPost(inputModel, blogId);
+    const createdPost =  await this.postsService.createPost(inputModel, blog.id);
+
+    if (!createdPost) {
+      throw new NotFoundException();
+    }
+
+    return createdPost
   }
 
   @Put(':id')
