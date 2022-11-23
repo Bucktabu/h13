@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { EmailConfirmationScheme } from "./entity/emailConfirm.scheme";
-import { EmailConfirmationModel } from "./entity/emailConfirmation.model";
+import { Injectable } from '@nestjs/common';
+import { EmailConfirmationScheme } from './entity/emailConfirm.scheme';
+import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 
 @Injectable()
 export class EmailConfirmationRepository {

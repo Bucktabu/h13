@@ -2,40 +2,45 @@ import {
   Body,
   Controller,
   Delete,
-  Get, HttpCode, HttpException, HttpStatus,
+  Get,
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  NotFoundException,
   Param,
   Post,
-  Query, Res
-} from "@nestjs/common";
+  Query,
+} from '@nestjs/common';
 import { UsersService } from '../application/users.service';
-import { CreateUserInputModel } from "./dto/createUserInput.model";
-import { QueryInputModel } from "./dto/queryInput.model";
+import { CreateUserInputModel } from './dto/createUserInput.model';
+import { QueryInputModel } from './dto/queryInput.model';
+import { UserViewModel } from './dto/userView.model';
 
 @Controller('users')
 export class UsersController {
-  constructor(protected userService: UsersService) {}
+  constructor(protected usersService: UsersService) {}
 
   @Get()
-  async getUsers(
+  getUsers(
     @Query()
-    query: QueryInputModel
+    query: QueryInputModel,
   ) {
-    return this.userService.getUsers(query);
+    return this.usersService.getUsers(query);
   }
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body() inputModel: CreateUserInputModel) {
-    return this.userService.createUser(inputModel);
+  createUser(@Body() inputModel: CreateUserInputModel): Promise<UserViewModel> {
+    return this.usersService.createUser(inputModel);
   }
 
   @Delete(':id')
   @HttpCode(204)
   async deleteUsersById(@Param('id') userId: string) {
-    const result = await this.userService.deleteUserById(userId);
+    const result = await this.usersService.deleteUserById(userId);
 
     if (!result) {
-        throw new HttpException('If specified user is not exists', HttpStatus.NOT_FOUND)
+      throw new NotFoundException();
     }
   }
 }

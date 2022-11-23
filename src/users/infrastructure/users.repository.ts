@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { giveSkipNumber } from '../../helper.functions';
-import { UserScheme } from "./entity/users.scheme";
-import { UserDBModel } from "./entity/userDB.model";
-import { QueryInputModel } from "../api/dto/queryInput.model";
+import { UserScheme } from './entity/users.scheme';
+import { UserDBModel } from './entity/userDB.model';
+import { QueryInputModel } from '../api/dto/queryInput.model';
+import { UserViewModel } from '../api/dto/userView.model';
 
 @Injectable()
 export class UsersRepository {
-  async getUsers(query: QueryInputModel) {
+  async getUsers(query: QueryInputModel): Promise<UserViewModel[]> {
     console.log(query.searchLoginTerm, query.searchEmailTerm);
 
     return UserScheme.find(
@@ -24,7 +25,10 @@ export class UsersRepository {
       .lean();
   }
 
-  async getTotalCount(searchLoginTerm: string, searchEmailTerm: string) {
+  async getTotalCount(
+    searchLoginTerm: string,
+    searchEmailTerm: string,
+  ): Promise<number> {
     return UserScheme.countDocuments({
       $and: [
         { login: { $regex: searchLoginTerm, $options: 'i' } },

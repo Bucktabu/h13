@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { UserDBModel } from "./userDB.model";
+import mongoose from 'mongoose';
+import { UserDBModel } from './userDB.model';
 
 const usersScheme = new mongoose.Schema<UserDBModel>({
   id: { type: String, required: true },

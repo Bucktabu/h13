@@ -5,4 +5,5 @@ export type QueryInputModel = {
   sortDirection: string;
   searchLoginTerm: string;
   searchEmailTerm: string;
-}
+  searchNameTerm: string;
+};

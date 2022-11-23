@@ -2,14 +2,18 @@ import { UsersRepository } from '../infrastructure/users.repository';
 import { _generateHash, paginationContentPage } from '../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailConfirmationRepository } from '../../emailConfirmation/infrastructure/emailConfirmation.repository';
-import { EmailManager } from "../../emailTransfer/email.manager";
-import { Injectable } from "@nestjs/common";
-import { UserDBModel } from "../infrastructure/entity/userDB.model";
-import { EmailConfirmationModel } from "../../emailConfirmation/infrastructure/entity/emailConfirmation.model";
-import { UserAccountModel } from "../infrastructure/entity/userAccount.model";
-import { CreateUserInputModel } from "../api/dto/createUserInput.model";
-import  bcrypt from 'bcrypt'
+import { EmailManager } from '../../emailTransfer/email.manager';
+import { Injectable } from '@nestjs/common';
+import { UserDBModel } from '../infrastructure/entity/userDB.model';
+import { EmailConfirmationModel } from '../../emailConfirmation/infrastructure/entity/emailConfirmation.model';
+import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
+import { CreateUserInputModel } from '../api/dto/createUserInput.model';
+import bcrypt from 'bcrypt';
 import add from 'date-fns/add';
+import { createdUserViewModel } from '../../dataMapper/createdUserViewModel';
+import { ContentPageModel } from '../../globalTypes/contentPage.type';
+import { UserViewModel } from '../api/dto/userView.model';
+import { QueryInputModel } from '../api/dto/queryInput.model';
 
 @Injectable()
 export class UsersService {
@@ -19,7 +23,7 @@ export class UsersService {
     protected usersRepository: UsersRepository,
   ) {}
 
-  async getUsers(query) {
+  async getUsers(query: QueryInputModel): Promise<ContentPageModel> {
     const users = await this.usersRepository.getUsers(query);
     const totalCount = await this.usersRepository.getTotalCount(
       query.searchLoginTerm,
@@ -34,7 +38,7 @@ export class UsersService {
     );
   }
 
-  async createUser(inputModel: CreateUserInputModel) {
+  async createUser(inputModel: CreateUserInputModel): Promise<UserViewModel> {
     const passwordSalt = await bcrypt.genSalt(10);
     const passwordHash = await _generateHash(inputModel.password, passwordSalt);
     const userAccountId = uuidv4();
@@ -67,10 +71,13 @@ export class UsersService {
       inputModel.email,
       userAccount.emailConfirmation.confirmationCode,
     );
-    return userAccount;
+
+    return createdUserViewModel(accountData);
   }
 
-  async createUserAccount(userAccount: UserAccountModel) {
+  async createUserAccount(
+    userAccount: UserAccountModel,
+  ): Promise<UserAccountModel> {
     const user = await this.usersRepository.createUser(userAccount.accountData);
     const emailConfirmation =
       await this.emailConfirmationRepository.createEmailConfirmation(
@@ -81,7 +88,7 @@ export class UsersService {
       return null;
     }
 
-    return { accountData: user, emailConfirmation };
+    return userAccount;
   }
 
   deleteUserById(userId: string): Promise<boolean> {

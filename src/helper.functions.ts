@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 import { UserViewModel } from './users/api/dto/userView.model';
-import { BlogViewModel } from './blogs/blogView.model';
-import { PostViewModel } from './posts/postsView.model';
+import { BlogViewModel } from './blogs/api/dto/blogView.model';
+import { PostViewModel } from './posts/api/dto/postsView.model';
 import { CommentViewModel } from './comments/commentView.model';
 
 export const giveSkipNumber = (pageNumber: string, pageSize: string) => {
@@ -15,6 +15,7 @@ export const givePagesCount = (totalCount: number, pageSize: string) => {
 export const _generateHash = async (password: string, salt: string) => {
   return await bcrypt.hash(password, salt);
 };
+
 export const paginationContentPage = (
   pageNumber: string,
   pageSize: string,

@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { EmailConfirmationModel } from "./emailConfirmation.model";
+import mongoose from 'mongoose';
+import { EmailConfirmationModel } from './emailConfirmation.model';
 
 const emailConfirmScheme = new mongoose.Schema<EmailConfirmationModel>({
   id: { type: String, required: true },

@@ -1,4 +1,4 @@
-import { IsEmail, Length, MaxLength, MinLength } from "class-validator";
+import { IsEmail, Length, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserInputModel {
   // @MinLength(3, {
@@ -13,4 +13,4 @@ export class CreateUserInputModel {
   password: string;
   @IsEmail()
   email: string;
-};
+}
