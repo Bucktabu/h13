@@ -60,7 +60,7 @@ export class PostsService {
   async createPost(
     inputModel: PostInputModel,
     blogId?: string,
-  ): Promise<PostViewModel | null> {
+  ): Promise</*PostViewModel*/PostDBModel | null> {
     let id = inputModel.blogId;
     if (blogId) {
       id = blogId;
