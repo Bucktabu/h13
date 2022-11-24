@@ -11,7 +11,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { CreatePostInputModel } from './dto/createPostInput.model';
+import { PostInputModel } from './dto/postInputModel';
 import { PostsService } from '../application/posts.service';
 import { CommentsService } from '../../comments/application/comments.service';
 
@@ -46,14 +46,14 @@ export class PostsController {
 
   @Post()
   @HttpCode(201)
-  createPost(@Body() inputModel: CreatePostInputModel) {
+  createPost(@Body() inputModel: PostInputModel) {
     return this.postsService.createPost(inputModel);
   }
 
   @Put(':id')
   @HttpCode(204)
   async updatePost(
-    @Body() inputModel: CreatePostInputModel,
+    @Body() inputModel: PostInputModel,
     @Param('id') postId: string,
   ) {
     const result = await this.postsService.updatePost(postId, inputModel);

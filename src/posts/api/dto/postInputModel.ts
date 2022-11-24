@@ -1,6 +1,6 @@
 import { Length } from 'class-validator';
 
-export class CreatePostInputModel {
+export class PostInputModel {
   @Length(3, 30)
   title: string;
   @Length(3, 100)

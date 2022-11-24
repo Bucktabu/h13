@@ -28,7 +28,7 @@ export class BlogsRepository {
     return BlogSchema.findOne({ id: id }, { _id: false, __v: false });
   }
 
-  async createNewBlog(newBlog: BlogModel): Promise<BlogModel | null> {
+  async createBlog(newBlog: BlogModel): Promise<BlogModel | null> {
     try {
       await BlogSchema.create(newBlog);
       return newBlog;

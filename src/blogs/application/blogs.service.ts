@@ -44,7 +44,7 @@ export class BlogsService {
       new Date().toISOString(),
     );
 
-    const createdBlog = await this.blogsRepository.createNewBlog(newBlog);
+    const createdBlog = await this.blogsRepository.createBlog(newBlog);
 
     if (!createdBlog) {
       return null;

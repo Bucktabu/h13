@@ -16,7 +16,7 @@ import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostsService } from '../../posts/application/posts.service';
 import { BlogInputModel } from './dto/blogInput.model';
 import { BlogViewModel } from './dto/blogView.model';
-import { CreatePostInputModel } from '../../posts/api/dto/createPostInput.model';
+import { PostInputModel } from '../../posts/api/dto/postInputModel';
 
 @Controller('blogs')
 export class BlogsController {
@@ -61,7 +61,7 @@ export class BlogsController {
   @Post(':id/posts')
   @HttpCode(201)
   async createPostByBlogId(
-    @Body() inputModel: CreatePostInputModel,
+    @Body() inputModel: PostInputModel,
     @Param('id') blogId: string,
   ) {
     const blog = await this.blogsService.getBlogById(blogId);

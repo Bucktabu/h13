@@ -5,6 +5,7 @@ const blogScheme = new mongoose.Schema<BlogModel>({
   id: { type: String, required: true },
   name: { type: String, required: true },
   websiteUrl: { type: String, required: true },
+  description: { type: String, required: true },
   createdAt: { type: String, required: true },
 });
 

@@ -3,7 +3,7 @@ import { PostDBModel } from './entity/postDB.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { giveSkipNumber } from '../../helper.functions';
 import { PostsScheme } from './entity/posts.scheme';
-import { CreatePostInputModel } from '../api/dto/createPostInput.model';
+import { PostInputModel } from '../api/dto/postInputModel';
 
 @Injectable()
 export class PostsRepository {
@@ -31,13 +31,13 @@ export class PostsRepository {
       await PostsScheme.create(newPost);
       return newPost;
     } catch (e) {
-      return null; // TODO при попытке создать пост по блог айди выдает null
+      return null;
     }
   }
 
   async updatePost(
     postId: string,
-    inputModel: CreatePostInputModel,
+    inputModel: PostInputModel,
   ): Promise<boolean> {
     const result = await PostsScheme.updateOne(
       { id: postId },

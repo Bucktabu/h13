@@ -5,7 +5,7 @@ import { paginationContentPage } from '../../helper.functions';
 import { PostViewModel } from '../api/dto/postsView.model';
 import { PostDBModel } from '../infrastructure/entity/postDB.model';
 import { postOutputBeforeCreate } from '../../dataMapper/postViewModelBeforeCreate';
-import { CreatePostInputModel } from '../api/dto/createPostInput.model';
+import { PostInputModel } from '../api/dto/postInputModel';
 import { v4 as uuidv4 } from 'uuid';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
@@ -58,7 +58,7 @@ export class PostsService {
   }
 
   async createPost(
-    inputModel: CreatePostInputModel,
+    inputModel: PostInputModel,
     blogId?: string,
   ): Promise<PostViewModel | null> {
     let id = inputModel.blogId;
@@ -75,7 +75,7 @@ export class PostsService {
       await this.getBlogName(inputModel.blogId),
       new Date().toISOString(),
     );
-
+    console.log(newPost)
     const createdPost = await this.postsRepository.createPost(newPost);
 
     if (!createdPost) {
@@ -97,7 +97,7 @@ export class PostsService {
 
   async updatePost(
     postId: string,
-    inputModel: CreatePostInputModel,
+    inputModel: PostInputModel,
   ): Promise<boolean> {
     return await this.postsRepository.updatePost(postId, inputModel);
   }
