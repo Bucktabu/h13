@@ -27,18 +27,23 @@ export class PostsService {
     query: QueryInputModel,
     blogId: string,
     token?: string,
-  ): Promise<ContentPageModel> {
+  ): Promise<ContentPageModel | null> {
     const postsDB = await this.postsRepository.getPosts(query, blogId);
+
+    if (!postsDB) {
+      return null
+    }
+
     const totalCount = await this.postsRepository.getTotalCount(blogId);
     const userId = await this.jwtService.getUserIdViaToken(token);
-    const posts = await Promise.all(
-      postsDB.map(async (p) => await this.addLikesInfoForPost(p, userId)),
-    );
+    // const posts = await Promise.all(
+    //   postsDB.map(async (p) => await this.addLikesInfoForPost(p, userId)),
+    // );
 
     return paginationContentPage(
       query.pageNumber,
       query.pageSize,
-      posts,
+      postsDB,
       totalCount,
     );
   }

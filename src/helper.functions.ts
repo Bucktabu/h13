@@ -1,3 +1,5 @@
+import { PostDBModel } from "./posts/infrastructure/entity/postDB.model";
+
 const bcrypt = require('bcrypt');
 import { UserViewModel } from './users/api/dto/userView.model';
 import { BlogViewModel } from './blogs/api/dto/blogView.model';
@@ -21,7 +23,7 @@ export const paginationContentPage = (
   pageSize: string,
   content:
     | BlogViewModel[]
-    | PostViewModel[]
+    | PostDBModel[]/*PostViewModel[]*/
     | UserViewModel[]
     | CommentViewModel[],
   totalCount: number,

@@ -49,7 +49,13 @@ export class BlogsController {
     @Query() query: QueryInputModel,
     @Param('id') blogId: string,
   ) {
-    return this.postsService.getPosts(query, blogId);
+    const posts = this.postsService.getPosts(query, blogId);
+
+    if (!posts) {
+      throw new NotFoundException();
+    }
+
+    return posts
   }
 
   @Post()
