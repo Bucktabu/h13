@@ -32,8 +32,14 @@ export class PostsController {
   }
 
   @Get(':id')
-  getPostById(@Param('id') postId: string) {
-    return this.postsService.getPostById(postId);
+  async getPostById(@Param('id') postId: string) {
+    const post = await this.postsService.getPostById(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    return post
   }
 
   @Get(':id/comments')

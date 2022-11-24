@@ -75,7 +75,7 @@ export class PostsService {
       await this.getBlogName(id),
       new Date().toISOString(),
     );
-    console.log(newPost)
+
     const createdPost = await this.postsRepository.createPost(newPost);
 
     if (!createdPost) {
