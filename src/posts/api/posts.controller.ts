@@ -39,7 +39,7 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    return post
+    return post;
   }
 
   @Get(':id/comments')
@@ -54,6 +54,21 @@ export class PostsController {
   @HttpCode(201)
   createPost(@Body() inputModel: PostInputModel) {
     return this.postsService.createPost(inputModel);
+  }
+
+  @Post('/:id/comments')
+  @HttpCode(201)
+  async createComment(
+    @Body('content') content: string,
+    @Param('id') postId: string,
+  ) {
+    const post = await this.postsService.getPostById(postId);
+
+    if (!post) {
+      throw new NotFoundException();
+    }
+
+    return; //this.commentsService.createComment(postId, content, userId)
   }
 
   @Put(':id')

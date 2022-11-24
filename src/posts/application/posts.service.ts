@@ -31,7 +31,7 @@ export class PostsService {
     const postsDB = await this.postsRepository.getPosts(query, blogId);
 
     if (!postsDB) {
-      return null
+      return null;
     }
 
     const totalCount = await this.postsRepository.getTotalCount(blogId);
@@ -59,13 +59,13 @@ export class PostsService {
     }
 
     //const userId = await this.jwtService.getUserIdViaToken(token);
-    return post //await this.addLikesInfoForPost(post, userId);
+    return post; //await this.addLikesInfoForPost(post, userId);
   }
 
   async createPost(
     inputModel: PostInputModel,
     blogId?: string,
-  ): Promise</*PostViewModel*/PostDBModel | null> {
+  ): Promise</*PostViewModel*/ PostDBModel | null> {
     let id = inputModel.blogId;
     if (blogId) {
       id = blogId;

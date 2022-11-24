@@ -8,17 +8,20 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from '../application/users.service';
-import { CreateUserInputModel } from './dto/createUserInput.model';
+import { UserInputModel } from './dto/userInputModel';
 import { QueryInputModel } from './dto/queryInput.model';
 import { UserViewModel } from './dto/userView.model';
+import { AuthBasicGuard } from '../../guard/auth.basic.guard';
 
 @Controller('users')
 export class UsersController {
   constructor(protected usersService: UsersService) {}
 
   @Get()
+  @UseGuards(AuthBasicGuard)
   getUsers(
     @Query()
     query: QueryInputModel,
@@ -27,12 +30,14 @@ export class UsersController {
   }
 
   @Post()
+  @UseGuards(AuthBasicGuard)
   @HttpCode(201)
-  createUser(@Body() inputModel: CreateUserInputModel): Promise<UserViewModel> {
+  createUser(@Body() inputModel: UserInputModel): Promise<UserViewModel> {
     return this.usersService.createUser(inputModel);
   }
 
   @Delete(':id')
+  @UseGuards(AuthBasicGuard)
   @HttpCode(204)
   async deleteUsersById(@Param('id') userId: string) {
     const result = await this.usersService.deleteUserById(userId);
@@ -41,6 +46,6 @@ export class UsersController {
       throw new NotFoundException();
     }
 
-    return
+    return;
   }
 }

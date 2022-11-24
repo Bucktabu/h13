@@ -1,21 +1,16 @@
-import { IsEmail, IsString, Length } from "class-validator";
+import { IsEmail, IsString, Length } from 'class-validator';
 
 export class BlogInputModel {
-  constructor(
-    public name: string,
-    public description: string,
-    public websiteUrl: string,
-  ) {}
-}
+  @IsString()
+  @Length(3, 15)
+  name: string;
 
-export class BlogInputModel1 {
   @IsString()
-  @Length(1, 15)
-  name: string
+  @Length(3, 500)
+  description: string;
+
   @IsString()
-  @Length(1, 100)
-  description: string
-  @IsString()
+  @Length(3, 100)
   @IsEmail()
-  websiteUrl: string
+  websiteUrl: string;
 }

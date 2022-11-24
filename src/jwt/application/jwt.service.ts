@@ -41,18 +41,9 @@ export class JwtService {
     let userId;
     if (!token) userId = null;
     else {
-      const payload = await this.giveTokenPayload(token.split(' ')[1]);
+      const payload = await this.getTokenPayload(token.split(' ')[1]);
       userId = payload.userId;
     }
     return userId;
-  }
-
-  async giveTokenPayload(token: string) {
-    try {
-      const result: any = await jwt.verify(token, settings.JWT_SECRET);
-      return result;
-    } catch (error) {
-      return null;
-    }
   }
 }

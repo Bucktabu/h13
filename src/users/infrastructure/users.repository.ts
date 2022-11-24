@@ -7,8 +7,22 @@ import { UserViewModel } from '../api/dto/userView.model';
 
 @Injectable()
 export class UsersRepository {
-  async getUsers(query: QueryInputModel): Promise<UserViewModel[]> {
+  async getUserByIdOrLoginOrEmail(
+    IdOrLoginOrEmail: string,
+  ): Promise<UserDBModel | null> {
+    return UserScheme.findOne(
+      {
+        $or: [
+          { id: IdOrLoginOrEmail },
+          { login: IdOrLoginOrEmail },
+          { email: IdOrLoginOrEmail },
+        ],
+      },
+      { _id: false, __v: false },
+    );
+  }
 
+  async getUsers(query: QueryInputModel): Promise<UserViewModel[]> {
     return UserScheme.find(
       {
         $or: [
@@ -43,6 +57,12 @@ export class UsersRepository {
     } catch (e) {
       return null;
     }
+  }
+
+  async updateUserPassword(userId: string, passwordSalt: string, passwordHash: string): Promise<boolean> {
+    const result = await UserScheme.updateOne({id: userId}, {$set: {passwordSalt, passwordHash}})
+
+    return result.matchedCount === 1
   }
 
   async deleteUserById(userId: string): Promise<boolean> {

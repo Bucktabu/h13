@@ -3,10 +3,10 @@ import { AppModule } from './app.module';
 import { runDB } from './db';
 import {
   BadRequestException,
-  HttpException,
   ValidationPipe,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
+import * as cookieParser from 'cookie-parser';
 
 const port = process.env.PORT || 5000;
 
@@ -14,6 +14,8 @@ async function bootstrap() {
   await runDB();
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalFilters(new HttpExceptionFilter());
+  //app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
@@ -37,7 +39,6 @@ async function bootstrap() {
       },
     }),
   );
-  app.useGlobalFilters(new HttpExceptionFilter());
 
   await app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);

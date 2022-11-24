@@ -49,7 +49,7 @@ export class BlogsController {
     @Query() query: QueryInputModel,
     @Param('id') blogId: string,
   ) {
-    const post = await this.blogsService.getBlogById(blogId)
+    const post = await this.blogsService.getBlogById(blogId);
 
     if (!post) {
       throw new NotFoundException();
@@ -76,9 +76,9 @@ export class BlogsController {
       throw new NotFoundException();
     }
 
-    const createdPost =  await this.postsService.createPost(inputModel, blog.id);
+    const createdPost = await this.postsService.createPost(inputModel, blog.id);
 
-    return createdPost
+    return createdPost;
   }
 
   @Put(':id')

@@ -11,7 +11,10 @@ export class PostsRepository {
     query: QueryInputModel,
     blogId: string | undefined,
   ): Promise<PostDBModel[]> {
-    return PostsScheme.find({ blogId: { $regex: blogId } }, { _id: false, __v: false })
+    return PostsScheme.find(
+      { blogId: { $regex: blogId } },
+      { _id: false, __v: false },
+    )
       .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(Number(query.pageSize))
@@ -23,7 +26,7 @@ export class PostsRepository {
   }
 
   async getPostById(postId: string): Promise<PostDBModel | null> {
-    return PostsScheme.findOne({ id: postId }, { _id: false , __v: false});
+    return PostsScheme.findOne({ id: postId }, { _id: false, __v: false });
   }
 
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
