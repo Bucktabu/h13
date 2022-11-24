@@ -46,15 +46,15 @@ export class PostsService {
   async getPostById(
     postId: string,
     token?: string,
-  ): Promise<PostViewModel | null> {
+  ): Promise</*PostViewModel*/ PostDBModel | null> {
     const post = await this.postsRepository.getPostById(postId);
 
     if (!post) {
       return null;
     }
 
-    const userId = await this.jwtService.getUserIdViaToken(token);
-    return await this.addLikesInfoForPost(post, userId);
+    //const userId = await this.jwtService.getUserIdViaToken(token);
+    return post //await this.addLikesInfoForPost(post, userId);
   }
 
   async createPost(

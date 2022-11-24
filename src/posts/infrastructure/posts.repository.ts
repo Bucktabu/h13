@@ -23,7 +23,7 @@ export class PostsRepository {
   }
 
   async getPostById(postId: string): Promise<PostDBModel | null> {
-    return PostsScheme.findOne({ id: postId }, { projection: { _id: false } });
+    return PostsScheme.findOne({ id: postId }, { _id: false , __v: false});
   }
 
   async createPost(newPost: PostDBModel): Promise<PostDBModel | null> {
