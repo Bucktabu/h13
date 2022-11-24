@@ -45,7 +45,7 @@ export class BlogsController {
   }
 
   @Get(':id/posts')
-  async getPostsPageByBlogId(
+  async getPostsByBlogId(
     @Query() query: QueryInputModel,
     @Param('id') blogId: string,
   ) {
