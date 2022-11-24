@@ -40,5 +40,7 @@ export class UsersController {
     if (!result) {
       throw new NotFoundException();
     }
+
+    return
   }
 }

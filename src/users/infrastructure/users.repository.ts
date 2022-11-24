@@ -8,11 +8,10 @@ import { UserViewModel } from '../api/dto/userView.model';
 @Injectable()
 export class UsersRepository {
   async getUsers(query: QueryInputModel): Promise<UserViewModel[]> {
-    console.log(query.searchLoginTerm, query.searchEmailTerm);
 
     return UserScheme.find(
       {
-        $and: [
+        $or: [
           { login: { $regex: query.searchLoginTerm, $options: 'i' } },
           { email: { $regex: query.searchEmailTerm, $options: 'i' } },
         ],
@@ -30,7 +29,7 @@ export class UsersRepository {
     searchEmailTerm: string,
   ): Promise<number> {
     return UserScheme.countDocuments({
-      $and: [
+      $or: [
         { login: { $regex: searchLoginTerm, $options: 'i' } },
         { email: { $regex: searchEmailTerm, $options: 'i' } },
       ],
