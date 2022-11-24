@@ -72,7 +72,7 @@ export class PostsService {
       inputModel.shortDescription,
       inputModel.content,
       id,
-      await this.getBlogName(inputModel.blogId),
+      await this.getBlogName(id),
       new Date().toISOString(),
     );
     console.log(newPost)
@@ -85,8 +85,8 @@ export class PostsService {
     return postOutputBeforeCreate(createdPost);
   }
 
-  async getBlogName(id: string): Promise<string> {
-    const blog = await this.blogsRepository.getBlogById(id);
+  async getBlogName(blogId: string): Promise<string> {
+    const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
       return '';
