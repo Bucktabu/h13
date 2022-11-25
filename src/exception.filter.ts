@@ -4,7 +4,21 @@ import {
   ArgumentsHost,
   HttpException,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
+
+@Catch(Error)
+export class ErrorExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+
+    if (process.env.envorinment !== 'production') {
+      response.status(500).send(exception)
+    } else {
+      response.status(500).send('Some error occurred')
+    }
+  }
+}
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
@@ -15,10 +29,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     if (status === 400) {
       const errors = {
-        errorsMessage: [],
+        errorsMessages: [],
       };
       const responseBody: any = exception.getResponse();
-      responseBody.message.forEach((m) => errors.errorsMessage.push(m));
+      responseBody.message.forEach((m) => errors.errorsMessages.push(m));
 
       response.status(status).send(errors);
     } else {

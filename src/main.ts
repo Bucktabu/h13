@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { runDB } from './db';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
-import { HttpExceptionFilter } from './exception.filter';
+import { ErrorExceptionFilter, HttpExceptionFilter } from "./exception.filter";
 
 const port = process.env.PORT || 5000;
 
@@ -10,6 +10,7 @@ async function bootstrap() {
   await runDB();
   const app = await NestFactory.create(AppModule);
 
+  app.useGlobalFilters(new ErrorExceptionFilter());
   app.useGlobalFilters(new HttpExceptionFilter());
   app.useGlobalPipes(
     new ValidationPipe({
