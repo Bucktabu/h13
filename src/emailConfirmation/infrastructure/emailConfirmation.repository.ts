@@ -4,10 +4,13 @@ import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 
 @Injectable()
 export class EmailConfirmationRepository {
-  async getEmailConfirmationByCodeOrId(codeOrId: string): Promise<EmailConfirmationModel | null> {
-    return EmailConfirmationScheme
-      .findOne({$or: [{confirmationCode: codeOrId}, {id: codeOrId}]},
-        {_id: false, __v: false})
+  async getEmailConfirmationByCodeOrId(
+    codeOrId: string,
+  ): Promise<EmailConfirmationModel | null> {
+    return EmailConfirmationScheme.findOne(
+      { $or: [{ confirmationCode: codeOrId }, { id: codeOrId }] },
+      { _id: false, __v: false },
+    );
   }
 
   async createEmailConfirmation(emailConfirmation: EmailConfirmationModel) {
@@ -19,17 +22,25 @@ export class EmailConfirmationRepository {
     }
   }
 
-  async updateConfirmationCode(id: string, confirmationCode: string, newExpirationDate?: Date): Promise<boolean> {
-    const result = await EmailConfirmationScheme
-      .updateOne({id}, {$set: {confirmationCode}})
+  async updateConfirmationCode(
+    id: string,
+    confirmationCode: string,
+    newExpirationDate?: Date,
+  ): Promise<boolean> {
+    const result = await EmailConfirmationScheme.updateOne(
+      { id },
+      { $set: { confirmationCode } },
+    );
 
-    return result.modifiedCount === 1
+    return result.modifiedCount === 1;
   }
 
   async updateConfirmationInfo(id: string) {
-    let result = await EmailConfirmationScheme
-      .updateOne({id}, {$set: {isConfirmed: true}})
+    const result = await EmailConfirmationScheme.updateOne(
+      { id },
+      { $set: { isConfirmed: true } },
+    );
 
-    return result.modifiedCount === 1
+    return result.modifiedCount === 1;
   }
 }

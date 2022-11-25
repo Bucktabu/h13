@@ -1,20 +1,28 @@
-import { Injectable, NestMiddleware } from "@nestjs/common";
-import { EmailConfirmationRepository } from "../emailConfirmation/infrastructure/emailConfirmation.repository";
-import { NextFunction, Request, Response } from "express";
+import { Injectable, NestMiddleware } from '@nestjs/common';
+import { EmailConfirmationRepository } from '../emailConfirmation/infrastructure/emailConfirmation.repository';
+import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class CheckCredential implements NestMiddleware {
-  constructor(protected emailConfirmationRepository: EmailConfirmationRepository) {}
+  constructor(
+    protected emailConfirmationRepository: EmailConfirmationRepository,
+  ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const emailConfirmation = await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(req.body.recoveryCode)
+    const emailConfirmation =
+      await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(
+        req.body.recoveryCode,
+      );
 
     if (!emailConfirmation) {
-      return res.status(400)
-        .send({errorsMessages: [{ message: 'Incorrect recovery code', field: "recoveryCode" }]})
+      return res.status(400).send({
+        errorsMessages: [
+          { message: 'Incorrect recovery code', field: 'recoveryCode' },
+        ],
+      });
     }
 
-    req.body.userId = emailConfirmation.id
-    next()
+    req.body.userId = emailConfirmation.id;
+    next();
   }
 }

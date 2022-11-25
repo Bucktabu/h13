@@ -37,24 +37,29 @@ export class CommentsRepository {
     return comment;
   }
 
-  async createComment(newComment: CommentBDModel): Promise<CommentBDModel | null> {
+  async createComment(
+    newComment: CommentBDModel,
+  ): Promise<CommentBDModel | null> {
     try {
-      await CommentsSchema.create(newComment)
-      return newComment
+      await CommentsSchema.create(newComment);
+      return newComment;
     } catch (e) {
-      return null
+      return null;
     }
   }
 
   async updateComment(commentId: string, comment: string): Promise<boolean> {
-    const result = await CommentsSchema.updateOne({id: commentId}, {$set:{content: comment}})
+    const result = await CommentsSchema.updateOne(
+      { id: commentId },
+      { $set: { content: comment } },
+    );
 
-    return result.modifiedCount === 1
+    return result.modifiedCount === 1;
   }
 
   async deleteCommentById(commentId: string): Promise<boolean> {
-    const result = await CommentsSchema.deleteOne({id: commentId})
+    const result = await CommentsSchema.deleteOne({ id: commentId });
 
-    return result.deletedCount === 1
+    return result.deletedCount === 1;
   }
 }

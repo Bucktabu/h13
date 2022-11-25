@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
-import { SortDirection, SortParameters } from '../sort.parameters';
+import { SortDirection, SortParameters } from '../globalTypes/sort.parameters';
 
 @Injectable()
 export class QueryParametersValidation implements NestMiddleware {

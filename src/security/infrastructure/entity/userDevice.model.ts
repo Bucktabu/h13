@@ -5,6 +5,6 @@ export class UserDeviceModel {
     public browser: string,
     public ipAddress: string,
     public iat: number,
-    public exp: number
+    public exp: number,
   ) {}
 }

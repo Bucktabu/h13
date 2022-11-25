@@ -6,5 +6,6 @@ export class QueryInputModel {
     public sortDirection: string,
     public searchLoginTerm: string,
     public searchEmailTerm: string,
-    public searchNameTerm: string) {}
-};
+    public searchNameTerm: string,
+  ) {}
+}

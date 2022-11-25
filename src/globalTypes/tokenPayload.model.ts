@@ -3,7 +3,6 @@ export class TokenPayloadModel {
     public userId: string,
     public deviceId: string,
     public iat: number,
-    public exp: number
-  ) {
-  }
+    public exp: number,
+  ) {}
 }

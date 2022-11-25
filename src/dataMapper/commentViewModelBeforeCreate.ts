@@ -1,7 +1,9 @@
-import { CommentBDModel } from "../comments/infrastructure/entity/commentDB.model";
-import { CommentViewModel } from "../comments/api/dto/commentView.model";
+import { CommentBDModel } from '../comments/infrastructure/entity/commentDB.model';
+import { CommentViewModel } from '../comments/api/dto/commentView.model';
 
-export const commentOutputBeforeCreate = (comment: CommentBDModel): CommentViewModel => {
+export const commentOutputBeforeCreate = (
+  comment: CommentBDModel,
+): CommentViewModel => {
   return {
     id: comment.id,
     content: comment.content,
@@ -11,7 +13,7 @@ export const commentOutputBeforeCreate = (comment: CommentBDModel): CommentViewM
     likesInfo: {
       myStatus: 'None',
       likesCount: 0,
-      dislikesCount: 0
-    }
-  }
-}
+      dislikesCount: 0,
+    },
+  };
+};

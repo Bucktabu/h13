@@ -1,10 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { runDB } from './db';
-import {
-  BadRequestException,
-  ValidationPipe,
-} from '@nestjs/common';
+import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
 
 const port = process.env.PORT || 5000;
@@ -18,6 +15,7 @@ async function bootstrap() {
     new ValidationPipe({
       transform: true,
       stopAtFirstError: true,
+
       exceptionFactory: (errorsMessages) => {
         const errorsForResponse = [];
 
@@ -31,9 +29,10 @@ async function bootstrap() {
           });
         });
 
-        throw new BadRequestException([
-          errorsMessages.map((e) => e.constraints),
-        ]);
+        throw new BadRequestException(
+          errorsForResponse
+          //errorsMessages.map((e) => e.constraints),
+        );
       },
     }),
   );

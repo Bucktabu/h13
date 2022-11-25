@@ -12,7 +12,7 @@ import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
 import { LikesService } from '../../likes/application/likes.service';
 import { JwtService } from '../../jwt/application/jwt.service';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
-import { UsersRepository } from "../../users/infrastructure/users.repository";
+import { UsersRepository } from '../../users/infrastructure/users.repository';
 
 @Injectable()
 export class PostsService {
@@ -22,7 +22,7 @@ export class PostsService {
     protected likesRepository: LikesRepository,
     protected blogsRepository: BlogsRepository,
     protected postsRepository: PostsRepository,
-    protected usersRepository: UsersRepository
+    protected usersRepository: UsersRepository,
   ) {}
 
   async getPosts(
@@ -109,15 +109,25 @@ export class PostsService {
     return await this.postsRepository.updatePost(postId, inputModel);
   }
 
-  async updateLikesInfo(userId: string, commentId: string, likeStatus: string): Promise<boolean> {
-    const addedAt = new Date().toISOString()
-    const login = await this.usersRepository.getUserByIdOrLoginOrEmail(userId)
+  async updateLikesInfo(
+    userId: string,
+    commentId: string,
+    likeStatus: string,
+  ): Promise<boolean> {
+    const addedAt = new Date().toISOString();
+    const login = await this.usersRepository.getUserByIdOrLoginOrEmail(userId);
 
     if (!login) {
-      return false
+      return false;
     }
 
-    return await this.likesRepository.updateUserReaction(commentId, userId, likeStatus, addedAt, login.login)
+    return await this.likesRepository.updateUserReaction(
+      commentId,
+      userId,
+      likeStatus,
+      addedAt,
+      login.login,
+    );
   }
 
   async deletePostById(postId: string): Promise<boolean> {

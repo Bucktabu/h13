@@ -59,10 +59,17 @@ export class UsersRepository {
     }
   }
 
-  async updateUserPassword(userId: string, passwordSalt: string, passwordHash: string): Promise<boolean> {
-    const result = await UserScheme.updateOne({id: userId}, {$set: {passwordSalt, passwordHash}})
+  async updateUserPassword(
+    userId: string,
+    passwordSalt: string,
+    passwordHash: string,
+  ): Promise<boolean> {
+    const result = await UserScheme.updateOne(
+      { id: userId },
+      { $set: { passwordSalt, passwordHash } },
+    );
 
-    return result.matchedCount === 1
+    return result.matchedCount === 1;
   }
 
   async deleteUserById(userId: string): Promise<boolean> {

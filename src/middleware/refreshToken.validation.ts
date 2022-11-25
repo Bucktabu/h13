@@ -1,38 +1,46 @@
-import { Injectable } from "@nestjs/common";
-import { JwtService } from "../jwt/application/jwt.service";
-import { UsersService } from "../users/application/users.service";
-import { NextFunction, Request, Response } from "express";
+import { Injectable } from '@nestjs/common';
+import { JwtService } from '../jwt/application/jwt.service';
+import { UsersService } from '../users/application/users.service';
+import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class RefreshTokenValidation {
-  constructor(protected jwtService: JwtService,
-              protected usersService: UsersService) {}
+  constructor(
+    protected jwtService: JwtService,
+    protected usersService: UsersService,
+  ) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
     if (!req.cookies.refreshToken) {
-      return res.sendStatus(401)
+      return res.sendStatus(401);
     }
 
-    const tokenInBlackList = await this.jwtService.checkTokenInBlackList(req.cookies.refreshToken)
+    const tokenInBlackList = await this.jwtService.checkTokenInBlackList(
+      req.cookies.refreshToken,
+    );
 
     if (tokenInBlackList) {
-      return res.sendStatus(401)
+      return res.sendStatus(401);
     }
 
-    const tokenPayload = await this.jwtService.getTokenPayload(req.cookies.refreshToken)
+    const tokenPayload = await this.jwtService.getTokenPayload(
+      req.cookies.refreshToken,
+    );
 
     if (!tokenPayload) {
-      return res.sendStatus(401)
+      return res.sendStatus(401);
     }
 
-    const user = await this.usersService.getUserByIdOrLoginOrEmail(tokenPayload.userId)
+    const user = await this.usersService.getUserByIdOrLoginOrEmail(
+      tokenPayload.userId,
+    );
 
     if (!user) {
-      return res.sendStatus(401)
+      return res.sendStatus(401);
     }
 
-    req.body.user = user
-    req.body.tokenPayload = tokenPayload
-    next()
+    req.body.user = user;
+    req.body.tokenPayload = tokenPayload;
+    next();
   }
 }

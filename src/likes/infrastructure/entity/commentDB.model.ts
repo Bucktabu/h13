@@ -5,6 +5,6 @@ export class CommentBDConstructor {
     public userId: string,
     public userLogin: string,
     public createdAt: string,
-    public postId?: string
+    public postId?: string,
   ) {}
 }

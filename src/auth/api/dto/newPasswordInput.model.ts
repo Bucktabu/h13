@@ -1,4 +1,4 @@
-import { IsString, Length } from "class-validator";
+import { IsString, Length } from 'class-validator';
 
 export class NewPasswordInputModel {
   @IsString()
@@ -8,5 +8,5 @@ export class NewPasswordInputModel {
   @IsString()
   recoveryCode: string;
 
-  userId: string
+  userId: string;
 }

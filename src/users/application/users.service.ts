@@ -81,11 +81,18 @@ export class UsersService {
     return createdUserViewModel(accountData);
   }
 
-  async updateUserPassword(userId: string, newPassword: string): Promise<boolean> {
-    const passwordSalt = await bcrypt.genSalt(10)
-    const passwordHash = await _generateHash(newPassword, passwordSalt) //TODO вынести в отдельную функцию
+  async updateUserPassword(
+    userId: string,
+    newPassword: string,
+  ): Promise<boolean> {
+    const passwordSalt = await bcrypt.genSalt(10);
+    const passwordHash = await _generateHash(newPassword, passwordSalt); //TODO вынести в отдельную функцию
 
-    return await this.usersRepository.updateUserPassword(userId, passwordSalt, passwordHash)
+    return await this.usersRepository.updateUserPassword(
+      userId,
+      passwordSalt,
+      passwordHash,
+    );
   }
 
   deleteUserById(userId: string): Promise<boolean> {

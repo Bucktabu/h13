@@ -1,8 +1,5 @@
-import { UserDeviceModel } from "./userDevice.model";
+import { UserDeviceModel } from './userDevice.model';
 
 export class DeviceSecurityModel {
-  constructor(
-    public userId: string,
-    public userDevice: UserDeviceModel
-  ) {}
+  constructor(public userId: string, public userDevice: UserDeviceModel) {}
 }
