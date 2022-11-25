@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import { IsEmail, IsString, IsUrl, Length } from "class-validator";
 
 export class BlogInputModel {
   @IsString()
@@ -11,6 +11,6 @@ export class BlogInputModel {
 
   @IsString()
   @Length(3, 100)
-  @IsEmail()
+  @IsUrl()
   websiteUrl: string;
 }
