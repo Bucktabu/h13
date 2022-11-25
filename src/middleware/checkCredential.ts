@@ -1,9 +1,9 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
-import { NextFunction, Request, Response } from "express";
 import { EmailConfirmationRepository } from "../emailConfirmation/infrastructure/emailConfirmation.repository";
+import { NextFunction, Request, Response } from "express";
 
 @Injectable()
-export class ConfirmationCodeValidation implements NestMiddleware {
+export class CheckCredential implements NestMiddleware {
   constructor(protected emailConfirmationRepository: EmailConfirmationRepository) {}
 
   async use(req: Request, res: Response, next: NextFunction) {

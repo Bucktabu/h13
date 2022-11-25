@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { ContentPageModel } from '../../globalTypes/contentPage.type';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { paginationContentPage } from '../../helper.functions';
 import { PostViewModel } from '../api/dto/postsView.model';
 import { PostDBModel } from '../infrastructure/entity/postDB.model';
@@ -12,6 +12,7 @@ import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
 import { LikesService } from '../../likes/application/likes.service';
 import { JwtService } from '../../jwt/application/jwt.service';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
+import { UsersRepository } from "../../users/infrastructure/users.repository";
 
 @Injectable()
 export class PostsService {
@@ -21,6 +22,7 @@ export class PostsService {
     protected likesRepository: LikesRepository,
     protected blogsRepository: BlogsRepository,
     protected postsRepository: PostsRepository,
+    protected usersRepository: UsersRepository
   ) {}
 
   async getPosts(
@@ -35,15 +37,15 @@ export class PostsService {
     }
 
     const totalCount = await this.postsRepository.getTotalCount(blogId);
-    //const userId = await this.jwtService.getUserIdViaToken(token);
-    // const posts = await Promise.all(
-    //   postsDB.map(async (p) => await this.addLikesInfoForPost(p, userId)),
-    // );
+    const userId = await this.jwtService.getUserIdViaToken(token);
+    const posts = await Promise.all(
+      postsDB.map(async (p) => await this.addLikesInfoForPost(p, userId)),
+    );
 
     return paginationContentPage(
       query.pageNumber,
       query.pageSize,
-      postsDB,
+      posts,
       totalCount,
     );
   }
@@ -51,21 +53,21 @@ export class PostsService {
   async getPostById(
     postId: string,
     token?: string,
-  ): Promise</*PostViewModel*/ PostDBModel | null> {
+  ): Promise<PostViewModel | null> {
     const post = await this.postsRepository.getPostById(postId);
 
     if (!post) {
       return null;
     }
 
-    //const userId = await this.jwtService.getUserIdViaToken(token);
-    return post; //await this.addLikesInfoForPost(post, userId);
+    const userId = await this.jwtService.getUserIdViaToken(token);
+    return await this.addLikesInfoForPost(post, userId);
   }
 
   async createPost(
     inputModel: PostInputModel,
     blogId?: string,
-  ): Promise</*PostViewModel*/ PostDBModel | null> {
+  ): Promise<PostViewModel | null> {
     let id = inputModel.blogId;
     if (blogId) {
       id = blogId;
@@ -105,6 +107,17 @@ export class PostsService {
     inputModel: PostInputModel,
   ): Promise<boolean> {
     return await this.postsRepository.updatePost(postId, inputModel);
+  }
+
+  async updateLikesInfo(userId: string, commentId: string, likeStatus: string): Promise<boolean> {
+    const addedAt = new Date().toISOString()
+    const login = await this.usersRepository.getUserByIdOrLoginOrEmail(userId)
+
+    if (!login) {
+      return false
+    }
+
+    return await this.likesRepository.updateUserReaction(commentId, userId, likeStatus, addedAt, login.login)
   }
 
   async deletePostById(postId: string): Promise<boolean> {

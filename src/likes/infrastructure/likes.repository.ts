@@ -1,5 +1,5 @@
 import { LikesScheme } from './entity/likes.scheme';
-import { NewestLikesModel } from '../newestLikes.model';
+import { NewestLikesModel } from './entity/newestLikes.model';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -27,10 +27,6 @@ export class LikesRepository {
     } catch (e) {
       return null;
     }
-  }
-
-  async getReactionsCount(commentId: string, status: string): Promise<number> {
-    return LikesScheme.countDocuments({ $and: [{ commentId }, { status }] });
   }
 
   async getLikeReactionsCount(parentId: string): Promise<number> {

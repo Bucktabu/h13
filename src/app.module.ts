@@ -23,6 +23,10 @@ import { PostsRepository } from "./posts/infrastructure/posts.repository";
 import { ConfirmationCodeValidation } from "./middleware/confirmationCode.validation";
 import { ConfirmationEmailValidation } from "./middleware/confirmationEmail.validation";
 import { ResendingConfirmationValidation } from "./middleware/resendingConfirmation.validation";
+import { RefreshTokenValidation } from "./middleware/refreshToken.validation";
+import { LikeStatusValidation } from "./middleware/likeStatus.validation";
+import { CheckCredential } from "./middleware/checkCredential";
+import { LoginOrEmailExistValidation } from "./middleware/loginOrEmailExist.validation";
 
 @Module({
   imports: [],
@@ -57,6 +61,9 @@ export class AppModule implements NestModule {
       .apply(QueryParametersValidation)
       .forRoutes({ path: '*', method: RequestMethod.GET });
     consumer
+      .apply(CheckCredential)
+      .forRoutes({path: '/auth/login', method: RequestMethod.POST})
+    consumer
       .apply(ConfirmationCodeValidation)
       .forRoutes({path: '/auth/new-password', method: RequestMethod.POST})
     consumer
@@ -64,6 +71,21 @@ export class AppModule implements NestModule {
       .forRoutes({path: '/auth/registration-confirmation', method: RequestMethod.POST})
     consumer
       .apply(ResendingConfirmationValidation)
-      .forRoutes({path: 'registration-email-resending' , method: RequestMethod.POST})
+      .forRoutes({path: '/auth/registration-email-resending' , method: RequestMethod.POST})
+    consumer
+      .apply(RefreshTokenValidation)
+      .forRoutes({path: '/auth/refresh-token', method: RequestMethod.POST})
+    consumer
+      .apply(RefreshTokenValidation)
+      .forRoutes({path: 'logout', method: RequestMethod.POST})
+    consumer
+      .apply(RefreshTokenValidation)
+      .forRoutes({path: 'security', method: RequestMethod.ALL})
+    consumer
+      .apply(LikeStatusValidation)
+      .forRoutes({path: '/comments/:id/like-status', method: RequestMethod.PUT})
+    consumer
+      .apply(LoginOrEmailExistValidation)
+      .forRoutes({path: '/posts/registration', method: RequestMethod.POST})
   }
 }

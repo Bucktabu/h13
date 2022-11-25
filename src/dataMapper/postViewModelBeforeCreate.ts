@@ -9,11 +9,11 @@ export const postOutputBeforeCreate = (postsBD: PostDBModel) => {
     blogId: postsBD.blogId,
     blogName: postsBD.blogName,
     createdAt: postsBD.createdAt,
-    // extendedLikesInfo: {
-    //   myStatus: 'None',
-    //   likesCount: 0,
-    //   dislikesCount: 0,
-    //   newestLikes: [],
-    // }, // TODO тесты расходятся со свагером?
+    extendedLikesInfo: {
+      myStatus: 'None',
+      likesCount: 0,
+      dislikesCount: 0,
+      newestLikes: [],
+    },
   };
 };

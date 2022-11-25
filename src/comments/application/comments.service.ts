@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CommentViewModel } from '../commentView.model';
+import { CommentViewModel } from '../api/dto/commentView.model';
 import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
 import { JwtService } from '../../jwt/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { ContentPageModel } from '../../globalTypes/contentPage.type';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { paginationContentPage } from '../../helper.functions';
+import { LikesRepository } from "../../likes/infrastructure/likes.repository";
+import {v4 as uuidv4} from 'uuid';
+import { commentOutputBeforeCreate } from "../../dataMapper/commentViewModelBeforeCreate";
+import { UserDBModel } from "../../users/infrastructure/entity/userDB.model";
 
 @Injectable()
 export class CommentsService {
@@ -14,6 +18,7 @@ export class CommentsService {
     protected likesService: LikesService,
     protected jwtService: JwtService,
     protected commentsRepository: CommentsRepository,
+    protected likesRepository: LikesRepository
   ) {}
 
   async getComments(
@@ -48,6 +53,40 @@ export class CommentsService {
 
     const userId = await this.jwtService.getUserIdViaToken(token);
     return await this.addLikesInfoForComment(comment, userId);
+  }
+
+  async createComment(postId: string, comment: string, user: UserDBModel): Promise<CommentViewModel | null> {
+    const commentId = uuidv4()
+
+    let newComment = new CommentBDModel(
+      commentId,
+      comment,
+      user.id,
+      user.login,
+      new Date().toISOString(),
+      postId
+    )
+
+    try {
+      await this.commentsRepository.createComment(newComment)
+    } catch (e) {
+      return null
+    }
+
+    return commentOutputBeforeCreate(newComment)
+  }
+
+  async updateComment(commentId: string, comment: string): Promise<boolean> {
+    return await this.commentsRepository.updateComment(commentId, comment)
+  }
+
+  async updateLikesInfo(userId: string, commentId: string, likeStatus: string): Promise<boolean> {
+    const addedAt = new Date().toISOString()
+    return await this.likesRepository.updateUserReaction(commentId, userId, likeStatus, addedAt)
+  }
+
+  async deleteCommentById(commentId: string): Promise<boolean> {
+    return await this.commentsRepository.deleteCommentById(commentId)
   }
 
   private async addLikesInfoForComment(

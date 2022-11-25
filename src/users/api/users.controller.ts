@@ -17,11 +17,11 @@ import { UserViewModel } from './dto/userView.model';
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
 
 @Controller('users')
+@UseGuards(AuthBasicGuard)
 export class UsersController {
   constructor(protected usersService: UsersService) {}
 
   @Get()
-  @UseGuards(AuthBasicGuard)
   getUsers(
     @Query()
     query: QueryInputModel,
@@ -30,14 +30,12 @@ export class UsersController {
   }
 
   @Post()
-  @UseGuards(AuthBasicGuard)
   @HttpCode(201)
   createUser(@Body() inputModel: UserInputModel): Promise<UserViewModel> {
     return this.usersService.createUser(inputModel);
   }
 
   @Delete(':id')
-  @UseGuards(AuthBasicGuard)
   @HttpCode(204)
   async deleteUsersById(@Param('id') userId: string) {
     const result = await this.usersService.deleteUserById(userId);

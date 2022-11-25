@@ -67,6 +67,7 @@ export class UsersRepository {
 
   async deleteUserById(userId: string): Promise<boolean> {
     const result = await UserScheme.deleteOne({ id: userId });
+
     return result.deletedCount === 1;
   }
 }

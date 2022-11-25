@@ -11,7 +11,6 @@ import {
 import { AuthBearerGuard } from "../../guard/auth.bearer.guard";
 import { UserDBModel } from "../../users/infrastructure/entity/userDB.model";
 import { AboutMeViewModel } from "../../dataMapper/aboutMeViewModel";
-import { CreateUserInputModel } from "./dto/createUserInput.model";
 import {v4 as uuidv4} from "uuid";
 import { JwtService } from "../../jwt/application/jwt.service";
 import { IpAddress } from "../../decorators/ipAdress.decorator";
@@ -21,11 +20,16 @@ import { UsersService } from "../../users/application/users.service";
 import { NewPasswordInputModel } from "./dto/newPasswordInput.model";
 import { AuthService } from "../application/auth.service";
 import { UserInputModel } from "../../users/api/dto/userInputModel";
+import { SecurityService } from "../../security/application/security.service";
+import { Cookies } from "../../decorators/cookie.decorator";
+import { TokenPayloadModel } from "../../globalTypes/tokenPayload.model";
+import { EmailConfirmationService } from "../../emailConfirmation/aplication/emailConfirmation.service";
 
 @Controller('auth')
 export class AuthController {
   constructor(protected authService: AuthService,
               protected jwsService: JwtService,
+              protected emailConfirmationService: EmailConfirmationService,
               protected securityService: SecurityService,
               protected usersService: UsersService) {}
 
@@ -39,7 +43,7 @@ export class AuthController {
 
   @Post('login')
   async createUser(
-    @Body() body: CreateUserInputModel,
+    @Body() body: UserInputModel,
     @Req() user: UserDBModel,
     @IpAddress() ipAddress,
   ) {
@@ -107,7 +111,15 @@ export class AuthController {
 
   @Post('registration-confirmation')
   @HttpCode(204)
-  registrationConfirmation() {
+  async registrationConfirmation(
+    @Body('emailConfirmationId') id: string
+  ) {
+    const result = await this.emailConfirmationService.updateConfirmationInfo(id)
+
+    if (!result) {
+      throw new ServiceUnavailableException()
+    }
+
     return
   }
 
@@ -125,6 +137,24 @@ export class AuthController {
     return
   }
 
-  // createRefreshToken
-  // logout
+  @Post('refresh-token')
+  async createRefreshToken(
+    @Body('tokenPayload') tokenPayload: TokenPayloadModel,
+    @Cookies('refreshToken') refreshToken: string
+  ) {
+    const token = await this.securityService.createNewRefreshToken(refreshToken, tokenPayload)
+
+    response.cookie('refreshToken', token.refreshToken, {secure: true, httpOnly: true})
+    return {'accessToken': token.accessToken}
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  async logout(
+    @Cookies('refreshToken') refreshToken: string
+  ) {
+    await this.securityService.logoutFromCurrentSession(refreshToken)
+
+    return
+  }
 }

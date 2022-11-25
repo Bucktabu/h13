@@ -6,7 +6,6 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from './exception.filter';
-import * as cookieParser from 'cookie-parser';
 
 const port = process.env.PORT || 5000;
 
@@ -15,7 +14,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalFilters(new HttpExceptionFilter());
-  //app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

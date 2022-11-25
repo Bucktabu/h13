@@ -1,4 +1,4 @@
-import { NewestLikesModel } from '../../../likes/newestLikes.model';
+import { NewestLikesModel } from '../../../likes/infrastructure/entity/newestLikes.model';
 
 export class PostViewModel {
   constructor(

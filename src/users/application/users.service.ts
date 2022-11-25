@@ -11,7 +11,7 @@ import { UserInputModel } from '../api/dto/userInputModel';
 import bcrypt from 'bcrypt';
 import add from 'date-fns/add';
 import { createdUserViewModel } from '../../dataMapper/createdUserViewModel';
-import { ContentPageModel } from '../../globalTypes/contentPage.type';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { UserViewModel } from '../api/dto/userView.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
 
@@ -81,7 +81,18 @@ export class UsersService {
     return createdUserViewModel(accountData);
   }
 
-  async createUserAccount(
+  async updateUserPassword(userId: string, newPassword: string): Promise<boolean> {
+    const passwordSalt = await bcrypt.genSalt(10)
+    const passwordHash = await _generateHash(newPassword, passwordSalt) //TODO вынести в отдельную функцию
+
+    return await this.usersRepository.updateUserPassword(userId, passwordSalt, passwordHash)
+  }
+
+  deleteUserById(userId: string): Promise<boolean> {
+    return this.usersRepository.deleteUserById(userId);
+  }
+
+  private async createUserAccount(
     userAccount: UserAccountModel,
   ): Promise<UserAccountModel> {
     const user = await this.usersRepository.createUser(userAccount.accountData);
@@ -95,16 +106,5 @@ export class UsersService {
     }
 
     return userAccount;
-  }
-
-  async updateUserPassword(userId: string, newPassword: string): Promise<boolean> {
-    const passwordSalt = await bcrypt.genSalt(10)
-    const passwordHash = await _generateHash(newPassword, passwordSalt) //TODO вынести в отдельную функцию
-
-    return await this.usersRepository.updateUserPassword(userId, passwordSalt, passwordHash)
-  }
-
-  deleteUserById(userId: string): Promise<boolean> {
-    return this.usersRepository.deleteUserById(userId);
   }
 }

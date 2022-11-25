@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { paginationContentPage } from '../../helper.functions';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { ContentPageModel } from '../../globalTypes/contentPage.type';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { BlogModel } from '../infrastructure/entity/blog.model';
 import { BlogInputModel } from '../api/dto/blogInput.model';
 import { v4 as uuidv4 } from 'uuid';

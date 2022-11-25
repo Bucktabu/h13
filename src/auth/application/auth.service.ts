@@ -28,7 +28,7 @@ export class AuthService {
       return false
     }
 
-    const emailConfirmation = await this.emailConfirmationRepository.giveEmailConfirmationByCodeOrId(userId)
+    const emailConfirmation = await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(userId)
 
     if (!emailConfirmation) {
       return false

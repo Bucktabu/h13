@@ -4,6 +4,12 @@ import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 
 @Injectable()
 export class EmailConfirmationRepository {
+  async getEmailConfirmationByCodeOrId(codeOrId: string): Promise<EmailConfirmationModel | null> {
+    return EmailConfirmationScheme
+      .findOne({$or: [{confirmationCode: codeOrId}, {id: codeOrId}]},
+        {_id: false, __v: false})
+  }
+
   async createEmailConfirmation(emailConfirmation: EmailConfirmationModel) {
     try {
       await EmailConfirmationScheme.create(emailConfirmation);
@@ -20,9 +26,10 @@ export class EmailConfirmationRepository {
     return result.modifiedCount === 1
   }
 
-  async giveEmailConfirmationByCodeOrId(codeOrId: string): Promise<EmailConfirmationModel | null> {
-    return EmailConfirmationScheme
-      .findOne({$or: [{confirmationCode: codeOrId}, {id: codeOrId}]},
-        {_id: false, __v: false})
+  async updateConfirmationInfo(id: string) {
+    let result = await EmailConfirmationScheme
+      .updateOne({id}, {$set: {isConfirmed: true}})
+
+    return result.modifiedCount === 1
   }
 }
