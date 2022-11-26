@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { EmailConfirmationRepository } from '../../emailConfirmation/infrastructure/emailConfirmation.repository';
+import { EmailConfirmationRepository } from '../../users/infrastructure/emailConfirmation.repository';
 import { EmailManager } from '../../emailTransfer/email.manager';
 import add from 'date-fns/add';
 

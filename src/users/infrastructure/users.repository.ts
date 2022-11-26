@@ -22,7 +22,7 @@ export class UsersRepository {
     );
   }
 
-  async getUsers(query: QueryInputModel): Promise<UserViewModel[]> {
+  async getUsers(query: QueryInputModel): Promise<UserDBModel[]> {
     return UserScheme.find(
       {
         $or: [

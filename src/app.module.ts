@@ -7,7 +7,7 @@ import {
 import { UsersController } from './users/api/users.controller';
 import { UsersService } from './users/application/users.service';
 import { UsersRepository } from './users/infrastructure/users.repository';
-import { EmailConfirmationRepository } from './emailConfirmation/infrastructure/emailConfirmation.repository';
+import { EmailConfirmationRepository } from './users/infrastructure/emailConfirmation.repository';
 import { EmailAdapters } from './emailTransfer/email.adapter';
 import { EmailManager } from './emailTransfer/email.manager';
 import { QueryParametersValidation } from './middleware/queryParameters.validation';
@@ -18,8 +18,8 @@ import { BlogsRepository } from './blogs/infrastructure/blogs.repository';
 import { CommentsController } from './comments/api/comments.controller';
 import { CommentsService } from './comments/application/comments.service';
 import { CommentsRepository } from './comments/infrastructure/comments.repository';
-import { JwtService } from './jwt/application/jwt.service';
-import { JwtRepository } from './jwt/infrastructure/jwt.repository';
+import { JwtService } from './auth/application/jwt.service';
+import { JwtRepository } from './auth/infrastructure/jwt.repository';
 import { LikesService } from './likes/application/likes.service';
 import { LikesRepository } from './likes/infrastructure/likes.repository';
 import { PostsController } from './posts/api/posts.controller';
@@ -32,6 +32,7 @@ import { RefreshTokenValidation } from './middleware/refreshToken.validation';
 import { LikeStatusValidation } from './middleware/likeStatus.validation';
 import { CheckCredential } from './middleware/checkCredential';
 import { LoginOrEmailExistValidation } from './middleware/loginOrEmailExist.validation';
+import { BanInfoRepository } from "./users/infrastructure/banInfo.repository";
 
 @Module({
   imports: [],
@@ -52,6 +53,7 @@ import { LoginOrEmailExistValidation } from './middleware/loginOrEmailExist.vali
     LikesService,
     PostsService,
     UsersService,
+    BanInfoRepository,
     BlogsRepository,
     CommentsRepository,
     JwtRepository,

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CommentViewModel } from '../api/dto/commentView.model';
 import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
-import { JwtService } from '../../jwt/application/jwt.service';
+import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';

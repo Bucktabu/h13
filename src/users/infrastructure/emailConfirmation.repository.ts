@@ -43,4 +43,10 @@ export class EmailConfirmationRepository {
 
     return result.modifiedCount === 1;
   }
+
+  async deleteEmailConfirmationById(id: string): Promise<boolean> {
+    const result = await EmailConfirmationScheme.deleteOne({ id });
+
+    return result.deletedCount === 1;
+  }
 }

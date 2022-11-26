@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
 import { LikesService } from '../../likes/application/likes.service';
-import { JwtService } from '../../jwt/application/jwt.service';
+import { JwtService } from '../../auth/application/jwt.service';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
 

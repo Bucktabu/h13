@@ -1,4 +1,4 @@
-import { JwtService } from '../../jwt/application/jwt.service';
+import { JwtService } from '../../auth/application/jwt.service';
 import { SecurityRepository } from '../infrastructure/security.repository';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { UserDeviceModel } from '../infrastructure/entity/userDevice.model';
