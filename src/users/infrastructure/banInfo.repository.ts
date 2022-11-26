@@ -2,8 +2,8 @@ import { BanInfoModel } from "./entity/banInfo.model";
 import { BanInfoScheme } from "./entity/banInfo.scheme";
 
 export class BanInfoRepository {
-  getBanInfo(id: string) {
-    return BanInfoScheme.findOne({id})
+  async getBanInfo(id: string): Promise<any> {
+    return BanInfoScheme.findOne({id}, {_id: false, id: false, __v: false})
   }
 
   async createBanInfo(banInfo: BanInfoModel) {
