@@ -34,12 +34,14 @@ export class UsersService {
 
   async getUsers(query: QueryInputModel): Promise<ContentPageModel> {
     const usersDB = await this.usersRepository.getUsers(query);
-    const users = await Promise.all(usersDB.map(async u => await this.addBanInfo(u)))
+    console.log('1');
+    const users = await Promise.all(usersDB.map(async (u) => await this.addBanInfo(u)))
+    console.log('users', users);
     const totalCount = await this.usersRepository.getTotalCount(
       query.searchLoginTerm,
       query.searchEmailTerm,
     );
-
+    console.log('5');
     return paginationContentPage(
       query.pageNumber,
       query.pageSize,
@@ -137,8 +139,10 @@ export class UsersService {
 
   private async addBanInfo(
     userDB: UserDBModel
-  ) {
+  ): Promise<UserViewModel> {
+    console.log('3');
     const banInfo = await this.banInfoRepository.getBanInfo(userDB.id)
+    console.log('4');
 
     return {
       id: userDB.id,
@@ -149,7 +153,7 @@ export class UsersService {
         isBanned: banInfo.isBanned,
         banDate: banInfo.banDate,
         banReason: banInfo.banReason
-      },
+      }
     };
   }
 }

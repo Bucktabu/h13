@@ -90,10 +90,9 @@ export class AppModule implements NestModule {
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({ path: 'security', method: RequestMethod.ALL });
-    consumer.apply(LikeStatusValidation).forRoutes({
-      path: '/comments/:id/like-status',
-      method: RequestMethod.PUT,
-    });
+    consumer
+      .apply(LikeStatusValidation)
+      .forRoutes({path: '/comments/:id/like-status', method: RequestMethod.PUT});
     consumer
       .apply(LoginOrEmailExistValidation)
       .forRoutes({ path: '/posts/registration', method: RequestMethod.POST });

@@ -108,7 +108,7 @@ export class CommentsService {
   ) {
     const result = await this.likesService.getReactionAndReactionCount(
       comment.id,
-      userId!,
+      userId,
     );
 
     return {
