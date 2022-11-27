@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  ExecutionContext,
   Get,
   HttpCode,
   NotFoundException,
@@ -26,6 +25,8 @@ import { SecurityService } from '../../security/application/security.service';
 import { Cookies } from '../../decorators/cookie.decorator';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
+import { AuthInputModel } from "./dto/authInput.model";
+import { Request } from "express";
 
 @Controller('auth')
 export class AuthController {
@@ -45,12 +46,13 @@ export class AuthController {
 
   @Post('login')
   async createUser(
-    @Body() body: UserInputModel,
-    @Req() user: UserDBModel,
+    @Body() body: AuthInputModel,
     @IpAddress() ipAddress,
+    @Req() req: Request
   ) {
+    console.log(body.user);
     const deviceId = uuidv4();
-    const token = await this.jwsService.createToken(user.id, deviceId);
+    const token = await this.jwsService.createToken(req.user.id, deviceId);
     const tokenPayload = await this.jwsService.getTokenPayload(
       token.refreshToken,
     );

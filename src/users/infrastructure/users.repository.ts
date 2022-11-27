@@ -3,7 +3,6 @@ import { giveSkipNumber } from '../../helper.functions';
 import { UserScheme } from './entity/users.scheme';
 import { UserDBModel } from './entity/userDB.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
-import { UserViewModel } from '../api/dto/userView.model';
 
 @Injectable()
 export class UsersRepository {

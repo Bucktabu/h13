@@ -33,10 +33,16 @@ import { LikeStatusValidation } from './middleware/likeStatus.validation';
 import { CheckCredential } from './middleware/checkCredential';
 import { LoginOrEmailExistValidation } from './middleware/loginOrEmailExist.validation';
 import { BanInfoRepository } from "./users/infrastructure/banInfo.repository";
+import { AuthController } from "./auth/api/auth.controller";
+import { AuthService } from "./auth/application/auth.service";
+import { EmailConfirmationService } from "./users/application/emailConfirmation.service";
+import { SecurityService } from "./security/application/security.service";
+import { SecurityRepository } from "./security/infrastructure/security.repository";
 
 @Module({
   imports: [],
   controllers: [
+    AuthController,
     BlogsController,
     CommentsController,
     PostsController,
@@ -44,21 +50,25 @@ import { BanInfoRepository } from "./users/infrastructure/banInfo.repository";
     UsersController,
   ],
   providers: [
+    AuthService,
     BlogsService,
     CommentsService,
     EmailAdapters,
     EmailManager,
-    EmailConfirmationRepository,
+    EmailConfirmationService,
     JwtService,
     LikesService,
     PostsService,
+    SecurityService,
     UsersService,
     BanInfoRepository,
     BlogsRepository,
     CommentsRepository,
+    EmailConfirmationRepository,
     JwtRepository,
     LikesRepository,
     PostsRepository,
+    SecurityRepository,
     UsersRepository,
   ],
 })
@@ -86,10 +96,10 @@ export class AppModule implements NestModule {
       .forRoutes({ path: '/auth/refresh-token', method: RequestMethod.POST });
     consumer
       .apply(RefreshTokenValidation)
-      .forRoutes({ path: 'logout', method: RequestMethod.POST });
+      .forRoutes({ path: '/auth/logout', method: RequestMethod.POST });
     consumer
       .apply(RefreshTokenValidation)
-      .forRoutes({ path: 'security', method: RequestMethod.ALL });
+      .forRoutes({ path: '/security', method: RequestMethod.ALL });
     consumer
       .apply(LikeStatusValidation)
       .forRoutes({path: '/comments/:id/like-status', method: RequestMethod.PUT});

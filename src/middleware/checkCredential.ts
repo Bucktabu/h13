@@ -1,28 +1,28 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { EmailConfirmationRepository } from '../users/infrastructure/emailConfirmation.repository';
-import { NextFunction, Request, Response } from 'express';
+import { UsersRepository } from "../users/infrastructure/users.repository";
+import { Request, Response, NextFunction } from "express";
+import { UserDBModel } from "../users/infrastructure/entity/userDB.model";
+import bcrypt from "bcrypt";
 
 @Injectable()
 export class CheckCredential implements NestMiddleware {
-  constructor(
-    protected emailConfirmationRepository: EmailConfirmationRepository,
-  ) {}
+  constructor(protected usersRepository: UsersRepository) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
-    const emailConfirmation =
-      await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(
-        req.body.recoveryCode,
-      );
 
-    if (!emailConfirmation) {
-      return res.status(400).send({
-        errorsMessages: [
-          { message: 'Incorrect recovery code', field: 'recoveryCode' },
-        ],
-      });
+    const user: UserDBModel | null = await this.usersRepository.getUserByIdOrLoginOrEmail(req.body.loginOrEmail)
+
+    if (!user) {
+      return res.sendStatus(401)
     }
 
-    req.body.userId = emailConfirmation.id;
-    next();
+    const passwordEqual = await bcrypt.compare(req.body.password, user!.passwordHash)
+
+    if (!passwordEqual) {
+      return res.sendStatus(401)
+    }
+
+    req.user = user
+    return next()
   }
 }
