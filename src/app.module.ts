@@ -78,24 +78,29 @@ export class AppModule implements NestModule {
     consumer
       .apply(ConfirmationCodeValidation)
       .forRoutes({ path: '/auth/new-password', method: RequestMethod.POST });
-    consumer.apply(ConfirmationEmailValidation).forRoutes({
-      path: '/auth/registration-confirmation',
-      method: RequestMethod.POST,
-    });
-    consumer.apply(ResendingConfirmationValidation).forRoutes({
-      path: '/auth/registration-email-resending',
-      method: RequestMethod.POST,
-    });
+    consumer
+      .apply(LoginOrEmailExistValidation)
+      .forRoutes({path: '/auth/registration', method: RequestMethod.POST});
+    consumer
+      .apply(ConfirmationEmailValidation)
+      .forRoutes({
+        path: '/auth/registration-confirmation',
+        method: RequestMethod.POST});
+    consumer
+      .apply(ResendingConfirmationValidation)
+      .forRoutes({
+        path: '/auth/registration-email-resending',
+        method: RequestMethod.POST});
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({ path: '/auth/refresh-token', method: RequestMethod.POST });
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({ path: '/security', method: RequestMethod.ALL });
-    consumer.apply(LikeStatusValidation).forRoutes({
-      path: '/comments/:id/like-status',
-      method: RequestMethod.PUT,
-    });
+    consumer
+      .apply(LikeStatusValidation).forRoutes({
+        path: '/comments/:id/like-status',
+        method: RequestMethod.PUT});
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({path: '/auth/logout', method: RequestMethod.POST});
