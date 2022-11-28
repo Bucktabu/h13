@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
+import { settings } from "../settings";
 
 @Injectable()
 export class AuthBasicGuard implements CanActivate {
@@ -14,7 +15,7 @@ export class AuthBasicGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const base64 = Buffer.from(
-      `${process.env.BASIC_USER}:${process.env.BASIC_PASS}`,
+      `${settings.BASIC_USER}:${settings.BASIC_PASS}`,
     ).toString('base64');
     const validAuthHeader = `Basic ${base64}`;
 
