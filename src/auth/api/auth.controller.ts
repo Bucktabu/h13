@@ -59,7 +59,7 @@ export class AuthController {
     );
 
     await this.securityService.createUserDevice(tokenPayload, ipAddress);
-    console.log('refreshToken=' + token.refreshToken);
+    // console.log('refreshToken=' + token.refreshToken);
     return res
       .status(200)
       .cookie('refreshToken', token.refreshToken, {
