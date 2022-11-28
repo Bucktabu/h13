@@ -17,7 +17,7 @@ export class ResendingConfirmationValidation implements NestMiddleware {
         .send({ errorsMessages: [{ message: 'Wrong email', field: 'email' }] });
     }
 
-    req.body.user = user;
+    req.user = user;
     next();
   }
 }

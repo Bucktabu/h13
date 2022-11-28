@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { EmailConfirmationModel } from './emailConfirmation.model';
 
-const emailConfirmScheme = new mongoose.Schema<EmailConfirmationModel>({
+const emailConfirmationScheme = new mongoose.Schema<EmailConfirmationModel>({
   id: { type: String, required: true },
   confirmationCode: { type: String, required: true },
   expirationDate: { type: Date, required: true },
@@ -9,6 +9,6 @@ const emailConfirmScheme = new mongoose.Schema<EmailConfirmationModel>({
 });
 
 export const EmailConfirmationScheme = mongoose.model(
-  'emailConfirm',
-  emailConfirmScheme,
+  'emailConfirmation',
+  emailConfirmationScheme,
 );

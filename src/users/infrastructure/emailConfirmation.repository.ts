@@ -25,11 +25,12 @@ export class EmailConfirmationRepository {
   async updateConfirmationCode(
     id: string,
     confirmationCode: string,
-    newExpirationDate?: Date,
+    expirationDate?: Date,
   ): Promise<boolean> {
+    console.log(confirmationCode, /*newExpirationDate*/);
     const result = await EmailConfirmationScheme.updateOne(
       { id },
-      { $set: { confirmationCode } },
+      { $set: { confirmationCode, expirationDate } },
     );
 
     return result.modifiedCount === 1;

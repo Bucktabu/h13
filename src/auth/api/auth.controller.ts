@@ -82,9 +82,9 @@ export class AuthController {
         email.toString(),
       );
 
-      if (!result) {
-        throw new ServiceUnavailableException();
-      }
+      // if (!result) {
+      //   throw new ServiceUnavailableException();
+      // }
     }
 
     return;
@@ -104,9 +104,9 @@ export class AuthController {
       body.newPassword,
     );
 
-    if (!result) {
-      throw new ServiceUnavailableException();
-    }
+    // if (!result) {
+    //   throw new ServiceUnavailableException();
+    // }
 
     return;
   }
@@ -116,13 +116,13 @@ export class AuthController {
   async registration(@Body() body: UserInputModel) {
     const createdUser = await this.usersService.createUser(body);
 
-    if (!createdUser) {
-      throw new ServiceUnavailableException();
-    }
+    // if (!createdUser) {
+    //   throw new ServiceUnavailableException();
+    // }
 
     await this.emailManager.sendConfirmationEmail(
       createdUser.email,
-      createdUser.cod,
+      createdUser.code,
     );
 
     return;
@@ -135,9 +135,9 @@ export class AuthController {
       req.emailConfirmationId,
     );
 
-    if (!result) {
-      throw new ServiceUnavailableException();
-    }
+    // if (!result) {
+    //   throw new ServiceUnavailableException();
+    // }
 
     return;
   }
@@ -147,9 +147,9 @@ export class AuthController {
   async registrationEmailResending(@Req() req: Request) {
     const result = await this.authService.updateConfirmationCode(req.user.id);
 
-    if (!result) {
-      throw new ServiceUnavailableException();
-    }
+    // if (!result) {
+    //   throw new ServiceUnavailableException();
+    // }
 
     return;
   }

@@ -90,7 +90,7 @@ export class UsersService {
     return {
       user: createdUser,
       email: accountData.email,
-      cod: emailConfirmation.confirmationCode,
+      code: emailConfirmation.confirmationCode,
     };
   }
 
