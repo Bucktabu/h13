@@ -1,7 +1,10 @@
 import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
-import { BanInfoModel } from "../users/infrastructure/entity/banInfo.model";
+import { BanInfoModel } from '../users/infrastructure/entity/banInfo.model';
 
-export const createUserViewModel = async (userDB: UserDBModel, banInfo: BanInfoModel) => {
+export const createUserViewModel = async (
+  userDB: UserDBModel,
+  banInfo: BanInfoModel,
+) => {
   return {
     id: userDB.id,
     login: userDB.login,
@@ -10,7 +13,7 @@ export const createUserViewModel = async (userDB: UserDBModel, banInfo: BanInfoM
     banInfo: {
       isBanned: banInfo.isBanned,
       banDate: banInfo.banDate,
-      banReason: banInfo.banReason
+      banReason: banInfo.banReason,
     },
   };
 };

@@ -14,8 +14,8 @@ import { createUserViewModel } from '../../dataMapper/createUserViewModel';
 import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { UserViewModel } from '../api/dto/userView.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
-import { BanInfoModel } from "../infrastructure/entity/banInfo.model";
-import { BanInfoRepository } from "../infrastructure/banInfo.repository";
+import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
+import { BanInfoRepository } from '../infrastructure/banInfo.repository';
 
 @Injectable()
 export class UsersService {
@@ -34,7 +34,9 @@ export class UsersService {
 
   async getUsers(query: QueryInputModel): Promise<ContentPageModel> {
     const usersDB = await this.usersRepository.getUsers(query);
-    const users = await Promise.all(usersDB.map(async (u) => await this.addBanInfo(u)))
+    const users = await Promise.all(
+      usersDB.map(async (u) => await this.addBanInfo(u)),
+    );
     const totalCount = await this.usersRepository.getTotalCount(
       query.searchLoginTerm,
       query.searchEmailTerm,
@@ -48,7 +50,7 @@ export class UsersService {
     );
   }
 
-  async createUser(inputModel: UserInputModel): Promise<UserViewModel> {
+  async createUser(inputModel: UserInputModel) {
     const passwordSalt = await bcrypt.genSalt(10);
     const passwordHash = await _generateHash(inputModel.password, passwordSalt);
     const userAccountId = uuidv4();
@@ -69,14 +71,13 @@ export class UsersService {
       false,
     );
 
-    const banInfo = new BanInfoModel(
-      userAccountId,
-      false,
-      null,
-      null
-    )
+    const banInfo = new BanInfoModel(userAccountId, false, null, null);
 
-    const userAccount = new UserAccountModel(accountData, banInfo, emailConfirmation);
+    const userAccount = new UserAccountModel(
+      accountData,
+      banInfo,
+      emailConfirmation,
+    );
 
     const createdAccount = await this.createUserAccount(userAccount);
 
@@ -84,12 +85,13 @@ export class UsersService {
       return null;
     }
 
-    await this.emailsManager.sendConfirmationEmail(
-      inputModel.email,
-      userAccount.emailConfirmation.confirmationCode,
-    );
+    const createdUser = createUserViewModel(accountData, banInfo);
 
-    return createUserViewModel(accountData, banInfo);
+    return {
+      user: createdUser,
+      email: accountData.email,
+      cod: emailConfirmation.confirmationCode,
+    };
   }
 
   async updateUserPassword(
@@ -108,21 +110,28 @@ export class UsersService {
 
   async deleteUserById(userId: string): Promise<boolean> {
     const userDeleted = await this.usersRepository.deleteUserById(userId);
-    const banInfoDeleted = await this.banInfoRepository.deleteBanInfoById(userId);
-    const emailConfirmationDeleted  = await this.emailConfirmationRepository.deleteEmailConfirmationById(userId)
+    const banInfoDeleted = await this.banInfoRepository.deleteBanInfoById(
+      userId,
+    );
+    const emailConfirmationDeleted =
+      await this.emailConfirmationRepository.deleteEmailConfirmationById(
+        userId,
+      );
 
     if (!userDeleted) {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 
   private async createUserAccount(
-    userAccount: UserAccountModel
+    userAccount: UserAccountModel,
   ): Promise<boolean> {
     const user = await this.usersRepository.createUser(userAccount.accountData);
-    const banInfo = await this.banInfoRepository.createBanInfo(userAccount.banInfo)
+    const banInfo = await this.banInfoRepository.createBanInfo(
+      userAccount.banInfo,
+    );
     const emailConfirmation =
       await this.emailConfirmationRepository.createEmailConfirmation(
         userAccount.emailConfirmation,
@@ -135,18 +144,15 @@ export class UsersService {
     return true;
   }
 
-  private async addBanInfo(
-    userDB: UserDBModel
-  ): Promise<UserViewModel> {
-
-    const banInfo = await this.banInfoRepository.getBanInfo(userDB.id)
+  private async addBanInfo(userDB: UserDBModel): Promise<UserViewModel> {
+    const banInfo = await this.banInfoRepository.getBanInfo(userDB.id);
 
     return {
       id: userDB.id,
       login: userDB.login,
       email: userDB.email,
       createdAt: userDB.createdAt,
-      banInfo
+      banInfo,
     };
   }
 }

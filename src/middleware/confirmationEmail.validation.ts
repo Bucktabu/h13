@@ -33,7 +33,7 @@ export class ConfirmationEmailValidation implements NestMiddleware {
         .send({ errorsMessages: [{ message: 'Bad Request', field: 'code' }] });
     }
 
-    req.body.emailConfirmationId = emailConfirmation.id;
+    req.emailConfirmationId = emailConfirmation.id;
     next();
   }
 }

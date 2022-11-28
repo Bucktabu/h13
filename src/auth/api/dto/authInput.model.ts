@@ -1,7 +1,9 @@
-import { UserDBModel } from "../../../users/infrastructure/entity/userDB.model";
+import { IsString } from 'class-validator';
 
 export class AuthInputModel {
-  loginOrEmail: string
-  password: string
-  user: UserDBModel
+  @IsString()
+  loginOrEmail: string;
+
+  @IsString()
+  password: string;
 }

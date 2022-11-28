@@ -1,6 +1,6 @@
 import { UserDBModel } from './userDB.model';
 import { EmailConfirmationModel } from './emailConfirmation.model';
-import { BanInfoModel } from "./banInfo.model";
+import { BanInfoModel } from './banInfo.model';
 
 export class UserAccountModel {
   constructor(

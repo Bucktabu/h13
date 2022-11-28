@@ -1,4 +1,4 @@
-import { BanInfoModel } from "../../infrastructure/entity/banInfo.model";
+import { BanInfoModel } from '../../infrastructure/entity/banInfo.model';
 
 export class UserViewModel {
   constructor(
@@ -8,9 +8,9 @@ export class UserViewModel {
     public createdAt: string,
     //public banInfo: BanInfoModel
     public banInfo: {
-      isBanned: boolean,
-      banDate: Date,
-      banReason: string
-    }
+      isBanned: boolean;
+      banDate: Date;
+      banReason: string;
+    },
   ) {}
 }

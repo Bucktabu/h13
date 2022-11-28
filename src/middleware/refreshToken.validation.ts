@@ -16,7 +16,7 @@ export class RefreshTokenValidation {
     }
 
     const tokenInBlackList = await this.jwtService.checkTokenInBlackList(
-      req.cookies.refreshToken,
+        req.cookies.refreshToken,
     );
 
     if (tokenInBlackList) {
@@ -40,7 +40,7 @@ export class RefreshTokenValidation {
     }
 
     req.body.user = user;
-    req.body.tokenPayload = tokenPayload;
+    //req.body.tokenPayload = tokenPayload;
     next();
   }
 }

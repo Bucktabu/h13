@@ -31,8 +31,10 @@ export class UsersController {
 
   @Post()
   @HttpCode(201)
-  createUser(@Body() inputModel: UserInputModel): Promise<UserViewModel> {
-    return this.usersService.createUser(inputModel);
+  async createUser(@Body() inputModel: UserInputModel): Promise<UserViewModel> {
+    const result = await this.usersService.createUser(inputModel);
+
+    return result.user;
   }
 
   @Delete(':id')

@@ -1,17 +1,17 @@
-import { BanInfoModel } from "./entity/banInfo.model";
-import { BanInfoScheme } from "./entity/banInfo.scheme";
+import { BanInfoModel } from './entity/banInfo.model';
+import { BanInfoScheme } from './entity/banInfo.scheme';
 
 export class BanInfoRepository {
   async getBanInfo(id: string): Promise<any> {
-    return BanInfoScheme.findOne({id}, {_id: false, id: false, __v: false})
+    return BanInfoScheme.findOne({ id }, { _id: false, id: false, __v: false });
   }
 
   async createBanInfo(banInfo: BanInfoModel) {
     try {
-      await BanInfoScheme.create(banInfo)
-      return banInfo
+      await BanInfoScheme.create(banInfo);
+      return banInfo;
     } catch (e) {
-      return null
+      return null;
     }
   }
 

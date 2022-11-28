@@ -22,7 +22,7 @@ export class UsersRepository {
   }
 
   async getUsers(query: QueryInputModel): Promise<UserDBModel[]> {
-    return  UserScheme.find(
+    return UserScheme.find(
       {
         $or: [
           { login: { $regex: query.searchLoginTerm, $options: 'i' } },

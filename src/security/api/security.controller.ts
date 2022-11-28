@@ -7,6 +7,7 @@ import {
   HttpCode,
   NotFoundException,
   Param,
+  Req,
 } from '@nestjs/common';
 import { SecurityService } from '../application/security.service';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
@@ -16,7 +17,8 @@ export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
   @Get('devices')
-  getAllActiveSessions(@Body('user') user: UserDBModel) {
+  getAllActiveSessions(@Req() user: UserDBModel) {
+    console.log(user);
     return this.securityService.getAllActiveSessions(user.id);
   }
 
