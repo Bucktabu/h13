@@ -45,6 +45,16 @@ import { LikeStatusValidation } from "./middleware/likeStatus.validation";
     UsersController,
   ],
   providers: [
+    BanInfoRepository,
+    BlogsRepository,
+    CommentsRepository,
+    EmailConfirmationRepository,
+    JwtRepository,
+    LikesRepository,
+    PostsRepository,
+    SecurityRepository,
+    UsersRepository,
+
     AuthService,
     BlogsService,
     CommentsService,
@@ -56,15 +66,6 @@ import { LikeStatusValidation } from "./middleware/likeStatus.validation";
     PostsService,
     SecurityService,
     UsersService,
-    BanInfoRepository,
-    BlogsRepository,
-    CommentsRepository,
-    EmailConfirmationRepository,
-    JwtRepository,
-    LikesRepository,
-    PostsRepository,
-    SecurityRepository,
-    UsersRepository,
   ],
 })
 export class AppModule implements NestModule {
@@ -107,5 +108,5 @@ export class AppModule implements NestModule {
     consumer
       .apply(LoginOrEmailExistValidation)
       .forRoutes({ path: '/posts/registration', method: RequestMethod.POST });
-  }
+  } // TODO переписать на guards and pipe
 }

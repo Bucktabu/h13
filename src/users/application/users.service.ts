@@ -22,7 +22,6 @@ export class UsersService {
   constructor(
     protected banInfoRepository: BanInfoRepository,
     protected emailConfirmationRepository: EmailConfirmationRepository,
-    protected emailsManager: EmailManager,
     protected usersRepository: UsersRepository,
   ) {}
 

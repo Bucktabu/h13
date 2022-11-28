@@ -65,6 +65,7 @@ export class AuthController {
       .cookie('refreshToken', token.refreshToken, {
         secure: true,
         httpOnly: true,
+        //maxAge: 24*60*60*1000
       })
       .send({ accessToken: token.accessToken });
   } // TODO можно все привести к точно такому же виду как в експрессе

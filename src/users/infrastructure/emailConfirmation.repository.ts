@@ -4,6 +4,7 @@ import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 
 @Injectable()
 export class EmailConfirmationRepository {
+
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
   ): Promise<EmailConfirmationModel | null> {

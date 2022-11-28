@@ -1,6 +1,8 @@
 import { BanInfoModel } from './entity/banInfo.model';
 import { BanInfoScheme } from './entity/banInfo.scheme';
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class BanInfoRepository {
   async getBanInfo(id: string): Promise<any> {
     return BanInfoScheme.findOne({ id }, { _id: false, id: false, __v: false });

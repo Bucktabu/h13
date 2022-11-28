@@ -26,7 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const status = exception.getStatus();
-
+    console.log('here');
     if (status === 400) {
       const errors = {
         errorsMessages: [],
@@ -41,6 +41,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       //   timestamp: new Date().toISOString(),
       //   path: request.url,
       // });
+      console.log(status, response)
       response.sendStatus(status);
     }
   }

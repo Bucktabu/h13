@@ -1,6 +1,8 @@
 import { SecurityScheme } from './entity/security.scheme';
 import { DeviceSecurityModel } from './entity/deviceSecurity.model';
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class SecurityRepository {
   async getAllActiveSessions(userId: string) {
     return SecurityScheme.find(

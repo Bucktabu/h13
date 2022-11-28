@@ -1,5 +1,7 @@
-import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
+import { EmailConfirmationRepository } from "../infrastructure/emailConfirmation.repository";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class EmailConfirmationService {
   constructor(
     protected emailConfirmationRepository: EmailConfirmationRepository,
