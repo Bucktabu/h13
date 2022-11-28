@@ -1,6 +1,6 @@
+import { Injectable } from '@nestjs/common';
 import { LikesScheme } from './entity/likes.scheme';
 import { NewestLikesModel } from './entity/newestLikes.model';
-import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class LikesRepository {

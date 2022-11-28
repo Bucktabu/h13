@@ -1,6 +1,6 @@
 import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
 
-export const AboutMeViewModel = (userDB: UserDBModel) => {
+export const ToAboutMeViewModel = (userDB: UserDBModel) => {
   return {
     email: userDB.email,
     login: userDB.login,

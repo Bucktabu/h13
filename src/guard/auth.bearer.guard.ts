@@ -4,8 +4,8 @@ import {
   ExecutionContext,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UsersService } from '../users/application/users.service';
 import { JwtService } from '../auth/application/jwt.service';
+import { UsersService } from '../users/application/users.service';
 
 @Injectable()
 export class AuthBearerGuard implements CanActivate {

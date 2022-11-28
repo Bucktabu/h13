@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { NextFunction, Request, Response } from 'express';
 import { IpAddressScheme } from './ipAddress.scheme';
+import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
 export class IpAddressLimiter implements NestMiddleware {

@@ -1,6 +1,6 @@
-import { v4 as uuidv4 } from 'uuid';
-import { EmailConfirmationRepository } from '../../users/infrastructure/emailConfirmation.repository';
 import { EmailManager } from '../../emailTransfer/email.manager';
+import { EmailConfirmationRepository } from '../../users/infrastructure/emailConfirmation.repository';
+import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 
 export class AuthService {

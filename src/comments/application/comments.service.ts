@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CommentViewModel } from '../api/dto/commentView.model';
-import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
 import { JwtService } from '../../auth/application/jwt.service';
 import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { ContentPageModel } from '../../globalTypes/contentPage.model';
-import { paginationContentPage } from '../../helper.functions';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
-import { v4 as uuidv4 } from 'uuid';
-import { commentOutputBeforeCreate } from '../../dataMapper/commentViewModelBeforeCreate';
+import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
+import { CommentViewModel } from '../api/dto/commentView.model';
+import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
+import { commentOutputBeforeCreate } from '../../dataMapper/toCommentViewModelBeforeCreate';
+import { paginationContentPage } from '../../helper.functions';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CommentsService {

@@ -1,6 +1,6 @@
 import { BlogModel } from '../blogs/infrastructure/entity/blog.model';
 
-export const blogViewModel = (blogDB: BlogModel) => {
+export const toBlogViewModel = (blogDB: BlogModel) => {
   return {
     id: blogDB.id,
     name: blogDB.name,

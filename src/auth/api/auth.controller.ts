@@ -11,22 +11,22 @@ import {
   ServiceUnavailableException,
   UseGuards,
 } from '@nestjs/common';
-import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
-import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { AboutMeViewModel } from '../../dataMapper/aboutMeViewModel';
-import { v4 as uuidv4 } from 'uuid';
-import { JwtService } from '../application/jwt.service';
-import { emailInputModel } from './dto/emailInput.model';
-import { UsersService } from '../../users/application/users.service';
-import { NewPasswordInputModel } from './dto/newPasswordInput.model';
-import { AuthService } from '../application/auth.service';
-import { UserInputModel } from '../../users/api/dto/userInputModel';
-import { SecurityService } from '../../security/application/security.service';
-import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
-import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
-import { AuthInputModel } from './dto/authInput.model';
 import { Request, Response } from 'express';
+import { AuthService } from '../application/auth.service';
+import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
+import { JwtService } from '../application/jwt.service';
+import { SecurityService } from '../../security/application/security.service';
+import { UsersService } from '../../users/application/users.service';
 import { EmailManager } from '../../emailTransfer/email.manager';
+import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
+import { AuthInputModel } from './dto/authInput.model';
+import { emailInputModel } from './dto/emailInput.model';
+import { NewPasswordInputModel } from './dto/newPasswordInput.model';
+import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
+import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
+import { UserInputModel } from '../../users/api/dto/userInputModel';
+import { ToAboutMeViewModel } from '../../dataMapper/toAboutMeViewModel';
+import { v4 as uuidv4 } from 'uuid';
 
 @Controller('auth')
 export class AuthController {
@@ -42,7 +42,7 @@ export class AuthController {
   @Get()
   @UseGuards(AuthBearerGuard)
   aboutMe(@Body('user') user: UserDBModel) {
-    return AboutMeViewModel(user);
+    return ToAboutMeViewModel(user);
   }
 
   @Post('login')
@@ -82,9 +82,9 @@ export class AuthController {
         email.toString(),
       );
 
-      // if (!result) {
-      //   throw new ServiceUnavailableException();
-      // }
+      if (!result) {
+        throw new ServiceUnavailableException();
+      }
     }
 
     return;
@@ -104,9 +104,9 @@ export class AuthController {
       body.newPassword,
     );
 
-    // if (!result) {
-    //   throw new ServiceUnavailableException();
-    // }
+    if (!result) {
+      throw new ServiceUnavailableException();
+    }
 
     return;
   }
@@ -135,9 +135,9 @@ export class AuthController {
       req.emailConfirmationId,
     );
 
-    // if (!result) {
-    //   throw new ServiceUnavailableException();
-    // }
+    if (!result) {
+      throw new ServiceUnavailableException();
+    }
 
     return;
   }
@@ -147,9 +147,9 @@ export class AuthController {
   async registrationEmailResending(@Req() req: Request) {
     const result = await this.authService.updateConfirmationCode(req.user.id);
 
-    // if (!result) {
-    //   throw new ServiceUnavailableException();
-    // }
+    if (!result) {
+      throw new ServiceUnavailableException();
+    }
 
     return;
   }

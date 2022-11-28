@@ -1,11 +1,11 @@
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '../../auth/application/jwt.service';
 import { SecurityRepository } from '../infrastructure/security.repository';
+import { DeviceSecurityModel } from '../infrastructure/entity/deviceSecurity.model';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { UserDeviceModel } from '../infrastructure/entity/userDevice.model';
-import { DeviceSecurityModel } from '../infrastructure/entity/deviceSecurity.model';
+import { activeSessionsViewModel } from '../../dataMapper/toActiveSessionViewModel';
 import UserAgent from 'user-agents';
-import { Injectable } from '@nestjs/common';
-import { activeSessionsViewModel } from '../../dataMapper/activeSessionViewModel';
 
 @Injectable()
 export class SecurityService {

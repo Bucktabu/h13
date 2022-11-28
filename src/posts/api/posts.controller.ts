@@ -12,14 +12,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
+import { AuthBasicGuard } from '../../guard/auth.basic.guard';
+import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
+import { CommentsService } from '../../comments/application/comments.service';
+import { PostsService } from '../application/posts.service';
+import { CommentInputModel } from '../../comments/api/dto/commentInput.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostInputModel } from './dto/postInputModel';
-import { PostsService } from '../application/posts.service';
-import { CommentsService } from '../../comments/application/comments.service';
-import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
-import { CommentInputModel } from '../../comments/api/dto/commentInput.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { AuthBasicGuard } from '../../guard/auth.basic.guard';
 
 @Controller('posts')
 export class PostsController {

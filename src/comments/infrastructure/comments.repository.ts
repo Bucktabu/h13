@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CommentBDModel } from './entity/commentDB.model';
 import { CommentsSchema } from './entity/comments.scheme';
+import { CommentBDModel } from './entity/commentDB.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { giveSkipNumber } from '../../helper.functions';
 

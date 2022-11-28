@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PostDBModel } from './entity/postDB.model';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { giveSkipNumber } from '../../helper.functions';
 import { PostsScheme } from './entity/posts.scheme';
+import { QueryInputModel } from '../../users/api/dto/queryInput.model';
+import { PostDBModel } from './entity/postDB.model';
 import { PostInputModel } from '../api/dto/postInputModel';
+import { giveSkipNumber } from '../../helper.functions';
 
 @Injectable()
 export class PostsRepository {

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
-import { paginationContentPage } from '../../helper.functions';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { ContentPageModel } from '../../globalTypes/contentPage.model';
-import { BlogModel } from '../infrastructure/entity/blog.model';
 import { BlogInputModel } from '../api/dto/blogInput.model';
+import { BlogModel } from '../infrastructure/entity/blog.model';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
+import { QueryInputModel } from '../../users/api/dto/queryInput.model';
+import { toBlogViewModel } from '../../dataMapper/toBlogViewModel';
+import { paginationContentPage } from '../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
-import { blogViewModel } from '../../dataMapper/blogViewModel';
 
 @Injectable()
 export class BlogsService {
@@ -50,7 +50,7 @@ export class BlogsService {
       return null;
     }
 
-    return blogViewModel(createdBlog);
+    return toBlogViewModel(createdBlog);
   }
 
   async updateBlog(

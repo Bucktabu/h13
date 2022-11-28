@@ -1,21 +1,21 @@
+import { Injectable } from '@nestjs/common';
+import { EmailManager } from '../../emailTransfer/email.manager';
+import { BanInfoRepository } from '../infrastructure/banInfo.repository';
+import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
 import { UsersRepository } from '../infrastructure/users.repository';
+import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
+import { ContentPageModel } from '../../globalTypes/contentPage.model';
+import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
+import { QueryInputModel } from '../api/dto/queryInput.model';
+import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
+import { UserDBModel } from '../infrastructure/entity/userDB.model';
+import { UserInputModel } from '../api/dto/userInputModel';
+import { UserViewModel } from '../api/dto/userView.model';
+import { toCreateUserViewModel } from '../../dataMapper/toCreateUserViewModel';
 import { _generateHash, paginationContentPage } from '../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
-import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
-import { EmailManager } from '../../emailTransfer/email.manager';
-import { Injectable } from '@nestjs/common';
-import { UserDBModel } from '../infrastructure/entity/userDB.model';
-import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
-import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
-import { UserInputModel } from '../api/dto/userInputModel';
-import bcrypt from 'bcrypt';
 import add from 'date-fns/add';
-import { createUserViewModel } from '../../dataMapper/createUserViewModel';
-import { ContentPageModel } from '../../globalTypes/contentPage.model';
-import { UserViewModel } from '../api/dto/userView.model';
-import { QueryInputModel } from '../api/dto/queryInput.model';
-import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
-import { BanInfoRepository } from '../infrastructure/banInfo.repository';
+import bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -85,7 +85,7 @@ export class UsersService {
       return null;
     }
 
-    const createdUser = createUserViewModel(accountData, banInfo);
+    const createdUser = toCreateUserViewModel(accountData, banInfo);
 
     return {
       user: createdUser,

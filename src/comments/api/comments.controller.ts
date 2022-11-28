@@ -12,9 +12,8 @@ import {
   ServiceUnavailableException,
   UseGuards,
 } from '@nestjs/common';
-import { CommentsService } from '../application/comments.service';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
+import { CommentsService } from '../application/comments.service';
 import { CommentInputModel } from './dto/commentInput.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 

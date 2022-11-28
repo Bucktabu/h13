@@ -10,11 +10,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { UsersService } from '../application/users.service';
-import { UserInputModel } from './dto/userInputModel';
-import { QueryInputModel } from './dto/queryInput.model';
-import { UserViewModel } from './dto/userView.model';
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
+import { UsersService } from '../application/users.service';
+import { QueryInputModel } from './dto/queryInput.model';
+import { UserInputModel } from './dto/userInputModel';
+import { UserViewModel } from './dto/userView.model';
 
 @Controller('users')
 @UseGuards(AuthBasicGuard)

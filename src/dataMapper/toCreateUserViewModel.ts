@@ -1,7 +1,7 @@
-import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
 import { BanInfoModel } from '../users/infrastructure/entity/banInfo.model';
+import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
 
-export const createUserViewModel = async (
+export const toCreateUserViewModel = async (
   userDB: UserDBModel,
   banInfo: BanInfoModel,
 ) => {

@@ -1,5 +1,5 @@
-import { DeviceSecurityModel } from './entity/deviceSecurity.model';
 import { SecurityScheme } from './entity/security.scheme';
+import { DeviceSecurityModel } from './entity/deviceSecurity.model';
 
 export class SecurityRepository {
   async getAllActiveSessions(userId: string) {

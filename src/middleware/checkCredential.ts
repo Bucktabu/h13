@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { UsersRepository } from '../users/infrastructure/users.repository';
-import { Request, Response, NextFunction } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
 import bcrypt from 'bcrypt';
 
