@@ -1,7 +1,7 @@
 import { IsEmail, IsString } from "class-validator";
 
 export class EmailInputModel {
-  // @IsString()
-  // @IsEmail()
+// ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
+  @IsEmail()
   email: string;
 }

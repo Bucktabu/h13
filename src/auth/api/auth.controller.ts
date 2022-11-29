@@ -4,7 +4,7 @@ import {
   Controller,
   Get,
   HttpCode,
-  Ip,
+  Ip, Logger,
   NotFoundException, NotImplementedException,
   Post,
   Req,
@@ -74,11 +74,12 @@ export class AuthController {
   @Post('password-recovery')
   @HttpCode(204)
   async passwordRecovery(@Body('email') email: EmailInputModel) {
-    if (!isEmail(email)) {
-      throw new BadRequestException({
-        errorsMessages: [{ message: 'Email should be email', field: 'email' }]
-      })
-    } // TODO isEmail trouble
+    console.log('email: ', email );
+    // if (!isEmail(email)) {
+    //   throw new BadRequestException({
+    //     errorsMessages: [{ message: 'Email should be email', field: 'email' }]
+    //   })
+    // } // TODO isEmail trouble
 
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
       email.toString(),
@@ -153,23 +154,23 @@ export class AuthController {
   @Post('registration-email-resending')
   @HttpCode(204)
   async registrationEmailResending(
-    @Body('email') email: EmailInputModel,
+    @Body() dto: EmailInputModel,
     @Req() req: Request
   ) {
-    if (!isEmail(email)) {
-      throw new BadRequestException({
-        errorsMessages: [{ message: 'Email should be email', field: 'email' }]
-      })
-    }
+    console.log('email:', dto);
+    // if (!isEmail(email)) {
+    //   throw new BadRequestException({
+    //     errorsMessages: [{ message: 'Email should be email', field: 'email' }]
+    //   })
+    // }
 
-    console.log(email, isEmail(email));
     const newConfirmationCode = await this.authService.updateConfirmationCode(req.user.id);
 
     if (!newConfirmationCode) {
       throw new NotImplementedException();
     }
 
-    return await this.emailManager.sendConfirmationEmail(email.toString(), newConfirmationCode);
+    return await this.emailManager.sendConfirmationEmail(dto.email, newConfirmationCode);
   }
 
   @Post('refresh-token')

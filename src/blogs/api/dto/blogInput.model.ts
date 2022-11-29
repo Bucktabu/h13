@@ -1,10 +1,10 @@
 import { IsString, IsUrl, Length } from 'class-validator';
 import { trim } from "../../../helper.functions";
-import { Transform } from "class-transformer";
+import { Transform, TransformFnParams } from "class-transformer";
 
 export class BlogInputModel {
   @IsString()
-  //@Transform((value) => trim(value.toString()))
+  @Transform(({ value }: TransformFnParams) => value?.trim())
   @Length(3, 15)
   name: string;
 
