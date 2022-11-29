@@ -78,7 +78,7 @@ export class AuthController {
       throw new BadRequestException({
         errorsMessages: [{ message: 'Email should be email', field: 'email' }]
       })
-    }
+    } // TODO isEmail trouble
 
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
       email.toString(),
@@ -139,7 +139,6 @@ export class AuthController {
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(@Req() req: Request) {
-    console.log('-----> id:', req.emailConfirmationId);
     const result = await this.emailConfirmationService.updateConfirmationInfo(
       req.emailConfirmationId,
     );

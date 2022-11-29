@@ -2,7 +2,6 @@ import { BlogViewModel } from '../blogs/api/dto/blogView.model';
 import { PostViewModel } from '../posts/api/dto/postsView.model';
 import { UserViewModel } from '../users/api/dto/userView.model';
 import { CommentViewModel } from '../comments/api/dto/commentView.model';
-import { PostDBModel } from '../posts/infrastructure/entity/postDB.model';
 
 export class ContentPageModel {
   constructor(
