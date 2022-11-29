@@ -139,7 +139,8 @@ export class AuthController {
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(@Req() req: Request) {
-     const result = await this.emailConfirmationService.updateConfirmationInfo(
+    console.log('-----> id:', req.emailConfirmationId);
+    const result = await this.emailConfirmationService.updateConfirmationInfo(
       req.emailConfirmationId,
     );
 

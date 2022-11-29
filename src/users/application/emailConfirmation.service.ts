@@ -7,6 +7,10 @@ export class EmailConfirmationService {
     protected emailConfirmationRepository: EmailConfirmationRepository,
   ) {}
 
+  async checkConfirmation(id: string): Promise<boolean> {
+    return this.emailConfirmationRepository.checkConfirmation(id)
+  }
+
   async updateConfirmationInfo(id: string) {
     return this.emailConfirmationRepository.updateConfirmationInfo(id);
   }

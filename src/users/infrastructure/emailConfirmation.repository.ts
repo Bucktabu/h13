@@ -14,6 +14,14 @@ export class EmailConfirmationRepository {
     );
   }
 
+  async checkConfirmation(id: string): Promise<boolean> {
+    return EmailConfirmationScheme
+      .findOne(
+        {id},
+        {_id: false, id: false, confirmationCode: false, expirationDate: false, __v: false}
+      )
+  }
+
   async createEmailConfirmation(emailConfirmation: EmailConfirmationModel) {
     try {
       await EmailConfirmationScheme.create(emailConfirmation);
