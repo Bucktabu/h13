@@ -20,7 +20,7 @@ import { UsersService } from '../../users/application/users.service';
 import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { AuthInputModel } from './dto/authInput.model';
-import { emailInputModel } from './dto/emailInput.model';
+import { EmailInputModel } from './dto/emailInputModel';
 import { NewPasswordInputModel } from './dto/newPasswordInput.model';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
@@ -72,7 +72,7 @@ export class AuthController {
 
   @Post('password-recovery')
   @HttpCode(204)
-  async passwordRecovery(@Body('email') email: emailInputModel) {
+  async passwordRecovery(@Body('email') email: EmailInputModel) {
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
       email.toString(),
     ); // TODO :^)
@@ -117,9 +117,9 @@ export class AuthController {
   async registration(@Body() body: UserInputModel) {
     const createdUser = await this.usersService.createUser(body);
 
-    // if (!createdUser) {
-    //   throw new ServiceUnavailableException();
-    // }
+    if (!createdUser) {
+      throw new ServiceUnavailableException();
+    }
 
     await this.emailManager.sendConfirmationEmail(
       createdUser.email,
@@ -145,14 +145,17 @@ export class AuthController {
 
   @Post('registration-email-resending')
   @HttpCode(204)
-  async registrationEmailResending(@Req() req: Request) {
-    const result = await this.authService.updateConfirmationCode(req.user.id);
+  async registrationEmailResending(
+    @Body('email') email: EmailInputModel,
+    @Req() req: Request
+  ) {
+    const newConfirmationCode = await this.authService.updateConfirmationCode(req.user.id);
 
-    if (!result) {
+    if (!newConfirmationCode) {
       throw new ServiceUnavailableException();
     }
 
-    return;
+    return await this.emailManager.sendConfirmationEmail(email.toString(), newConfirmationCode);
   }
 
   @Post('refresh-token')

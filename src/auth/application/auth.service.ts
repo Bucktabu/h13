@@ -27,36 +27,20 @@ export class AuthService {
     return true;
   }
 
-  async updateConfirmationCode(userId: string): Promise<boolean> {
+  async updateConfirmationCode(userId: string): Promise<string | null> {
     const newConfirmationCode = uuidv4();
     const newExpirationDate = add(new Date(), { hours: 24 });
-    console.log('userId:', userId, typeof userId);
-    console.log('newConfirmationCode:', newConfirmationCode, typeof newConfirmationCode);
-    console.log('newExpirationDate:', newExpirationDate, typeof newExpirationDate);
-    try {
-      const result =
-        await this.emailConfirmationRepository.updateConfirmationCode(
-          userId,
-          newConfirmationCode,
-          newExpirationDate,
-        );
-    } catch (e) {
-      console.log(e);
+    const result =
+      await this.emailConfirmationRepository.updateConfirmationCode(
+      userId,
+      newConfirmationCode,
+      newExpirationDate,
+    );
+
+    if (!result) {
+      return null;
     }
 
-    // if (!result) {
-    //   return false;
-    // }
-
-    const emailConfirmation =
-      await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(
-        userId,
-      );
-    console.log('5');
-    if (!emailConfirmation) {
-      return false;
-    }
-
-    return true;
+    return newConfirmationCode;
   }
 }
