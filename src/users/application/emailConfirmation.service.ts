@@ -8,7 +8,13 @@ export class EmailConfirmationService {
   ) {}
 
   async checkConfirmation(id: string): Promise<boolean> {
-    return this.emailConfirmationRepository.checkConfirmation(id)
+    const result = await this.emailConfirmationRepository.checkConfirmation(id)
+
+    if (result.isConfirmed === true) {
+      return true
+    }
+
+    return false
   }
 
   async updateConfirmationInfo(id: string) {

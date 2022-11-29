@@ -14,7 +14,7 @@ export class EmailConfirmationRepository {
     );
   }
 
-  async checkConfirmation(id: string): Promise<boolean> {
+  async checkConfirmation(id: string) {
     return EmailConfirmationScheme
       .findOne(
         {id},
