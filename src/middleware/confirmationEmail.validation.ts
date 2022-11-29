@@ -14,20 +14,16 @@ export class ConfirmationEmailValidation implements NestMiddleware {
         req.body.code,
       );
 
-    let isConfirmed = true;
+    let error = false;
     if (!emailConfirmation) {
-      isConfirmed = false;
+      error = true;
+    } else if (emailConfirmation.isConfirmed === true) {
+      error = true;
+    } else if (emailConfirmation!.expirationDate < new Date()) {
+      error = true;
     }
 
-    if (emailConfirmation!.expirationDate < new Date()) {
-      isConfirmed = true;
-    }
-
-    if (emailConfirmation!.isConfirmed) {
-      isConfirmed = true;
-    }
-
-    if (!isConfirmed) {
+    if (error) {
       return res
         .status(400)
         .send({ errorsMessages: [{ message: 'Bad Request', field: 'code' }] });
