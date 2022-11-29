@@ -28,7 +28,6 @@ export class EmailConfirmationRepository {
     confirmationCode: string,
     expirationDate?: Date,
   ): Promise<boolean> {
-    console.log(confirmationCode, expirationDate);
     const result = await EmailConfirmationScheme.updateOne(
       { id },
       { $set: { confirmationCode, expirationDate } },

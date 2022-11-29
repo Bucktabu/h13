@@ -1,16 +1,16 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
   HttpCode,
   Ip,
-  NotFoundException,
+  NotFoundException, NotImplementedException,
   Post,
   Req,
   Res,
-  ServiceUnavailableException,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { Request, Response } from 'express';
 import { AuthService } from '../application/auth.service';
 import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
@@ -20,13 +20,14 @@ import { UsersService } from '../../users/application/users.service';
 import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { AuthInputModel } from './dto/authInput.model';
-import { EmailInputModel } from './dto/emailInputModel';
+import { EmailInputModel } from "./dto/emailInputModel";
 import { NewPasswordInputModel } from './dto/newPasswordInput.model';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { UserInputModel } from '../../users/api/dto/userInputModel';
 import { ToAboutMeViewModel } from '../../dataMapper/toAboutMeViewModel';
 import { v4 as uuidv4 } from 'uuid';
+import { isEmail } from "class-validator";
 
 @Controller('auth')
 export class AuthController {
@@ -73,6 +74,12 @@ export class AuthController {
   @Post('password-recovery')
   @HttpCode(204)
   async passwordRecovery(@Body('email') email: EmailInputModel) {
+    if (!isEmail(email)) {
+      throw new BadRequestException({
+        errorsMessages: [{ message: 'Email should be email', field: 'email' }]
+      })
+    }
+
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
       email.toString(),
     ); // TODO :^)
@@ -84,7 +91,7 @@ export class AuthController {
       );
 
       if (!result) {
-        throw new ServiceUnavailableException();
+        throw new NotImplementedException();
       }
     }
 
@@ -106,7 +113,7 @@ export class AuthController {
     );
 
     if (!result) {
-      throw new ServiceUnavailableException();
+      throw new NotImplementedException();
     }
 
     return;
@@ -118,7 +125,7 @@ export class AuthController {
     const createdUser = await this.usersService.createUser(body);
 
     if (!createdUser) {
-      throw new ServiceUnavailableException();
+      throw new NotImplementedException();
     }
 
     await this.emailManager.sendConfirmationEmail(
@@ -132,12 +139,12 @@ export class AuthController {
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(@Req() req: Request) {
-    const result = await this.emailConfirmationService.updateConfirmationInfo(
+     const result = await this.emailConfirmationService.updateConfirmationInfo(
       req.emailConfirmationId,
     );
 
     if (!result) {
-      throw new ServiceUnavailableException();
+      throw new NotImplementedException();
     }
 
     return;
@@ -149,10 +156,17 @@ export class AuthController {
     @Body('email') email: EmailInputModel,
     @Req() req: Request
   ) {
+    if (!isEmail(email)) {
+      throw new BadRequestException({
+        errorsMessages: [{ message: 'Email should be email', field: 'email' }]
+      })
+    }
+
+    console.log(email, isEmail(email));
     const newConfirmationCode = await this.authService.updateConfirmationCode(req.user.id);
 
     if (!newConfirmationCode) {
-      throw new ServiceUnavailableException();
+      throw new NotImplementedException();
     }
 
     return await this.emailManager.sendConfirmationEmail(email.toString(), newConfirmationCode);
