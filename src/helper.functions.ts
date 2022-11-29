@@ -34,3 +34,7 @@ export const paginationContentPage = (
     items: content,
   };
 };
+
+export function trim(value: string): string {
+  return value.trim();
+}

@@ -58,7 +58,7 @@ export class PostsController {
 
   @Post()
   @HttpCode(201)
-  @UseGuards(AuthBearerGuard)
+  @UseGuards(AuthBasicGuard)
   createPost(@Body() inputModel: PostInputModel) {
     return this.postsService.createPost(inputModel);
   }

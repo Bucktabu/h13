@@ -5,13 +5,13 @@ import {
   ForbiddenException,
   Get,
   HttpCode,
-  NotFoundException,
+  NotFoundException, NotImplementedException,
   Param,
   Put,
   Req,
   ServiceUnavailableException,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { CommentsService } from '../application/comments.service';
 import { CommentInputModel } from './dto/commentInput.model';
@@ -77,7 +77,7 @@ export class CommentsController {
     );
 
     if (!result) {
-      throw new ServiceUnavailableException();
+      throw new NotImplementedException();
     }
 
     return;

@@ -61,7 +61,7 @@ export class UsersService {
       passwordSalt,
       passwordHash,
       new Date().toISOString(),
-    );
+    ); // TODO попробовать избавиться от соли
 
     const emailConfirmation = new EmailConfirmationModel(
       userAccountId,
@@ -70,7 +70,11 @@ export class UsersService {
       false,
     );
 
-    const banInfo = new BanInfoModel(userAccountId, false, null, null);
+    const banInfo = new BanInfoModel(
+      userAccountId,
+      false,
+      null,
+      null);
 
     const userAccount = new UserAccountModel(
       accountData,
@@ -91,7 +95,7 @@ export class UsersService {
       email: accountData.email,
       code: emailConfirmation.confirmationCode,
     };
-  }
+  } // TODO избавиться от аккаунта
 
   async updateUserPassword(
     userId: string,
@@ -109,13 +113,12 @@ export class UsersService {
 
   async deleteUserById(userId: string): Promise<boolean> {
     const userDeleted = await this.usersRepository.deleteUserById(userId);
-    const banInfoDeleted = await this.banInfoRepository.deleteBanInfoById(
+    await this.banInfoRepository.deleteBanInfoById(
       userId,
     );
-    const emailConfirmationDeleted =
-      await this.emailConfirmationRepository.deleteEmailConfirmationById(
-        userId,
-      );
+    await this.emailConfirmationRepository.deleteEmailConfirmationById(
+      userId,
+    );
 
     if (!userDeleted) {
       return false;
