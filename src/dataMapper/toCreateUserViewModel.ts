@@ -1,5 +1,5 @@
-import { BanInfoModel } from '../users/infrastructure/entity/banInfo.model';
-import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
+import { BanInfoModel } from '../modules/users/infrastructure/entity/banInfo.model';
+import { UserDBModel } from '../modules/users/infrastructure/entity/userDB.model';
 
 export const toCreateUserViewModel = async (
   userDB: UserDBModel,

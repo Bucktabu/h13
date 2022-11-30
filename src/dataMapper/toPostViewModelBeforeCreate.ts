@@ -1,4 +1,4 @@
-import { PostDBModel } from '../posts/infrastructure/entity/postDB.model';
+import { PostDBModel } from '../modules/posts/infrastructure/entity/postDB.model';
 
 export const postOutputBeforeCreate = (postsBD: PostDBModel) => {
   return {

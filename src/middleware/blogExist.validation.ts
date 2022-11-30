@@ -1,26 +1,27 @@
 import { Injectable, NestMiddleware } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
-import { BlogsRepository } from "../blogs/infrastructure/blogs.repository";
+import { BlogsRepository } from "../modules/blogs/infrastructure/blogs.repository";
+import { ValidationArguments, ValidatorConstraintInterface } from "class-validator";
 
 @Injectable()
-export class BlogExistValidation implements NestMiddleware {
+export class BlogExistValidation implements ValidatorConstraintInterface {
   constructor(protected blogsRepository: BlogsRepository) {}
 
-  async use(req: Request, res: Response, next: NextFunction) {
-    if (!req.body.blogId) {
-      return res
-        .status(400)
-        .send({message: 'Incorrect blog id', field: "blogId"})
+  async validate(blogId: string) {
+    if (blogId) {
+      return false
     }
 
-    const blog = await this.blogsRepository.getBlogById(req.body.blogId)
+    const blog = await this.blogsRepository.getBlogById(blogId)
 
     if (!blog) {
-      return res
-        .status(400)
-        .send({message: 'Incorrect blog id', field: "blogId"})
+      return false
     }
 
-    next()
+    return true
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return "Blog doesn't exist";
   }
 }

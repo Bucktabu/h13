@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { UsersRepository } from '../users/infrastructure/users.repository';
+import { UsersRepository } from '../modules/users/infrastructure/users.repository';
 import { NextFunction, Request, Response } from 'express';
-import { EmailConfirmationService } from "../users/application/emailConfirmation.service";
+import { EmailConfirmationService } from "../modules/users/application/emailConfirmation.service";
 
 @Injectable()
 export class ResendingConfirmationValidation implements NestMiddleware {

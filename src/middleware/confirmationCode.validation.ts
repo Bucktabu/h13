@@ -1,5 +1,5 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { EmailConfirmationRepository } from '../users/infrastructure/emailConfirmation.repository';
+import { EmailConfirmationRepository } from '../modules/users/infrastructure/emailConfirmation.repository';
 import { NextFunction, Request, Response } from 'express';
 
 @Injectable()

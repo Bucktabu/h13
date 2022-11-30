@@ -1,7 +1,7 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
-import { UsersRepository } from '../users/infrastructure/users.repository';
+import { UsersRepository } from '../modules/users/infrastructure/users.repository';
 import { NextFunction, Request, Response } from 'express';
-import { UserDBModel } from '../users/infrastructure/entity/userDB.model';
+import { UserDBModel } from '../modules/users/infrastructure/entity/userDB.model';
 import bcrypt from 'bcrypt';
 
 @Injectable()
