@@ -10,8 +10,8 @@ import {
   Put,
   Query,
   Req,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards, UsePipes
+} from "@nestjs/common";
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { CommentsService } from '../../comments/application/comments.service';
@@ -21,6 +21,7 @@ import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDTO } from './dto/postDTO';
 import { Request } from "express";
 import { ReactionDTO } from "../../globalTypes/reactionDTO";
+import { QueryParametersValidationPipe } from "../../pipe/queryParameters.validation.pipe";
 
 @Controller('posts')
 export class PostsController {
@@ -30,6 +31,7 @@ export class PostsController {
   ) {}
 
   @Get()
+  @UsePipes(QueryParametersValidationPipe)
   getPosts(
     @Query() query: QueryInputModel,
     @Req() req: Request,

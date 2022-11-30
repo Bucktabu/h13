@@ -9,7 +9,7 @@ import {
   Post,
   Put,
   Query, Req,
-  UseGuards
+  UseGuards, UsePipes
 } from "@nestjs/common";
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
@@ -19,6 +19,7 @@ import { BlogViewModel } from './dto/blogView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDTO } from '../../posts/api/dto/postDTO';
 import { Request } from "express";
+import { QueryParametersValidationPipe } from "../../pipe/queryParameters.validation.pipe";
 
 @Controller('blogs')
 export class BlogsController {
@@ -28,6 +29,7 @@ export class BlogsController {
   ) {}
 
   @Get()
+  @UsePipes(QueryParametersValidationPipe)
   getBlogs(
     @Query()
     query: QueryInputModel,

@@ -70,9 +70,9 @@ import { BlogExistValidation } from "./middleware/blogExist.validation";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    consumer
-      .apply(QueryParametersValidation)
-      .forRoutes({ path: '*', method: RequestMethod.GET });
+    // consumer
+    //   .apply(QueryParametersValidation)
+    //   .forRoutes({ path: '*', method: RequestMethod.GET });
     consumer
       .apply(CheckCredential)
       .forRoutes({ path: '/auth/login', method: RequestMethod.POST });
