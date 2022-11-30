@@ -15,6 +15,7 @@ import { UsersService } from '../application/users.service';
 import { QueryInputModel } from './dto/queryInput.model';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
+import { UserDBModel } from "../infrastructure/entity/userDB.model";
 
 @Controller('users')
 @UseGuards(AuthBasicGuard)
@@ -31,7 +32,7 @@ export class UsersController {
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body() dto: UserDTO): Promise<UserViewModel> {
+  async createUser(@Body() dto: UserDTO): Promise<UserDBModel> {
     const result = await this.usersService.createUser(dto);
 
     return result.user;
