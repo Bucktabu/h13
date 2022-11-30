@@ -59,8 +59,9 @@ export class PostsService {
     if (!post) {
       return null;
     }
-
+    console.log(token);
     const userId = await this.jwtService.getUserIdViaToken(token);
+    console.log(userId);
     return await this.addLikesInfoForPost(post, userId);
   }
 

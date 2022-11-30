@@ -31,16 +31,19 @@ export class PostsController {
 
   @Get()
   getPosts(
-    @Query()
-    query: QueryInputModel,
+    @Query() query: QueryInputModel,
+    @Req() req: Request,
   ) {
     const blogId = '';
-    return this.postsService.getPosts(query, blogId);
+    return this.postsService.getPosts(query, blogId, req.headers.authorization);
   }
 
   @Get(':id')
-  async getPostById(@Param('id') postId: string) {
-    const post = await this.postsService.getPostById(postId);
+  async getPostById(
+    @Param('id') postId: string,
+    @Req() req: Request,
+  ) {
+    const post = await this.postsService.getPostById(postId, req.headers.authorization);
 
     if (!post) {
       throw new NotFoundException();
@@ -53,8 +56,9 @@ export class PostsController {
   getCommentsByPostId(
     @Query() query: QueryInputModel,
     @Param('id') postId: string,
+    @Req() req: Request,
   ) {
-    return this.commentsService.getComments(postId, query);
+    return this.commentsService.getComments(postId, query, req.headers.authorization);
   }
 
   @Post()
