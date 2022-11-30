@@ -20,5 +20,7 @@ export class BlogExistValidation implements NestMiddleware {
         .status(400)
         .send({message: 'Incorrect blog id', field: "blogId"})
     }
+
+    next()
   }
 }

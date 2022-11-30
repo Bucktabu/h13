@@ -19,7 +19,6 @@ import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDTO } from './dto/postDTO';
-import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { Request } from "express";
 import { ReactionDTO } from "../../globalTypes/reactionDTO";
 
