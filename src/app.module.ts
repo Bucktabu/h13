@@ -32,7 +32,7 @@ import { QueryParametersValidation } from "./middleware/queryParameters.validati
 import { LoginOrEmailExistValidation } from "./middleware/loginOrEmailExist.validation";
 import { ResendingConfirmationValidation } from "./middleware/resendingConfirmation.validation";
 import { RefreshTokenValidation } from "./middleware/refreshToken.validation";
-import { LikeStatusValidation } from "./middleware/likeStatus.validation";
+import { BlogExistValidation } from "./middleware/blogExist.validation";
 
 @Module({
   imports: [],
@@ -99,12 +99,14 @@ export class AppModule implements NestModule {
       .apply(RefreshTokenValidation)
       .forRoutes({ path: '/security', method: RequestMethod.ALL });
     consumer
-      .apply(LikeStatusValidation).forRoutes({
-        path: '/comments/:id/like-status',
-        method: RequestMethod.PUT});
-    consumer
       .apply(RefreshTokenValidation)
       .forRoutes({path: '/auth/logout', method: RequestMethod.POST});
+    consumer
+      .apply(BlogExistValidation)
+      .forRoutes({path: '/posts', method: RequestMethod.POST})
+    consumer
+      .apply(BlogExistValidation)
+      .forRoutes({path: '/posts', method: RequestMethod.PUT})
     consumer
       .apply(LoginOrEmailExistValidation)
       .forRoutes({ path: '/posts/registration', method: RequestMethod.POST });

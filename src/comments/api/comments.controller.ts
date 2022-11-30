@@ -9,21 +9,25 @@ import {
   Param,
   Put,
   Req,
-  ServiceUnavailableException,
   UseGuards
 } from "@nestjs/common";
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { CommentsService } from '../application/comments.service';
 import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
+import { ReactionDTO } from "../../globalTypes/reactionDTO";
+import { Request } from "express";
 
 @Controller('comments')
 export class CommentsController {
   constructor(protected commentsService: CommentsService) {}
 
   @Get(':id')
-  getCommentById(@Param('id') commentId: string) {
-    return this.commentsService.getCommentById(commentId);
+  getCommentById(
+    @Param('id') commentId: string,
+    @Req() req: Request
+  ) {
+    return this.commentsService.getCommentById(commentId, req.headers.authorization);
   }
 
   @Put(':id')
@@ -60,7 +64,7 @@ export class CommentsController {
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateLikeStatus(
-    @Body('likeStatus') likeStatus: string,
+    @Body() dto: ReactionDTO,
     @Param('id') commentId: string,
     @Req() user: UserDBModel,
   ) {
@@ -73,7 +77,7 @@ export class CommentsController {
     const result = await this.commentsService.updateLikesInfo(
       user!.id,
       commentId,
-      likeStatus,
+      dto.likeStatus,
     );
 
     if (!result) {

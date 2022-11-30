@@ -8,9 +8,9 @@ import {
   Param,
   Post,
   Put,
-  Query,
-  UseGuards,
-} from '@nestjs/common';
+  Query, Req,
+  UseGuards
+} from "@nestjs/common";
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
@@ -18,6 +18,7 @@ import { BlogDTO } from './dto/blogDTO';
 import { BlogViewModel } from './dto/blogView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDTO } from '../../posts/api/dto/postDTO';
+import { Request } from "express";
 
 @Controller('blogs')
 export class BlogsController {
@@ -49,6 +50,7 @@ export class BlogsController {
   async getPostsByBlogId(
     @Query() query: QueryInputModel,
     @Param('id') blogId: string,
+    @Req() req: Request,
   ) {
     const post = await this.blogsService.getBlogById(blogId);
 
@@ -56,7 +58,7 @@ export class BlogsController {
       throw new NotFoundException();
     }
 
-    return this.postsService.getPosts(query, blogId);
+    return this.postsService.getPosts(query, blogId, req.headers.authorization);
   }
 
   @Post()

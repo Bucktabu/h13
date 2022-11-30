@@ -21,6 +21,7 @@ import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDTO } from './dto/postDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { Request } from "express";
+import { ReactionDTO } from "../../globalTypes/reactionDTO";
 
 @Controller('posts')
 export class PostsController {
@@ -64,7 +65,7 @@ export class PostsController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
-  createPost(@Body() dto: PostDTO) {
+  async createPost(@Body() dto: PostDTO) {
     return this.postsService.createPost(dto);
   }
 
@@ -105,7 +106,7 @@ export class PostsController {
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateLikeStatus(
-    @Body('likeStatus') likeStatus: string,
+    @Body() dto: ReactionDTO,
     @Param('id') commentId: string,
     @Req() req: Request,
   ) {
@@ -115,7 +116,7 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    await this.postsService.updateLikesInfo(req.user.id, commentId, likeStatus);
+    await this.postsService.updateLikesInfo(req.user.id, commentId, dto.likeStatus);
 
     return;
   }
