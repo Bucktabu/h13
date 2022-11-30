@@ -19,6 +19,5 @@ export class PostDTO {
   content: string;
 
   @Optional()
-  @IsString()
   blogId: string;
 }

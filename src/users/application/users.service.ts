@@ -88,10 +88,11 @@ export class UsersService {
       return null;
     }
 
-    const createdUser = toCreateUserViewModel(accountData, banInfo);
+    //const createdUser = toCreateUserViewModel(accountData, banInfo);
 
     return {
-      user: createdUser,
+      //user: createdUser,
+      user: accountData,
       email: accountData.email,
       code: emailConfirmation.confirmationCode,
     };
