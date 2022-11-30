@@ -32,7 +32,7 @@ export class UsersController {
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body() dto: UserDTO): Promise<UserDBModel> {
+  async createUser(@Body() dto: UserDTO): Promise<UserViewModel> {
     const result = await this.usersService.createUser(dto);
 
     return result.user;

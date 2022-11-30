@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { EmailManager } from '../../emailTransfer/email.manager';
 import { BanInfoRepository } from '../infrastructure/banInfo.repository';
 import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
 import { UsersRepository } from '../infrastructure/users.repository';
@@ -10,7 +9,7 @@ import { QueryInputModel } from '../api/dto/queryInput.model';
 import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
 import { UserDBModel } from '../infrastructure/entity/userDB.model';
 import { UserDTO } from '../api/dto/userDTO';
-import { UserViewModel } from '../api/dto/userView.model';
+import { UserViewModel, UserViewModelWithBanInfo } from "../api/dto/userView.model";
 import { toCreateUserViewModel } from '../../dataMapper/toCreateUserViewModel';
 import { _generateHash, paginationContentPage } from '../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
@@ -88,11 +87,10 @@ export class UsersService {
       return null;
     }
 
-    //const createdUser = toCreateUserViewModel(accountData, banInfo);
+    const createdUser = toCreateUserViewModel(accountData, banInfo);
 
     return {
-      //user: createdUser,
-      user: accountData,
+      user: createdUser,
       email: accountData.email,
       code: emailConfirmation.confirmationCode,
     };
@@ -147,7 +145,7 @@ export class UsersService {
     return true;
   }
 
-  private async addBanInfo(userDB: UserDBModel): Promise<UserViewModel> {
+  private async addBanInfo(userDB: UserDBModel): Promise<UserViewModelWithBanInfo> {
     const banInfo = await this.banInfoRepository.getBanInfo(userDB.id);
 
     return {

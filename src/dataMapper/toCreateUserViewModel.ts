@@ -10,10 +10,10 @@ export const toCreateUserViewModel = async (
     login: userDB.login,
     email: userDB.email,
     createdAt: userDB.createdAt,
-    banInfo: {
-      isBanned: banInfo.isBanned,
-      banDate: banInfo.banDate,
-      banReason: banInfo.banReason,
-    },
+    // banInfo: {
+    //   isBanned: banInfo.isBanned,
+    //   banDate: banInfo.banDate,
+    //   banReason: banInfo.banReason,
+    // },
   };
 };

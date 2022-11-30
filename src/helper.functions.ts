@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 import { BlogViewModel } from './blogs/api/dto/blogView.model';
 import { CommentViewModel } from './comments/api/dto/commentView.model';
 import { PostViewModel } from './posts/api/dto/postsView.model';
-import { UserViewModel } from './users/api/dto/userView.model';
+import { UserViewModel, UserViewModelWithBanInfo } from "./users/api/dto/userView.model";
 
 export const giveSkipNumber = (pageNumber: string, pageSize: string) => {
   return (Number(pageNumber) - 1) * Number(pageSize);
@@ -22,7 +22,7 @@ export const paginationContentPage = (
   content:
     | BlogViewModel[]
     | PostViewModel[]
-    | UserViewModel[]
+    | UserViewModelWithBanInfo[]
     | CommentViewModel[],
   totalCount: number,
 ) => {
