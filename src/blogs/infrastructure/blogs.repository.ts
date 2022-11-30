@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { BlogSchema } from './entity/blog.schema';
 import { BlogModel } from './entity/blog.model';
-import { BlogInputModel } from '../api/dto/blogInput.model';
+import { BlogDTO } from '../api/dto/blogDTO';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { giveSkipNumber } from '../../helper.functions';
 
@@ -39,7 +39,7 @@ export class BlogsRepository {
 
   async updateBlog(
     blogId: string,
-    inputModel: BlogInputModel,
+    inputModel: BlogDTO,
   ): Promise<boolean> {
     const result = await BlogSchema.updateOne(
       { id: blogId },

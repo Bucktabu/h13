@@ -14,10 +14,10 @@ import {
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
-import { BlogInputModel } from './dto/blogInput.model';
+import { BlogDTO } from './dto/blogDTO';
 import { BlogViewModel } from './dto/blogView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostInputModel } from '../../posts/api/dto/postInputModel';
+import { PostDTO } from '../../posts/api/dto/postDTO';
 
 @Controller('blogs')
 export class BlogsController {
@@ -62,7 +62,7 @@ export class BlogsController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
-  createBlog(@Body() inputModel: BlogInputModel): Promise<BlogViewModel> {
+  createBlog(@Body() inputModel: BlogDTO): Promise<BlogViewModel> {
     return this.blogsService.createBlog(inputModel);
   }
 
@@ -70,7 +70,7 @@ export class BlogsController {
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
   async createPostByBlogId(
-    @Body() inputModel: PostInputModel,
+    @Body() inputModel: PostDTO,
     @Param('id') blogId: string,
   ) {
     const blog = await this.blogsService.getBlogById(blogId);
@@ -88,7 +88,7 @@ export class BlogsController {
   @HttpCode(204)
   @UseGuards(AuthBasicGuard)
   async updateBlog(
-    @Body() inputModel: BlogInputModel,
+    @Body() inputModel: BlogDTO,
     @Param('id') blogId: string,
   ) {
     const result = await this.blogsService.updateBlog(blogId, inputModel);

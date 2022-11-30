@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
-import { BlogInputModel } from '../api/dto/blogInput.model';
+import { BlogDTO } from '../api/dto/blogDTO';
 import { BlogModel } from '../infrastructure/entity/blog.model';
 import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
@@ -35,7 +35,7 @@ export class BlogsService {
     return await this.blogsRepository.getBlogById(blogId);
   }
 
-  async createBlog(inputModel: BlogInputModel): Promise<BlogModel | null> {
+  async createBlog(inputModel: BlogDTO): Promise<BlogModel | null> {
     const newBlog = new BlogModel(
       uuidv4(),
       inputModel.name,
@@ -55,7 +55,7 @@ export class BlogsService {
 
   async updateBlog(
     blogId: string,
-    inputModel: BlogInputModel,
+    inputModel: BlogDTO,
   ): Promise<boolean> {
     return await this.blogsRepository.updateBlog(blogId, inputModel);
   }

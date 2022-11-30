@@ -14,7 +14,7 @@ import {
 } from "@nestjs/common";
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
 import { CommentsService } from '../application/comments.service';
-import { CommentInputModel } from './dto/commentInput.model';
+import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 
 @Controller('comments')
@@ -30,7 +30,7 @@ export class CommentsController {
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateCommentById(
-    @Body('content') content: CommentInputModel,
+    @Body('content') content: CommentDTO,
     @Param('id') commentId: string,
     @Req() user: UserDBModel,
   ) {

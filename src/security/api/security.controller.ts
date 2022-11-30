@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { SecurityService } from '../application/security.service';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
+import { Request } from "express";
 
 @Controller('security')
 export class SecurityController {
@@ -24,10 +25,10 @@ export class SecurityController {
 
   @Delete('devices')
   @HttpCode(204)
-  async deleteActiveSessions(@Body() body: any) {
+  async deleteActiveSessions(@Req() req: Request) {
     const result = await this.securityService.deleteAllActiveSessions(
-      body.user!.id,
-      body.tokenPayload.deviceId,
+      req.user.id,
+      req.tokenPayload.deviceId,
     );
 
     if (!result) {
@@ -40,8 +41,8 @@ export class SecurityController {
   @Delete('devices/:id')
   @HttpCode(204)
   async deleteActiveSessionsById(
-    @Body() body: any,
     @Param('id') deviceId: string,
+    @Req() req: Request,
   ) {
     const userDevice = await this.securityService.getDeviceById(deviceId);
 
@@ -49,7 +50,7 @@ export class SecurityController {
       throw new NotFoundException();
     }
 
-    if (userDevice.userId !== body.user.id) {
+    if (userDevice.userId !== req.user.id) {
       throw new ForbiddenException(); // 403
     }
 

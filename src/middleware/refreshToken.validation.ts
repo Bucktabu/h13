@@ -39,8 +39,8 @@ export class RefreshTokenValidation {
       return res.sendStatus(401);
     }
 
-    req.body.user = user;
-    //req.body.tokenPayload = tokenPayload;
+    req.user = user;
+    req.tokenPayload = tokenPayload;
     next();
   }
 }

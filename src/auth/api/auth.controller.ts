@@ -19,12 +19,12 @@ import { SecurityService } from '../../security/application/security.service';
 import { UsersService } from '../../users/application/users.service';
 import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../guard/auth.bearer.guard';
-import { AuthInputModel } from './dto/authInput.model';
-import { EmailInputModel } from "./dto/emailInputModel";
-import { NewPasswordInputModel } from './dto/newPasswordInput.model';
+import { AuthDTO } from './dto/authDTO';
+import { EmailDTO } from "./dto/emailDTO";
+import { NewPasswordDTO } from './dto/newPasswordDTO';
 import { TokenPayloadModel } from '../../globalTypes/tokenPayload.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { UserInputModel } from '../../users/api/dto/userInputModel';
+import { UserDTO } from '../../users/api/dto/userDTO';
 import { ToAboutMeViewModel } from '../../dataMapper/toAboutMeViewModel';
 import { v4 as uuidv4 } from 'uuid';
 import { isEmail } from "class-validator";
@@ -48,7 +48,7 @@ export class AuthController {
 
   @Post('login')
   async createUser(
-    @Body() body: AuthInputModel,
+    @Body() dto: AuthDTO,
     @Ip() ipAddress,
     @Req() req: Request,
     @Res() res: Response,
@@ -73,22 +73,15 @@ export class AuthController {
 
   @Post('password-recovery')
   @HttpCode(204)
-  async passwordRecovery(@Body('email') email: EmailInputModel) {
-    console.log('email: ', email );
-    // if (!isEmail(email)) {
-    //   throw new BadRequestException({
-    //     errorsMessages: [{ message: 'Email should be email', field: 'email' }]
-    //   })
-    // } // TODO isEmail trouble
-
+  async passwordRecovery(@Body() dto: EmailDTO) {
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
-      email.toString(),
-    ); // TODO :^)
+      dto.email,
+    )
 
     if (!user) {
       const result = await this.authService.sendPasswordRecovery(
         user.id,
-        email.toString(),
+        dto.email,
       );
 
       if (!result) {
@@ -101,16 +94,16 @@ export class AuthController {
 
   @Post('new-password')
   @HttpCode(204)
-  async createNewPassword(@Body() body: NewPasswordInputModel) {
-    const user = await this.usersService.getUserByIdOrLoginOrEmail(body.userId);
+  async createNewPassword(@Body() dto: NewPasswordDTO) {
+    const user = await this.usersService.getUserByIdOrLoginOrEmail(dto.userId);
 
     if (!user) {
       throw new NotFoundException();
     }
 
     const result = await this.usersService.updateUserPassword(
-      body.userId,
-      body.newPassword,
+      dto.userId,
+      dto.newPassword,
     );
 
     if (!result) {
@@ -122,8 +115,8 @@ export class AuthController {
 
   @Post('registration')
   @HttpCode(204)
-  async registration(@Body() body: UserInputModel) {
-    const createdUser = await this.usersService.createUser(body);
+  async registration(@Body() dto: UserDTO) {
+    const createdUser = await this.usersService.createUser(dto);
 
     if (!createdUser) {
       throw new NotImplementedException();
@@ -154,16 +147,9 @@ export class AuthController {
   @Post('registration-email-resending')
   @HttpCode(204)
   async registrationEmailResending(
-    @Body() dto: EmailInputModel,
+    @Body() dto: EmailDTO,
     @Req() req: Request
   ) {
-    console.log('email:', dto);
-    // if (!isEmail(email)) {
-    //   throw new BadRequestException({
-    //     errorsMessages: [{ message: 'Email should be email', field: 'email' }]
-    //   })
-    // }
-
     const newConfirmationCode = await this.authService.updateConfirmationCode(req.user.id);
 
     if (!newConfirmationCode) {

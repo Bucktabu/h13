@@ -8,7 +8,7 @@ import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { ContentPageModel } from '../../globalTypes/contentPage.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from '../infrastructure/entity/postDB.model';
-import { PostInputModel } from '../api/dto/postInputModel';
+import { PostDTO } from '../api/dto/postDTO';
 import { PostViewModel } from '../api/dto/postsView.model';
 import { paginationContentPage } from '../../helper.functions';
 import { postOutputBeforeCreate } from '../../dataMapper/toPostViewModelBeforeCreate';
@@ -65,19 +65,19 @@ export class PostsService {
   }
 
   async createPost(
-    inputModel: PostInputModel,
+    dto: PostDTO,
     blogId?: string,
   ): Promise<PostViewModel | null> {
-    let id = inputModel.blogId;
+    let id = dto.blogId;
     if (blogId) {
       id = blogId;
     }
 
     const newPost = new PostDBModel(
       uuidv4(),
-      inputModel.title,
-      inputModel.shortDescription,
-      inputModel.content,
+      dto.title,
+      dto.shortDescription,
+      dto.content,
       id,
       await this.getBlogName(id),
       new Date().toISOString(),
@@ -104,9 +104,9 @@ export class PostsService {
 
   async updatePost(
     postId: string,
-    inputModel: PostInputModel,
+    dto: PostDTO,
   ): Promise<boolean> {
-    return await this.postsRepository.updatePost(postId, inputModel);
+    return await this.postsRepository.updatePost(postId, dto);
   }
 
   async updateLikesInfo(

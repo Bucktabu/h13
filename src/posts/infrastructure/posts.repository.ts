@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PostsScheme } from './entity/posts.scheme';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from './entity/postDB.model';
-import { PostInputModel } from '../api/dto/postInputModel';
+import { PostDTO } from '../api/dto/postDTO';
 import { giveSkipNumber } from '../../helper.functions';
 
 @Injectable()
@@ -40,16 +40,16 @@ export class PostsRepository {
 
   async updatePost(
     postId: string,
-    inputModel: PostInputModel,
+    dto: PostDTO,
   ): Promise<boolean> {
     const result = await PostsScheme.updateOne(
       { id: postId },
       {
         $set: {
-          title: inputModel.title,
-          shortDescription: inputModel.shortDescription,
-          content: inputModel.content,
-          blogId: inputModel.blogId,
+          title: dto.title,
+          shortDescription: dto.shortDescription,
+          content: dto.content,
+          blogId: dto.blogId,
         },
       },
     );

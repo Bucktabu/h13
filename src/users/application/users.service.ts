@@ -9,7 +9,7 @@ import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmati
 import { QueryInputModel } from '../api/dto/queryInput.model';
 import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
 import { UserDBModel } from '../infrastructure/entity/userDB.model';
-import { UserInputModel } from '../api/dto/userInputModel';
+import { UserDTO } from '../api/dto/userDTO';
 import { UserViewModel } from '../api/dto/userView.model';
 import { toCreateUserViewModel } from '../../dataMapper/toCreateUserViewModel';
 import { _generateHash, paginationContentPage } from '../../helper.functions';
@@ -49,15 +49,15 @@ export class UsersService {
     );
   }
 
-  async createUser(inputModel: UserInputModel) {
+  async createUser(dto: UserDTO) {
     const passwordSalt = await bcrypt.genSalt(10);
-    const passwordHash = await _generateHash(inputModel.password, passwordSalt);
+    const passwordHash = await _generateHash(dto.password, passwordSalt);
     const userAccountId = uuidv4();
 
     const accountData = new UserDBModel(
       userAccountId,
-      inputModel.login,
-      inputModel.email,
+      dto.login,
+      dto.email,
       passwordSalt,
       passwordHash,
       new Date().toISOString(),

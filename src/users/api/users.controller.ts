@@ -13,7 +13,7 @@ import {
 import { AuthBasicGuard } from '../../guard/auth.basic.guard';
 import { UsersService } from '../application/users.service';
 import { QueryInputModel } from './dto/queryInput.model';
-import { UserInputModel } from './dto/userInputModel';
+import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
 
 @Controller('users')
@@ -31,8 +31,8 @@ export class UsersController {
 
   @Post()
   @HttpCode(201)
-  async createUser(@Body() inputModel: UserInputModel): Promise<UserViewModel> {
-    const result = await this.usersService.createUser(inputModel);
+  async createUser(@Body() dto: UserDTO): Promise<UserViewModel> {
+    const result = await this.usersService.createUser(dto);
 
     return result.user;
   }

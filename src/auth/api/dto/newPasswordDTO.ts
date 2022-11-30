@@ -1,6 +1,6 @@
 import { IsString, Length } from 'class-validator';
 
-export class NewPasswordInputModel {
+export class NewPasswordDTO {
   @IsString()
   @Length(3, 10)
   newPassword: string;
