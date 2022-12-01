@@ -3,18 +3,19 @@ import { BanInfoRepository } from '../infrastructure/banInfo.repository';
 import { EmailConfirmationRepository } from '../infrastructure/emailConfirmation.repository';
 import { UsersRepository } from '../infrastructure/users.repository';
 import { BanInfoModel } from '../infrastructure/entity/banInfo.model';
-import { ContentPageModel } from '../../../globalTypes/contentPage.model';
+import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { EmailConfirmationModel } from '../infrastructure/entity/emailConfirmation.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
 import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
 import { UserDBModel } from '../infrastructure/entity/userDB.model';
 import { UserDTO } from '../api/dto/userDTO';
 import { UserViewModel, UserViewModelWithBanInfo } from "../api/dto/userView.model";
-import { toCreateUserViewModel } from '../../../dataMapper/toCreateUserViewModel';
+import { toCreateUserViewModel } from '../../../data-mapper/to-create-user-view.model';
 import { _generateHash, paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import bcrypt from 'bcrypt';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class UsersService {
@@ -30,7 +31,7 @@ export class UsersService {
     return this.usersRepository.getUserByIdOrLoginOrEmail(IdOrLoginOrEmail);
   }
 
-  async getUsers(query: QueryInputModel): Promise<ContentPageModel> {
+  async getUsers(query: QueryParametersDTO): Promise<ContentPageModel> {
     const usersDB = await this.usersRepository.getUsers(query);
     const users = await Promise.all(
       usersDB.map(async (u) => await this.addBanInfo(u)),

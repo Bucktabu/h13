@@ -15,7 +15,7 @@ import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CommentsService } from '../application/comments.service';
 import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { ReactionDTO } from "../../../globalTypes/reactionDTO";
+import { ReactionDto } from "../../../global-model/reaction.dto";
 import { Request } from "express";
 
 @Controller('comments')
@@ -64,7 +64,7 @@ export class CommentsController {
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateLikeStatus(
-    @Body() dto: ReactionDTO,
+    @Body() dto: ReactionDto,
     @Param('id') commentId: string,
     @Req() user: UserDBModel,
   ) {

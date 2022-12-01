@@ -1,4 +1,4 @@
-export enum SortParameters {
+export enum SortParametersModel {
   Id = 'id',
   Name = 'name',
   YoutubeUrl = 'youtubeUrl',
@@ -8,10 +8,10 @@ export enum SortParameters {
   BlogId = 'blogId',
   BlogName = 'blogName',
   Login = 'login',
-  email = 'email',
+  Email = 'email',
 }
 
-export enum SortDirection {
+export enum SortDirections {
   Ascending = 'asc',
   Distending = 'desc',
 }

@@ -5,14 +5,15 @@ import { BlogsRepository } from '../../blogs/infrastructure/blogs.repository';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { PostsRepository } from '../infrastructure/posts.repository';
 import { UsersRepository } from '../../users/infrastructure/users.repository';
-import { ContentPageModel } from '../../../globalTypes/contentPage.model';
+import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from '../infrastructure/entity/postDB.model';
-import { PostDTO } from '../api/dto/postDTO';
+import { PostDTO, PostWithBlogIdDTO } from "../api/dto/postDTO";
 import { PostViewModel } from '../api/dto/postsView.model';
 import { paginationContentPage } from '../../../helper.functions';
-import { postOutputBeforeCreate } from '../../../dataMapper/toPostViewModelBeforeCreate';
+import { postOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
 import { v4 as uuidv4 } from 'uuid';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class PostsService {
@@ -26,7 +27,7 @@ export class PostsService {
   ) {}
 
   async getPosts(
-    query: QueryInputModel,
+    query: QueryParametersDTO,
     blogId: string,
     token?: string,
   ): Promise<ContentPageModel | null> {
@@ -66,7 +67,7 @@ export class PostsService {
   }
 
   async createPost(
-    dto: PostDTO,
+    dto: PostWithBlogIdDTO,
     blogId?: string,
   ): Promise<PostViewModel | null> {
     let id = dto.blogId;
@@ -105,7 +106,7 @@ export class PostsService {
 
   async updatePost(
     postId: string,
-    dto: PostDTO,
+    dto: PostWithBlogIdDTO,
   ): Promise<boolean> {
     return await this.postsRepository.updatePost(postId, dto);
   }

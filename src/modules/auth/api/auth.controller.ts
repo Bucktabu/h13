@@ -1,10 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Get,
   HttpCode,
-  Ip, Logger,
+  Ip,
   NotFoundException, NotImplementedException,
   Post,
   Req,
@@ -22,12 +21,13 @@ import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { AuthDTO } from './dto/authDTO';
 import { EmailDTO } from "./dto/emailDTO";
 import { NewPasswordDTO } from './dto/newPasswordDTO';
-import { TokenPayloadModel } from '../../../globalTypes/tokenPayload.model';
+import { TokenPayloadModel } from '../../../global-model/token-payload.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { UserDTO } from '../../users/api/dto/userDTO';
-import { ToAboutMeViewModel } from '../../../dataMapper/toAboutMeViewModel';
+import { ToAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model';
 import { v4 as uuidv4 } from 'uuid';
-import { isEmail } from "class-validator";
+import { RegistrationConfirmationDTO } from "./dto/reqistration-confirmation.dto";
+import { RegistrationEmailResendingDto } from "./dto/registration-email-resending.dto";
 
 @Controller('auth')
 export class AuthController {
@@ -132,9 +132,11 @@ export class AuthController {
 
   @Post('registration-confirmation')
   @HttpCode(204)
-  async registrationConfirmation(@Req() req: Request) {
+  async registrationConfirmation(
+    @Body() dto: RegistrationConfirmationDTO,
+  ) {
     const result = await this.emailConfirmationService.updateConfirmationInfo(
-      req.emailConfirmationId,
+      dto.code,
     );
 
     if (!result) {
@@ -148,7 +150,7 @@ export class AuthController {
   @UseGuards()
   @HttpCode(204)
   async registrationEmailResending(
-    @Body() dto: EmailDTO,
+    @Body() dto: RegistrationEmailResendingDto,
     @Req() req: Request
   ) {
     const newConfirmationCode = await this.authService.updateConfirmationCode(req.user.id);

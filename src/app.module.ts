@@ -28,11 +28,18 @@ import { UsersRepository } from "./modules/users/infrastructure/users.repository
 import { CheckCredential } from "./middleware/checkCredential";
 import { ConfirmationCodeValidation } from "./middleware/confirmationCode.validation";
 import { ConfirmationEmailValidation } from "./middleware/confirmationEmail.validation";
-import { QueryParametersValidation } from "./middleware/queryParameters.validation";
 import { LoginOrEmailExistValidation } from "./middleware/loginOrEmailExist.validation";
 import { ResendingConfirmationValidation } from "./middleware/resendingConfirmation.validation";
 import { RefreshTokenValidation } from "./middleware/refreshToken.validation";
-import { BlogExistValidation } from "./middleware/blogExist.validation";
+import { BlogExistValidation } from "./validations/blogExist.validation";
+import { SortByValidation } from "./validations/sort-by.validation";
+import { PageNumberValidation } from "./validations/page-number.validation";
+import { PageSizeValidation } from "./validations/page-size.validation";
+import { SearchNameTermValidation } from "./validations/search-name.validation";
+import { SearchLoginTermValidation } from "./validations/search-login-term.validation";
+import { SearchEmailTermValidation } from "./validations/search-email.term";
+import { RegistrationConfirmationValidation } from "./validations/registration-confirmation.validation";
+import { RegistrationEmailResendingValidation } from "./validations/registration-email-resending.validation";
 
 @Module({
   imports: [],
@@ -67,33 +74,38 @@ import { BlogExistValidation } from "./middleware/blogExist.validation";
     SecurityService,
     UsersService,
 
-    BlogExistValidation
+    BlogExistValidation,
+    PageNumberValidation,
+    PageSizeValidation,
+    RegistrationConfirmationValidation,
+    RegistrationEmailResendingValidation,
+    SearchEmailTermValidation,
+    SearchLoginTermValidation,
+    SearchNameTermValidation,
+    SortByValidation,
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
     consumer
-      .apply(QueryParametersValidation)
-      .forRoutes({ path: '*', method: RequestMethod.GET });
-    consumer
       .apply(CheckCredential)
       .forRoutes({ path: '/auth/login', method: RequestMethod.POST });
-    consumer
-      .apply(ConfirmationCodeValidation)
-      .forRoutes({ path: '/auth/new-password', method: RequestMethod.POST });
+    // consumer
+    //   .apply(ConfirmationCodeValidation)
+    //   .forRoutes({ path: '/auth/new-password', method: RequestMethod.POST });
     consumer
       .apply(LoginOrEmailExistValidation)
       .forRoutes({path: '/auth/registration', method: RequestMethod.POST});
-    consumer
-      .apply(ConfirmationEmailValidation)
-      .forRoutes({
-        path: '/auth/registration-confirmation',
-        method: RequestMethod.POST});
-    consumer
-      .apply(ResendingConfirmationValidation)
-      .forRoutes({
-        path: '/auth/registration-email-resending',
-        method: RequestMethod.POST});
+    // consumer
+    //   .apply(ConfirmationEmailValidation)
+    //   .forRoutes({
+    //     path: '/auth/registration-confirmation',
+    //     method: RequestMethod.POST});
+    // consumer
+    //   .apply(ResendingConfirmationValidation)
+    //   .forRoutes({
+    //     path: '/auth/registration-email-resending',
+    //     method: RequestMethod.POST});
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({ path: '/auth/refresh-token', method: RequestMethod.POST });
@@ -103,12 +115,6 @@ export class AppModule implements NestModule {
     consumer
       .apply(RefreshTokenValidation)
       .forRoutes({path: '/auth/logout', method: RequestMethod.POST});
-    consumer
-      .apply(BlogExistValidation)
-      .forRoutes({path: '/posts', method: RequestMethod.POST})
-    consumer
-      .apply(BlogExistValidation)
-      .forRoutes({path: '/posts', method: RequestMethod.PUT})
     consumer
       .apply(LoginOrEmailExistValidation)
       .forRoutes({ path: '/posts/registration', method: RequestMethod.POST });

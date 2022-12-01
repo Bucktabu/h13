@@ -4,13 +4,14 @@ import { LikesService } from '../../likes/application/likes.service';
 import { CommentsRepository } from '../infrastructure/comments.repository';
 import { LikesRepository } from '../../likes/infrastructure/likes.repository';
 import { CommentBDModel } from '../infrastructure/entity/commentDB.model';
-import { ContentPageModel } from '../../../globalTypes/contentPage.model';
+import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { CommentViewModel } from '../api/dto/commentView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { commentOutputBeforeCreate } from '../../../dataMapper/toCommentViewModelBeforeCreate';
+import { commentOutputBeforeCreate } from '../../../data-mapper/to-comment-view-before-create.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class CommentsService {
@@ -23,7 +24,7 @@ export class CommentsService {
 
   async getComments(
     postId: string,
-    query: QueryInputModel,
+    query: QueryParametersDTO,
     token?: string,
   ): Promise<ContentPageModel | null> {
     const commentsDB = await this.commentsRepository.getComments(query, postId);

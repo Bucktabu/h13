@@ -4,12 +4,12 @@ import { CommentViewModel } from './modules/comments/api/dto/commentView.model';
 import { PostViewModel } from './modules/posts/api/dto/postsView.model';
 import { UserViewModel, UserViewModelWithBanInfo } from "./modules/users/api/dto/userView.model";
 
-export const giveSkipNumber = (pageNumber: string, pageSize: string) => {
-  return (Number(pageNumber) - 1) * Number(pageSize);
+export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
+  return (pageNumber - 1) * pageSize;
 };
 
-export const givePagesCount = (totalCount: number, pageSize: string) => {
-  return Math.ceil(totalCount / Number(pageSize));
+export const givePagesCount = (totalCount: number, pageSize: number) => {
+  return Math.ceil(totalCount / pageSize);
 };
 
 export const _generateHash = async (password: string, salt: string) => {
@@ -17,8 +17,8 @@ export const _generateHash = async (password: string, salt: string) => {
 };
 
 export const paginationContentPage = (
-  pageNumber: string,
-  pageSize: string,
+  pageNumber: number,
+  pageSize: number,
   content:
     | BlogViewModel[]
     | PostViewModel[]

@@ -2,17 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { BlogsRepository } from '../infrastructure/blogs.repository';
 import { BlogDTO } from '../api/dto/blogDTO';
 import { BlogModel } from '../infrastructure/entity/blog.model';
-import { ContentPageModel } from '../../../globalTypes/contentPage.model';
+import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { toBlogViewModel } from '../../../dataMapper/toBlogViewModel';
+import { toBlogViewModel } from '../../../data-mapper/to-blog-view.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class BlogsService {
   constructor(protected blogsRepository: BlogsRepository) {}
 
-  async getBlogs(query: QueryInputModel): Promise<ContentPageModel | null> {
+  async getBlogs(query: QueryParametersDTO): Promise<ContentPageModel | null> {
     const blogs = await this.blogsRepository.getBlogs(query);
 
     if (!blogs) {

@@ -3,6 +3,7 @@ import { giveSkipNumber } from '../../../helper.functions';
 import { UserScheme } from './entity/users.scheme';
 import { UserDBModel } from './entity/userDB.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class UsersRepository {
@@ -21,7 +22,7 @@ export class UsersRepository {
     );
   }
 
-  async getUsers(query: QueryInputModel): Promise<UserDBModel[]> {
+  async getUsers(query: QueryParametersDTO): Promise<UserDBModel[]> {
     return UserScheme.find(
       {
         $or: [
@@ -31,9 +32,9 @@ export class UsersRepository {
       },
       { _id: false, passwordHash: false, passwordSalt: false, __v: false },
     )
-      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+      .sort({ [query.sortBy]: query.sortDirection ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
-      .limit(Number(query.pageSize))
+      .limit(query.pageSize)
       .lean();
   }
 

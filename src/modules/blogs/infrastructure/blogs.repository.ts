@@ -4,17 +4,18 @@ import { BlogModel } from './entity/blog.model';
 import { BlogDTO } from '../api/dto/blogDTO';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { giveSkipNumber } from '../../../helper.functions';
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Injectable()
 export class BlogsRepository {
-  async getBlogs(query: QueryInputModel): Promise<BlogModel[]> {
+  async getBlogs(query: QueryParametersDTO): Promise<BlogModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
       { _id: false, __v: false },
     )
-      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
+      .sort({ [query.sortBy]: query.sortDirection ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
-      .limit(Number(query.pageSize))
+      .limit(query.pageSize)
       .lean();
   }
 

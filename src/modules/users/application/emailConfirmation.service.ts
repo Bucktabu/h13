@@ -17,7 +17,7 @@ export class EmailConfirmationService {
     return false
   }
 
-  async updateConfirmationInfo(id: string) {
-    return this.emailConfirmationRepository.updateConfirmationInfo(id);
+  async updateConfirmationInfo(idOrCode: string) {
+    return this.emailConfirmationRepository.updateConfirmationInfo(idOrCode);
   }
 }

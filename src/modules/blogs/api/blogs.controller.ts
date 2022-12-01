@@ -17,9 +17,9 @@ import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BlogDTO } from './dto/blogDTO';
 import { BlogViewModel } from './dto/blogView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostDTO } from '../../posts/api/dto/postDTO';
+import { PostDTO, PostWithBlogIdDTO } from "../../posts/api/dto/postDTO";
 import { Request } from "express";
-import { QueryParametersValidationPipe } from "../../../pipe/queryParameters.validation.pipe";
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Controller('blogs')
 export class BlogsController {
@@ -29,10 +29,9 @@ export class BlogsController {
   ) {}
 
   @Get()
-  @UsePipes(QueryParametersValidationPipe)
   getBlogs(
     @Query()
-    query: QueryInputModel,
+    query: QueryParametersDTO,
   ) {
     return this.blogsService.getBlogs(query);
   }
@@ -50,10 +49,11 @@ export class BlogsController {
 
   @Get(':id/posts')
   async getPostsByBlogId(
-    @Query() query: QueryInputModel,
+    @Query() query: QueryParametersDTO,
     @Param('id') blogId: string,
     @Req() req: Request,
   ) {
+    console.log(query);
     const post = await this.blogsService.getBlogById(blogId);
 
     if (!post) {
@@ -74,7 +74,7 @@ export class BlogsController {
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
   async createPostByBlogId(
-    @Body() inputModel: PostDTO,
+    @Body() dto: PostWithBlogIdDTO,
     @Param('id') blogId: string,
   ) {
     const blog = await this.blogsService.getBlogById(blogId);
@@ -83,7 +83,7 @@ export class BlogsController {
       throw new NotFoundException();
     }
 
-    const createdPost = await this.postsService.createPost(inputModel, blog.id);
+    const createdPost = await this.postsService.createPost(dto, blog.id);
 
     return createdPost;
   }

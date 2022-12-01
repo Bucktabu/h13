@@ -8,15 +8,13 @@ import {
   Param,
   Post,
   Query,
-  UseGuards, UsePipes
+  UseGuards
 } from "@nestjs/common";
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { UsersService } from '../application/users.service';
-import { QueryInputModel } from './dto/queryInput.model';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
-import { UserDBModel } from "../infrastructure/entity/userDB.model";
-import { QueryParametersValidationPipe } from "../../../pipe/queryParameters.validation.pipe";
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Controller('users')
 @UseGuards(AuthBasicGuard)
@@ -24,10 +22,9 @@ export class UsersController {
   constructor(protected usersService: UsersService) {}
 
   @Get()
-  @UsePipes(QueryParametersValidationPipe)
   getUsers(
     @Query()
-    query: QueryInputModel,
+    query: QueryParametersDTO,
   ) {
     return this.usersService.getUsers(query);
   }

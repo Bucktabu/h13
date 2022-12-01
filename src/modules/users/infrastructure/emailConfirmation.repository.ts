@@ -44,9 +44,9 @@ export class EmailConfirmationRepository {
     return result.modifiedCount === 1;
   }
 
-  async updateConfirmationInfo(id: string) {
+  async updateConfirmationInfo(idOrCode: string) {
     const result = await EmailConfirmationScheme.updateOne(
-      { id },
+      { idOrCode },
       { $set: { isConfirmed: true } },
     );
 

@@ -10,7 +10,7 @@ import {
   Put,
   Query,
   Req,
-  UseGuards, UsePipes
+  UseGuards,
 } from "@nestjs/common";
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
@@ -18,9 +18,10 @@ import { CommentsService } from '../../comments/application/comments.service';
 import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostDTO } from './dto/postDTO';
+import { PostDTO, PostWithBlogIdDTO } from "./dto/postDTO";
 import { Request } from "express";
-import { ReactionDTO } from "../../../globalTypes/reactionDTO";
+import { ReactionDto } from "../../../global-model/reaction.dto";
+import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
 @Controller('posts')
 export class PostsController {
@@ -31,7 +32,7 @@ export class PostsController {
 
   @Get()
   getPosts(
-    @Query() query: QueryInputModel,
+    @Query() query: QueryParametersDTO,
     @Req() req: Request,
   ) {
     const blogId = '';
@@ -54,7 +55,7 @@ export class PostsController {
 
   @Get(':id/comments')
   getCommentsByPostId(
-    @Query() query: QueryInputModel,
+    @Query() query: QueryParametersDTO,
     @Param('id') postId: string,
     @Req() req: Request,
   ) {
@@ -64,7 +65,7 @@ export class PostsController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
-  async createPost(@Body() dto: PostDTO) {
+  async createPost(@Body() dto: PostWithBlogIdDTO) {
     return this.postsService.createPost(dto);
   }
 
@@ -89,7 +90,7 @@ export class PostsController {
   @HttpCode(204)
   @UseGuards(AuthBasicGuard)
   async updatePost(
-    @Body() dto: PostDTO,
+    @Body() dto: PostWithBlogIdDTO,
     @Param('id') postId: string,
   ) {
     const result = await this.postsService.updatePost(postId, dto);
@@ -105,7 +106,7 @@ export class PostsController {
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateLikeStatus(
-    @Body() dto: ReactionDTO,
+    @Body() dto: ReactionDto,
     @Param('id') commentId: string,
     @Req() req: Request,
   ) {
