@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AuthController } from './modules/auth/api/auth.controller';
 import { BlogsController } from './modules/blogs/api/blogs.controller';
 import { CommentsController } from './modules/comments/api/comments.controller';
@@ -30,9 +30,13 @@ import { ConfirmationCodeValidationPipe } from './pipe/confirmation-code-validat
 import { EmailResendingValidationPipe } from './pipe/email-resending.pipe';
 import { EmailExistValidationPipe } from './pipe/email-exist-validation.pipe';
 import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
+import { MongooseModule } from "@nestjs/mongoose";
+import { ConfigModule } from '@nestjs/config'
 
 @Module({
-  imports: [],
+  imports: [
+    ConfigModule.forRoot(),
+    MongooseModule.forRoot(process.env.MONGO_URI)],
   controllers: [
     AuthController,
     BlogsController,

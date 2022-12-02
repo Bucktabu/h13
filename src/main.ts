@@ -13,6 +13,7 @@ async function bootstrap() {
   await runDB();
   const app = await NestFactory.create(AppModule);
 
+  app.enableCors()
   app.use(cookieParser());
   app.useGlobalFilters(new ErrorExceptionFilter());
   app.useGlobalFilters(new HttpExceptionFilter());

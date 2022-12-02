@@ -1,11 +1,8 @@
-const bcrypt = require('bcrypt');
 import { BlogViewModel } from './modules/blogs/api/dto/blogView.model';
 import { CommentViewModel } from './modules/comments/api/dto/commentView.model';
 import { PostViewModel } from './modules/posts/api/dto/postsView.model';
-import {
-  UserViewModel,
-  UserViewModelWithBanInfo,
-} from './modules/users/api/dto/userView.model';
+import {UserViewModelWithBanInfo} from './modules/users/api/dto/userView.model';
+import bcrypt from "bcrypt";
 
 export const giveSkipNumber = (pageNumber: number, pageSize: number) => {
   return (pageNumber - 1) * pageSize;
