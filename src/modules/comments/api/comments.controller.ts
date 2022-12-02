@@ -24,20 +24,27 @@ export class CommentsController {
   constructor(protected commentsService: CommentsService) {}
 
   @Get(':id')
-  getCommentById(@Param('id') commentId: string, @Req() req: Request) {
-    return this.commentsService.getCommentById(
+  async getCommentById(@Param('id') commentId: string, @Req() req: Request) {
+    const comment = await this.commentsService.getCommentById(
       commentId,
       req.headers.authorization,
     );
+
+    if (!comment) {
+      throw new NotFoundException()
+    }
+
+    return comment
   }
+
 
   @Put(':id')
   @HttpCode(204)
   @UseGuards(AuthBearerGuard)
   async updateCommentById(
-    @Body('content') content: CommentDTO,
+    @Body() dto: CommentDTO,
     @Param('id') commentId: string,
-    @Req() user: UserDBModel,
+    @Req() req: Request,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -45,13 +52,13 @@ export class CommentsController {
       throw new NotFoundException();
     }
 
-    if (comment.userId !== user.id) {
+    if (comment.userId !== req.user.id) {
       throw new ForbiddenException(); //	If try edit the comment that is not your own
     }
 
     const isUpdate = await this.commentsService.updateComment(
       commentId,
-      content.toString(),
+      dto.content,
     );
 
     if (!isUpdate) {
