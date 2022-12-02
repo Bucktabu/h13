@@ -11,10 +11,12 @@ export class QueryParametersDTO {
   @IsOptional()
   sortDirection: string = SortDirections.Distending;
 
+  @Transform(({ value }: TransformFnParams) => Number(value))
   @IsNumber()
   @IsOptional()
   pageNumber = 1;
 
+  @Transform(({ value }: TransformFnParams) => Number(value))
   @IsNumber()
   @IsOptional()
   pageSize = 10;
