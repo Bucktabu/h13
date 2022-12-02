@@ -16,10 +16,10 @@ import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BlogDTO } from './dto/blogDTO';
-import { BlogViewModel } from './dto/blogView.model';
-import { PostWithBlogIdDTO } from '../../posts/api/dto/postDTO';
-import { Request } from 'express';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { PostWithBlogIdDTO } from '../../posts/api/dto/postDTO';
+import { BlogViewModel } from './dto/blogView.model';
+import { Request } from 'express';
 
 @Controller('blogs')
 export class BlogsController {

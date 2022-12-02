@@ -10,18 +10,18 @@ import {
   Put,
   Query,
   Req,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards, UsePipes
+} from "@nestjs/common";
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CommentsService } from '../../comments/application/comments.service';
 import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostDTO, PostWithBlogIdDTO } from './dto/postDTO';
+import { PostWithBlogIdDTO } from './dto/postDTO';
 import { Request } from 'express';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
+import { BlogExistValidationPipe } from "../../../pipe/blog-exist-validation.pipe";
 
 @Controller('posts')
 export class PostsController {
@@ -66,6 +66,7 @@ export class PostsController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
+  @UsePipes(BlogExistValidationPipe)
   async createPost(@Body() dto: PostWithBlogIdDTO) {
     return this.postsService.createPost(dto);
   }

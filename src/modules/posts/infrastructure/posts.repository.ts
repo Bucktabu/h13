@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PostsScheme } from './entity/posts.scheme';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from './entity/postDB.model';
-import { PostDTO, PostWithBlogIdDTO } from '../api/dto/postDTO';
+import { PostWithBlogIdDTO } from '../api/dto/postDTO';
 import { giveSkipNumber } from '../../../helper.functions';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 

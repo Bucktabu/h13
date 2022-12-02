@@ -42,6 +42,12 @@ import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
     UsersController,
   ],
   providers: [
+    BlogExistValidationPipe,
+    ConfirmationCodeValidationPipe,
+    EmailExistValidationPipe,
+    EmailResendingValidationPipe,
+    LoginExistValidationPipe,
+
     BanInfoRepository,
     BlogsRepository,
     CommentsRepository,
@@ -63,12 +69,6 @@ import { LoginExistValidationPipe } from './pipe/login-exist-validation,pipe';
     PostsService,
     SecurityService,
     UsersService,
-
-    BlogExistValidationPipe,
-    ConfirmationCodeValidationPipe,
-    EmailExistValidationPipe,
-    EmailResendingValidationPipe,
-    LoginExistValidationPipe,
   ],
 })
 export class AppModule implements NestModule {

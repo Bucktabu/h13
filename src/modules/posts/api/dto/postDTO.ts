@@ -1,4 +1,4 @@
-import { IsString, Length, Validate } from 'class-validator';
+import { IsNotEmpty, IsString, IsUUID, Length, Validate } from "class-validator";
 import { Transform, TransformFnParams } from 'class-transformer';
 import { Optional } from '@nestjs/common';
 import { BlogExistValidationPipe } from '../../../../pipe/blog-exist-validation.pipe';
@@ -36,7 +36,8 @@ export class PostWithBlogIdDTO {
   @Length(3, 1000)
   content: string;
 
-  @Optional()
+  @IsNotEmpty()
+  @IsUUID()
   @Validate(BlogExistValidationPipe)
   blogId: string;
 }

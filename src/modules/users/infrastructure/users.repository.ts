@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { giveSkipNumber } from '../../../helper.functions';
 import { UserScheme } from './entity/users.scheme';
 import { UserDBModel } from './entity/userDB.model';
-import { QueryInputModel } from '../api/dto/queryInput.model';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()

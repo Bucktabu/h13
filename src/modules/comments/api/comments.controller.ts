@@ -67,7 +67,7 @@ export class CommentsController {
   async updateLikeStatus(
     @Body() dto: ReactionDto,
     @Param('id') commentId: string,
-    @Req() user: UserDBModel,
+    @Req() req: Request,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -76,7 +76,7 @@ export class CommentsController {
     }
 
     const result = await this.commentsService.updateLikesInfo(
-      user!.id,
+      req.user.id,
       commentId,
       dto.likeStatus,
     );
