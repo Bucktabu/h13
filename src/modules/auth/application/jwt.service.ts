@@ -41,8 +41,8 @@ export class JwtService {
   }
 
   async createToken(userId: string, deviceId: string) {
-    const accessToken = await this.createJWT(userId, deviceId, 5 * 60 * 1000);
-    const refreshToken = await this.createJWT(userId, deviceId, 10 * 60 * 1000);
+    const accessToken = await this.createJWT(userId, deviceId, Number(settings.TIME_TO_EXPIRED_AT));
+    const refreshToken = await this.createJWT(userId, deviceId, Number(settings.TIME_TO_EXPIRED_RT));
 
     return { accessToken, refreshToken };
   }

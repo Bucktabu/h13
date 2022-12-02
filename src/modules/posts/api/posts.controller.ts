@@ -21,7 +21,6 @@ import { PostWithBlogIdDTO } from './dto/postDTO';
 import { Request } from 'express';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { BlogExistValidationPipe } from "../../../pipe/blog-exist-validation.pipe";
 import { User } from "../../../decorator/user.decorator";
 import { UserDBModel } from "../../users/infrastructure/entity/userDB.model";
 
@@ -74,7 +73,6 @@ export class PostsController {
   @Post()
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
-  @UsePipes(BlogExistValidationPipe)
   async createPost(@Body() dto: PostWithBlogIdDTO) {
     return this.postsService.createPost(dto);
   }

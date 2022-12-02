@@ -1,7 +1,6 @@
-import { IsNotEmpty, IsString, IsUUID, Length, Validate } from "class-validator";
+import { IsNotEmpty, IsString, Length, Validate } from "class-validator";
 import { Transform, TransformFnParams } from 'class-transformer';
-import { Optional } from '@nestjs/common';
-import { BlogExistValidationPipe } from '../../../../pipe/blog-exist-validation.pipe';
+import { BlogExistValidator } from "../../../../pipe/blog-exist.validator";
 
 export class PostDTO {
   @IsString()
@@ -22,21 +21,23 @@ export class PostDTO {
 
 export class PostWithBlogIdDTO {
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }: TransformFnParams) => value.trim())
   @Length(3, 30)
   title: string;
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }: TransformFnParams) => value.trim())
   @Length(3, 100)
   shortDescription: string;
 
   @IsString()
-  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @Transform(({ value }: TransformFnParams) => value.trim())
   @Length(3, 1000)
   content: string;
 
+  @IsString()
+  @Transform(({value}) => value.trim())
   @IsNotEmpty()
-  @Validate(BlogExistValidationPipe)
+  @Validate(BlogExistValidator)
   blogId: string;
 }

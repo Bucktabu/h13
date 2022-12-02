@@ -4,9 +4,10 @@ import { BlogDTO } from '../api/dto/blogDTO';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BlogModel } from './entity/blog.model';
 import { giveSkipNumber } from '../../../helper.functions';
+import { IBlogsRepository } from "./blogs-repository.interface";
 
 @Injectable()
-export class BlogsRepository {
+export class BlogsRepository implements IBlogsRepository{
   async getBlogs(query: QueryParametersDTO): Promise<BlogModel[]> {
     return BlogSchema.find(
       { name: { $regex: query.searchNameTerm, $options: 'i' } },
