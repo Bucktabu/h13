@@ -37,7 +37,6 @@ export class PostWithBlogIdDTO {
   content: string;
 
   @IsNotEmpty()
-  @IsUUID()
   @Validate(BlogExistValidationPipe)
   blogId: string;
 }

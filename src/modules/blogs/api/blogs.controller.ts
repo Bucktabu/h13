@@ -17,7 +17,7 @@ import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BlogDTO } from './dto/blogDTO';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
-import { PostWithBlogIdDTO } from '../../posts/api/dto/postDTO';
+import { PostDTO, PostWithBlogIdDTO } from "../../posts/api/dto/postDTO";
 import { BlogViewModel } from './dto/blogView.model';
 import { Request } from 'express';
 
@@ -74,7 +74,7 @@ export class BlogsController {
   @HttpCode(201)
   @UseGuards(AuthBasicGuard)
   async createPostByBlogId(
-    @Body() dto: PostWithBlogIdDTO,
+    @Body() dto: PostDTO,
     @Param('id') blogId: string,
   ) {
     const blog = await this.blogsService.getBlogById(blogId);

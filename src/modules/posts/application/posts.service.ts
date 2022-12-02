@@ -67,12 +67,12 @@ export class PostsService {
   }
 
   async createPost(
-    dto: PostWithBlogIdDTO,
+    dto: any, /*PostDTO | PostWithBlogIdDTO,*/ // TODO типизация
     blogId?: string,
   ): Promise<PostViewModel | null> {
-    let id = dto.blogId;
-    if (blogId) {
-      id = blogId;
+    let id = blogId;
+    if (!blogId) {
+      id = dto.blogId;
     }
 
     const newPost = new PostDBModel(

@@ -79,6 +79,7 @@ export class PostsController {
     @Param('id') postId: string,
     @Req() req: Request,
   ) {
+
     const post = await this.postsService.getPostById(postId);
 
     if (!post) {
