@@ -93,7 +93,7 @@ export class CommentsController {
   @UseGuards(AuthBearerGuard)
   async deleteCommentById(
     @Param('id') commentId: string,
-    @Req() user: UserDBModel,
+    @Req() req: Request,
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -101,7 +101,7 @@ export class CommentsController {
       throw new NotFoundException();
     }
 
-    if (comment.userId !== user.id) {
+    if (comment.userId !== req.user.id) {
       throw new ForbiddenException(); //	If try edit the comment that is not your own
     }
 
