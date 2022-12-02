@@ -1,5 +1,5 @@
-import { IsString, Length, Validate } from "class-validator";
-import { ConfirmationCodeValidationPipe } from "../../../../pipe/confirmation-code-validation.pipe";
+import { IsString, Length, Validate } from 'class-validator';
+import { ConfirmationCodeValidationPipe } from '../../../../pipe/confirmation-code-validation.pipe';
 
 export class NewPasswordDTO {
   @IsString()

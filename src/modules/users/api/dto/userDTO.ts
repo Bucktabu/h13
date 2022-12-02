@@ -1,7 +1,13 @@
-import { IsEmail, IsString, Length, MinLength, Validate } from "class-validator";
-import { Transform, TransformFnParams } from "class-transformer";
-import { EmailExistValidationPipe } from "../../../../pipe/email-exist-validation.pipe";
-import { LoginExistValidationPipe } from "../../../../pipe/login-exist-validation,pipe";
+import {
+  IsEmail,
+  IsString,
+  Length,
+  MinLength,
+  Validate,
+} from 'class-validator';
+import { Transform, TransformFnParams } from 'class-transformer';
+import { EmailExistValidationPipe } from '../../../../pipe/email-exist-validation.pipe';
+import { LoginExistValidationPipe } from '../../../../pipe/login-exist-validation,pipe';
 
 export class UserDTO {
   @IsString()

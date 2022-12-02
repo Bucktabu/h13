@@ -1,6 +1,6 @@
 import { SecurityScheme } from './entity/security.scheme';
 import { DeviceSecurityModel } from './entity/deviceSecurity.model';
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class SecurityRepository {

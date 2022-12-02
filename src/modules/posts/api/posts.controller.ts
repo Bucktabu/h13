@@ -11,17 +11,17 @@ import {
   Query,
   Req,
   UseGuards,
-} from "@nestjs/common";
+} from '@nestjs/common';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CommentsService } from '../../comments/application/comments.service';
 import { PostsService } from '../application/posts.service';
 import { CommentDTO } from '../../comments/api/dto/commentDTO';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostDTO, PostWithBlogIdDTO } from "./dto/postDTO";
-import { Request } from "express";
-import { ReactionDto } from "../../../global-model/reaction.dto";
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { PostDTO, PostWithBlogIdDTO } from './dto/postDTO';
+import { Request } from 'express';
+import { ReactionDto } from '../../../global-model/reaction.dto';
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Controller('posts')
 export class PostsController {
@@ -31,20 +31,17 @@ export class PostsController {
   ) {}
 
   @Get()
-  getPosts(
-    @Query() query: QueryParametersDTO,
-    @Req() req: Request,
-  ) {
+  getPosts(@Query() query: QueryParametersDTO, @Req() req: Request) {
     const blogId = '';
     return this.postsService.getPosts(query, blogId, req.headers.authorization);
   }
 
   @Get(':id')
-  async getPostById(
-    @Param('id') postId: string,
-    @Req() req: Request,
-  ) {
-    const post = await this.postsService.getPostById(postId, req.headers.authorization);
+  async getPostById(@Param('id') postId: string, @Req() req: Request) {
+    const post = await this.postsService.getPostById(
+      postId,
+      req.headers.authorization,
+    );
 
     if (!post) {
       throw new NotFoundException();
@@ -59,7 +56,11 @@ export class PostsController {
     @Param('id') postId: string,
     @Req() req: Request,
   ) {
-    return this.commentsService.getComments(postId, query, req.headers.authorization);
+    return this.commentsService.getComments(
+      postId,
+      query,
+      req.headers.authorization,
+    );
   }
 
   @Post()
@@ -116,7 +117,11 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    await this.postsService.updateLikesInfo(req.user.id, commentId, dto.likeStatus);
+    await this.postsService.updateLikesInfo(
+      req.user.id,
+      commentId,
+      dto.likeStatus,
+    );
 
     return;
   }

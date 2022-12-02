@@ -10,7 +10,7 @@ import {
   Req,
   Res,
   UseGuards,
-} from "@nestjs/common";
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { AuthService } from '../application/auth.service';
 import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
@@ -19,18 +19,18 @@ import { SecurityService } from '../../security/application/security.service';
 import { UsersService } from '../../users/application/users.service';
 import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
-import { CheckCredentialGuard } from "../../../guards/check-credential.guard";
-import { RefreshTokenValidationGuard } from "../../../guards/refresh-token-validation.guard";
-import { ConfirmationCodeValidationPipe } from "../../../pipe/confirmation-code-validation.pipe";
-import { EmailResendingValidationPipe } from "../../../pipe/email-resending.pipe";
-import { EmailDTO } from "./dto/emailDTO";
+import { CheckCredentialGuard } from '../../../guards/check-credential.guard';
+import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
+import { ConfirmationCodeValidationPipe } from '../../../pipe/confirmation-code-validation.pipe';
+import { EmailResendingValidationPipe } from '../../../pipe/email-resending.pipe';
+import { EmailDTO } from './dto/emailDTO';
 import { NewPasswordDTO } from './dto/newPasswordDTO';
-import { EmailConfirmationModel } from "../../users/infrastructure/entity/emailConfirmation.model";
+import { EmailConfirmationModel } from '../../users/infrastructure/entity/emailConfirmation.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { UserDTO } from '../../users/api/dto/userDTO';
 import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model';
 import { v4 as uuidv4 } from 'uuid';
-import { AuthDTO } from "./dto/authDTO";
+import { AuthDTO } from './dto/authDTO';
 
 @Controller('auth')
 export class AuthController {
@@ -78,9 +78,7 @@ export class AuthController {
   @Post('password-recovery')
   @HttpCode(204)
   async passwordRecovery(@Body() dto: EmailDTO) {
-    const user = await this.usersService.getUserByIdOrLoginOrEmail(
-      dto.email,
-    )
+    const user = await this.usersService.getUserByIdOrLoginOrEmail(dto.email);
 
     if (!user) {
       const result = await this.authService.sendPasswordRecovery(
@@ -98,14 +96,15 @@ export class AuthController {
 
   @Post('new-password')
   @HttpCode(204)
-  async createNewPassword(
-    @Body() dto: NewPasswordDTO,
-  ) {
-    const emailConfirmation = await this.emailConfirmationService
-      .getConfirmationByCode(dto.recoveryCode) // TODO можно ли как то избавиться от этого
+  async createNewPassword(@Body() dto: NewPasswordDTO) {
+    const emailConfirmation =
+      await this.emailConfirmationService.getConfirmationByCode(
+        dto.recoveryCode,
+      ); // TODO можно ли как то избавиться от этого
 
-    const user = await this.usersService
-      .getUserByIdOrLoginOrEmail(emailConfirmation.id);
+    const user = await this.usersService.getUserByIdOrLoginOrEmail(
+      emailConfirmation.id,
+    );
 
     if (!user) {
       throw new NotFoundException();
@@ -142,9 +141,9 @@ export class AuthController {
 
   @Post('registration-confirmation')
   @HttpCode(204)
-
   async registrationConfirmation(
-    @Body(ConfirmationCodeValidationPipe) emailConfirmation: EmailConfirmationModel,
+    @Body(ConfirmationCodeValidationPipe)
+    emailConfirmation: EmailConfirmationModel,
   ) {
     const result = await this.emailConfirmationService.updateConfirmationInfo(
       emailConfirmation.confirmationCode,
@@ -162,27 +161,30 @@ export class AuthController {
   async registrationEmailResending(
     @Body(EmailResendingValidationPipe) user: UserDBModel,
   ) {
-    const newConfirmationCode = await this.authService.updateConfirmationCode(user.id);
+    const newConfirmationCode = await this.authService.updateConfirmationCode(
+      user.id,
+    );
     console.log(newConfirmationCode);
     if (!newConfirmationCode) {
       throw new NotImplementedException();
     }
 
-    return await this.emailManager.sendConfirmationEmail(user.email, newConfirmationCode);
+    return await this.emailManager.sendConfirmationEmail(
+      user.email,
+      newConfirmationCode,
+    );
   }
 
   @Post('refresh-token')
   @UseGuards(RefreshTokenValidationGuard)
-  async createRefreshToken(
-    @Req() req: Request,
-    @Res() res: Response
-  ) {
+  async createRefreshToken(@Req() req: Request, @Res() res: Response) {
     const token = await this.securityService.createNewRefreshToken(
       req.cookies.refreshToken,
       req.tokenPayload,
     );
 
-    res.status(200)
+    res
+      .status(200)
       .cookie('refreshToken', token.refreshToken, {
         secure: true,
         httpOnly: true,
@@ -194,7 +196,9 @@ export class AuthController {
   @UseGuards(RefreshTokenValidationGuard)
   @HttpCode(204)
   async logout(@Req() req: Request) {
-    await this.securityService.logoutFromCurrentSession(req.cookies.refreshToken);
+    await this.securityService.logoutFromCurrentSession(
+      req.cookies.refreshToken,
+    );
 
     return;
   }

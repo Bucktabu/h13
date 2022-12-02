@@ -5,29 +5,30 @@ import {
   ForbiddenException,
   Get,
   HttpCode,
-  NotFoundException, NotImplementedException,
+  NotFoundException,
+  NotImplementedException,
   Param,
   Put,
   Req,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CommentsService } from '../application/comments.service';
 import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { ReactionDto } from "../../../global-model/reaction.dto";
-import { Request } from "express";
+import { ReactionDto } from '../../../global-model/reaction.dto';
+import { Request } from 'express';
 
 @Controller('comments')
 export class CommentsController {
   constructor(protected commentsService: CommentsService) {}
 
   @Get(':id')
-  getCommentById(
-    @Param('id') commentId: string,
-    @Req() req: Request
-  ) {
-    return this.commentsService.getCommentById(commentId, req.headers.authorization);
+  getCommentById(@Param('id') commentId: string, @Req() req: Request) {
+    return this.commentsService.getCommentById(
+      commentId,
+      req.headers.authorization,
+    );
   }
 
   @Put(':id')

@@ -8,13 +8,13 @@ import {
   Param,
   Post,
   Query,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { UsersService } from '../application/users.service';
 import { UserDTO } from './dto/userDTO';
 import { UserViewModel } from './dto/userView.model';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Controller('users')
 @UseGuards(AuthBasicGuard)

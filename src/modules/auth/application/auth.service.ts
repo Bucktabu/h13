@@ -2,7 +2,7 @@ import { EmailManager } from '../../emailTransfer/email.manager';
 import { EmailConfirmationRepository } from '../../users/infrastructure/emailConfirmation.repository';
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AuthService {
@@ -32,10 +32,10 @@ export class AuthService {
     const newExpirationDate = add(new Date(), { hours: 24 });
     const result =
       await this.emailConfirmationRepository.updateConfirmationCode(
-      userId,
-      newConfirmationCode,
-      newExpirationDate,
-    );
+        userId,
+        newConfirmationCode,
+        newExpirationDate,
+      );
 
     if (!result) {
       return null;

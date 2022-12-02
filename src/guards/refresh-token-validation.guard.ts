@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, PipeTransform, UnauthorizedException } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  PipeTransform,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '../modules/auth/application/jwt.service';
 import { UsersService } from '../modules/users/application/users.service';
 
@@ -17,7 +23,7 @@ export class RefreshTokenValidationGuard implements CanActivate {
     }
 
     const tokenInBlackList = await this.jwtService.checkTokenInBlackList(
-        req.cookies.refreshToken,
+      req.cookies.refreshToken,
     );
 
     if (tokenInBlackList) {
@@ -42,6 +48,6 @@ export class RefreshTokenValidationGuard implements CanActivate {
 
     req.user = user;
     req.tokenPayload = tokenPayload;
-    return true
+    return true;
   }
 }

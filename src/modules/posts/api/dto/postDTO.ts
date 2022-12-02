@@ -1,7 +1,7 @@
-import { IsString, Length, Validate } from "class-validator";
-import { Transform, TransformFnParams } from "class-transformer";
-import { Optional } from "@nestjs/common";
-import { BlogExistValidationPipe } from "../../../../pipe/blog-exist-validation.pipe";
+import { IsString, Length, Validate } from 'class-validator';
+import { Transform, TransformFnParams } from 'class-transformer';
+import { Optional } from '@nestjs/common';
+import { BlogExistValidationPipe } from '../../../../pipe/blog-exist-validation.pipe';
 
 export class PostDTO {
   @IsString()

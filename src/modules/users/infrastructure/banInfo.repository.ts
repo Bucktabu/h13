@@ -1,6 +1,6 @@
 import { BanInfoModel } from './entity/banInfo.model';
 import { BanInfoScheme } from './entity/banInfo.scheme';
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class BanInfoRepository {

@@ -1,26 +1,30 @@
-import { Injectable, PipeTransform } from "@nestjs/common";
-import { EmailConfirmationService } from "../modules/users/application/emailConfirmation.service";
-import { UsersRepository } from "../modules/users/infrastructure/users.repository";
+import { Injectable, PipeTransform } from '@nestjs/common';
+import { EmailConfirmationService } from '../modules/users/application/emailConfirmation.service';
+import { UsersRepository } from '../modules/users/infrastructure/users.repository';
 
 @Injectable()
 export class EmailResendingValidationPipe implements PipeTransform {
-  constructor(protected emailConfirmationService: EmailConfirmationService,
-              protected usersRepository: UsersRepository) {}
+  constructor(
+    protected emailConfirmationService: EmailConfirmationService,
+    protected usersRepository: UsersRepository,
+  ) {}
 
   async transform(dto, metadata) {
-    const email =  dto.email
-    const user = await this.usersRepository.getUserByIdOrLoginOrEmail(email)
+    const email = dto.email;
+    const user = await this.usersRepository.getUserByIdOrLoginOrEmail(email);
 
     if (!user) {
-      return false
+      return false;
     }
 
-    const isConfirmed = await this.emailConfirmationService.checkConfirmation(user.id)
+    const isConfirmed = await this.emailConfirmationService.checkConfirmation(
+      user.id,
+    );
 
     if (isConfirmed) {
-      return false
+      return false;
     }
 
-    return user
+    return user;
   }
 }

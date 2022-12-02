@@ -4,8 +4,8 @@ import { AppModule } from './app.module';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 
 import cookieParser from 'cookie-parser';
-import { ErrorExceptionFilter } from "./exception-filters/error-exception.filter";
-import { HttpExceptionFilter } from "./exception-filters/exception.filter";
+import { ErrorExceptionFilter } from './exception-filters/error-exception.filter';
+import { HttpExceptionFilter } from './exception-filters/exception.filter';
 
 const port = process.env.PORT || 5000;
 

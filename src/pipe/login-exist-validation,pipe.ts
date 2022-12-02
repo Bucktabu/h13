@@ -1,16 +1,18 @@
-import { PipeTransform } from "@nestjs/common";
-import { UsersRepository } from "../modules/users/infrastructure/users.repository";
+import { PipeTransform } from '@nestjs/common';
+import { UsersRepository } from '../modules/users/infrastructure/users.repository';
 
 export class LoginExistValidationPipe implements PipeTransform {
   constructor(protected usersRepository: UsersRepository) {}
 
   async transform(dto, metadata) {
-    const loginExist = await this.usersRepository.getUserByIdOrLoginOrEmail(dto.login);
+    const loginExist = await this.usersRepository.getUserByIdOrLoginOrEmail(
+      dto.login,
+    );
 
     if (loginExist) {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 }

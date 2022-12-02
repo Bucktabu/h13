@@ -3,14 +3,14 @@ import { giveSkipNumber } from '../../../helper.functions';
 import { UserScheme } from './entity/users.scheme';
 import { UserDBModel } from './entity/userDB.model';
 import { QueryInputModel } from '../api/dto/queryInput.model';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class UsersRepository {
   async getUserByIdOrLoginOrEmail(
     IdOrLoginOrEmail: string,
   ): Promise<UserDBModel | null> {
-    return  UserScheme.findOne(
+    return UserScheme.findOne(
       {
         $or: [
           { id: IdOrLoginOrEmail },
@@ -19,7 +19,7 @@ export class UsersRepository {
         ],
       },
       { _id: false, __v: false },
-    )
+    );
   }
 
   async getUsers(query: QueryParametersDTO): Promise<UserDBModel[]> {
@@ -32,7 +32,7 @@ export class UsersRepository {
       },
       { _id: false, passwordHash: false, passwordSalt: false, __v: false },
     )
-      .sort({ [query.sortBy]: query.sortDirection ? 1 : -1 })
+      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
       .lean();

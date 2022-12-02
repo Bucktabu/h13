@@ -9,13 +9,19 @@ import { QueryInputModel } from '../api/dto/queryInput.model';
 import { UserAccountModel } from '../infrastructure/entity/userAccount.model';
 import { UserDBModel } from '../infrastructure/entity/userDB.model';
 import { UserDTO } from '../api/dto/userDTO';
-import { UserViewModel, UserViewModelWithBanInfo } from "../api/dto/userView.model";
+import {
+  UserViewModel,
+  UserViewModelWithBanInfo,
+} from '../api/dto/userView.model';
 import { toCreateUserViewModel } from '../../../data-mapper/to-create-user-view.model';
-import { _generateHash, paginationContentPage } from '../../../helper.functions';
+import {
+  _generateHash,
+  paginationContentPage,
+} from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import add from 'date-fns/add';
 import bcrypt from 'bcrypt';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class UsersService {
@@ -70,11 +76,7 @@ export class UsersService {
       false,
     );
 
-    const banInfo = new BanInfoModel(
-      userAccountId,
-      false,
-      null,
-      null);
+    const banInfo = new BanInfoModel(userAccountId, false, null, null);
 
     const userAccount = new UserAccountModel(
       accountData,
@@ -113,12 +115,8 @@ export class UsersService {
 
   async deleteUserById(userId: string): Promise<boolean> {
     const userDeleted = await this.usersRepository.deleteUserById(userId);
-    await this.banInfoRepository.deleteBanInfoById(
-      userId,
-    );
-    await this.emailConfirmationRepository.deleteEmailConfirmationById(
-      userId,
-    );
+    await this.banInfoRepository.deleteBanInfoById(userId);
+    await this.emailConfirmationRepository.deleteEmailConfirmationById(userId);
 
     if (!userDeleted) {
       return false;
@@ -146,7 +144,9 @@ export class UsersService {
     return true;
   }
 
-  private async addBanInfo(userDB: UserDBModel): Promise<UserViewModelWithBanInfo> {
+  private async addBanInfo(
+    userDB: UserDBModel,
+  ): Promise<UserViewModelWithBanInfo> {
     const banInfo = await this.banInfoRepository.getBanInfo(userDB.id);
 
     return {

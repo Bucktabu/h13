@@ -7,7 +7,7 @@ import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { toBlogViewModel } from '../../../data-mapper/to-blog-view.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class BlogsService {
@@ -54,10 +54,7 @@ export class BlogsService {
     return toBlogViewModel(createdBlog);
   }
 
-  async updateBlog(
-    blogId: string,
-    inputModel: BlogDTO,
-  ): Promise<boolean> {
+  async updateBlog(blogId: string, inputModel: BlogDTO): Promise<boolean> {
     return await this.blogsRepository.updateBlog(blogId, inputModel);
   }
 

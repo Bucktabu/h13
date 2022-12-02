@@ -4,7 +4,6 @@ import { EmailConfirmationModel } from './entity/emailConfirmation.model';
 
 @Injectable()
 export class EmailConfirmationRepository {
-
   async getEmailConfirmationByCodeOrId(
     codeOrId: string,
   ): Promise<EmailConfirmationModel | null> {
@@ -15,11 +14,16 @@ export class EmailConfirmationRepository {
   }
 
   async checkConfirmation(id: string) {
-    return EmailConfirmationScheme
-      .findOne(
-        {id},
-        {_id: false, id: false, confirmationCode: false, expirationDate: false, __v: false}
-      )
+    return EmailConfirmationScheme.findOne(
+      { id },
+      {
+        _id: false,
+        id: false,
+        confirmationCode: false,
+        expirationDate: false,
+        __v: false,
+      },
+    );
   }
 
   async createEmailConfirmation(emailConfirmation: EmailConfirmationModel) {

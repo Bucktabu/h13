@@ -1,5 +1,5 @@
-import { IsEmail } from "class-validator";
-import { Transform, TransformFnParams } from "class-transformer";
+import { IsEmail } from 'class-validator';
+import { Transform, TransformFnParams } from 'class-transformer';
 
 export class EmailDTO {
   @IsEmail()

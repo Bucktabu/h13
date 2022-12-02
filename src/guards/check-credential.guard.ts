@@ -1,4 +1,10 @@
-import { CanActivate, ExecutionContext, Injectable, PipeTransform, UnauthorizedException } from "@nestjs/common";
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  PipeTransform,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { UsersRepository } from '../modules/users/infrastructure/users.repository';
 import { UserDBModel } from '../modules/users/infrastructure/entity/userDB.model';
 import bcrypt from 'bcrypt';
@@ -16,7 +22,7 @@ export class CheckCredentialGuard implements CanActivate {
       );
 
     if (!user) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
 
     const passwordEqual = await bcrypt.compare(
@@ -25,10 +31,10 @@ export class CheckCredentialGuard implements CanActivate {
     );
 
     if (!passwordEqual) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
 
-    req.user = user
-    return true
+    req.user = user;
+    return true;
   }
 }

@@ -8,17 +8,18 @@ import {
   Param,
   Post,
   Put,
-  Query, Req,
-  UseGuards
-} from "@nestjs/common";
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BlogDTO } from './dto/blogDTO';
 import { BlogViewModel } from './dto/blogView.model';
-import { PostWithBlogIdDTO } from "../../posts/api/dto/postDTO";
-import { Request } from "express";
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { PostWithBlogIdDTO } from '../../posts/api/dto/postDTO';
+import { Request } from 'express';
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Controller('blogs')
 export class BlogsController {
@@ -90,10 +91,7 @@ export class BlogsController {
   @Put(':id')
   @HttpCode(204)
   @UseGuards(AuthBasicGuard)
-  async updateBlog(
-    @Body() inputModel: BlogDTO,
-    @Param('id') blogId: string,
-  ) {
+  async updateBlog(@Body() inputModel: BlogDTO, @Param('id') blogId: string) {
     const result = await this.blogsService.updateBlog(blogId, inputModel);
 
     if (!result) {

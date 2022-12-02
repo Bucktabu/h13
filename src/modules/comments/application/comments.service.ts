@@ -11,7 +11,7 @@ import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { toCommentOutputBeforeCreate } from '../../../data-mapper/to-comment-view-before-create.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class CommentsService {

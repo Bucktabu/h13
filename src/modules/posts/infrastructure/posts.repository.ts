@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { PostsScheme } from './entity/posts.scheme';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from './entity/postDB.model';
-import { PostDTO, PostWithBlogIdDTO } from "../api/dto/postDTO";
+import { PostDTO, PostWithBlogIdDTO } from '../api/dto/postDTO';
 import { giveSkipNumber } from '../../../helper.functions';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class PostsRepository {
@@ -16,7 +16,7 @@ export class PostsRepository {
       { blogId: { $regex: blogId } },
       { _id: false, __v: false },
     )
-      .sort({ [query.sortBy]: query.sortDirection ? 1 : -1 })
+      .sort({ [query.sortBy]: query.sortDirection === 'asc' ? 1 : -1 })
       .skip(giveSkipNumber(query.pageNumber, query.pageSize))
       .limit(query.pageSize)
       .lean();
@@ -39,10 +39,7 @@ export class PostsRepository {
     }
   }
 
-  async updatePost(
-    postId: string,
-    dto: PostWithBlogIdDTO,
-  ): Promise<boolean> {
+  async updatePost(postId: string, dto: PostWithBlogIdDTO): Promise<boolean> {
     const result = await PostsScheme.updateOne(
       { id: postId },
       {

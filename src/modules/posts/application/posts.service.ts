@@ -8,12 +8,12 @@ import { UsersRepository } from '../../users/infrastructure/users.repository';
 import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { PostDBModel } from '../infrastructure/entity/postDB.model';
-import { PostDTO, PostWithBlogIdDTO } from "../api/dto/postDTO";
+import { PostDTO, PostWithBlogIdDTO } from '../api/dto/postDTO';
 import { PostViewModel } from '../api/dto/postsView.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
 import { v4 as uuidv4 } from 'uuid';
-import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
+import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 
 @Injectable()
 export class PostsService {
@@ -104,10 +104,7 @@ export class PostsService {
     return blog.name;
   }
 
-  async updatePost(
-    postId: string,
-    dto: PostWithBlogIdDTO,
-  ): Promise<boolean> {
+  async updatePost(postId: string, dto: PostWithBlogIdDTO): Promise<boolean> {
     return await this.postsRepository.updatePost(postId, dto);
   }
 

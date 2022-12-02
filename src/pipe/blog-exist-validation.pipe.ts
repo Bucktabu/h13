@@ -1,6 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { BlogsRepository } from "../modules/blogs/infrastructure/blogs.repository";
-import { ValidationArguments, ValidatorConstraintInterface } from "class-validator";
+import { Injectable } from '@nestjs/common';
+import { BlogsRepository } from '../modules/blogs/infrastructure/blogs.repository';
+import {
+  ValidationArguments,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
 @Injectable()
 export class BlogExistValidationPipe implements ValidatorConstraintInterface {
@@ -8,16 +11,16 @@ export class BlogExistValidationPipe implements ValidatorConstraintInterface {
 
   async validate(blogId: string) {
     if (blogId) {
-      return false
+      return false;
     }
 
-    const blog = await this.blogsRepository.getBlogById(blogId)
+    const blog = await this.blogsRepository.getBlogById(blogId);
 
     if (!blog) {
-      return false
+      return false;
     }
 
-    return true
+    return true;
   }
 
   defaultMessage(args: ValidationArguments) {
