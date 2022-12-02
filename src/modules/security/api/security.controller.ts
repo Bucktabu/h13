@@ -14,6 +14,7 @@ import { SecurityService } from '../application/security.service';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
 import { Request } from 'express';
+import { User } from "../../../decorator/user.decorator";
 
 @Controller('security')
 @UseGuards(RefreshTokenValidationGuard)
@@ -21,8 +22,7 @@ export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
   @Get('devices')
-  getAllActiveSessions(@Req() user: UserDBModel) {
-    console.log(user);
+  getAllActiveSessions(@User() user: UserDBModel) {
     return this.securityService.getAllActiveSessions(user.id);
   }
 
@@ -45,7 +45,7 @@ export class SecurityController {
   @HttpCode(204)
   async deleteActiveSessionsById(
     @Param('id') deviceId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel,
   ) {
     const userDevice = await this.securityService.getDeviceById(deviceId);
 
@@ -53,7 +53,7 @@ export class SecurityController {
       throw new NotFoundException();
     }
 
-    if (userDevice.userId !== req.user.id) {
+    if (userDevice.userId !== user.id) {
       throw new ForbiddenException(); // 403
     }
 

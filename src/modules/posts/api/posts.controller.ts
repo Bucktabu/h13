@@ -22,6 +22,8 @@ import { Request } from 'express';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { QueryParametersDTO } from '../../../global-model/query-parameters.dto';
 import { BlogExistValidationPipe } from "../../../pipe/blog-exist-validation.pipe";
+import { User } from "../../../decorator/user.decorator";
+import { UserDBModel } from "../../users/infrastructure/entity/userDB.model";
 
 @Controller('posts')
 export class PostsController {
@@ -51,16 +53,22 @@ export class PostsController {
   }
 
   @Get(':id/comments')
-  getCommentsByPostId(
+  async getCommentsByPostId(
     @Query() query: QueryParametersDTO,
     @Param('id') postId: string,
     @Req() req: Request,
   ) {
-    return this.commentsService.getComments(
+    const comment = await this.commentsService.getComments(
       postId,
       query,
       req.headers.authorization,
     );
+
+    if (!comment) {
+      throw new NotFoundException()
+    }
+
+    return comment
   }
 
   @Post()
@@ -77,7 +85,7 @@ export class PostsController {
   async createComment(
     @Body() dto: CommentDTO,
     @Param('id') postId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel
   ) {
 
     const post = await this.postsService.getPostById(postId);
@@ -86,7 +94,7 @@ export class PostsController {
       throw new NotFoundException();
     }
 
-    return this.commentsService.createComment(postId, dto.content, req.user);
+    return this.commentsService.createComment(postId, dto.content, user);
   }
 
   @Put(':id')
@@ -111,7 +119,7 @@ export class PostsController {
   async updateLikeStatus(
     @Body() dto: ReactionDto,
     @Param('id') commentId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel,
   ) {
     const post = await this.postsService.getPostById(commentId);
 
@@ -120,7 +128,7 @@ export class PostsController {
     }
 
     await this.postsService.updateLikesInfo(
-      req.user.id,
+      user.id,
       commentId,
       dto.likeStatus,
     );

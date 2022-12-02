@@ -31,6 +31,7 @@ import { UserDTO } from '../../users/api/dto/userDTO';
 import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthDTO } from './dto/authDTO';
+import { User } from "../../../decorator/user.decorator";
 
 @Controller('auth')
 export class AuthController {
@@ -43,9 +44,9 @@ export class AuthController {
     protected usersService: UsersService,
   ) {}
 
-  @Get()
+  @Get('me')
   @UseGuards(AuthBearerGuard)
-  aboutMe(@Body('user') user: UserDBModel) {
+  aboutMe(@User() user: UserDBModel) {
     return toAboutMeViewModel(user);
   }
 
@@ -54,11 +55,11 @@ export class AuthController {
   async createUser(
     @Body() dto: AuthDTO, // TODO Если я использую пайп внутри скобок боди, то у меня пропадает валидация входных параметров, а если я применяю пайп ко всему ендпоинту, то я не могу получить пользователя
     @Ip() ipAddress,
-    @Req() req: Request,
+    @User() user: UserDBModel,
     @Res() res: Response,
   ) {
     const deviceId = uuidv4();
-    const token = await this.jwsService.createToken(req.user.id, deviceId);
+    const token = await this.jwsService.createToken(user.id, deviceId);
     const tokenPayload = await this.jwsService.getTokenPayload(
       token.refreshToken,
     );

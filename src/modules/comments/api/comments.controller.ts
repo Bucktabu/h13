@@ -18,6 +18,7 @@ import { CommentDTO } from './dto/commentDTO';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { ReactionDto } from '../../../global-model/reaction.dto';
 import { Request } from 'express';
+import { User } from "../../../decorator/user.decorator";
 
 @Controller('comments')
 export class CommentsController {
@@ -44,7 +45,7 @@ export class CommentsController {
   async updateCommentById(
     @Body() dto: CommentDTO,
     @Param('id') commentId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -52,7 +53,7 @@ export class CommentsController {
       throw new NotFoundException();
     }
 
-    if (comment.userId !== req.user.id) {
+    if (comment.userId !== user.id) {
       throw new ForbiddenException(); //	If try edit the comment that is not your own
     }
 
@@ -74,7 +75,7 @@ export class CommentsController {
   async updateLikeStatus(
     @Body() dto: ReactionDto,
     @Param('id') commentId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -83,7 +84,7 @@ export class CommentsController {
     }
 
     const result = await this.commentsService.updateLikesInfo(
-      req.user.id,
+      user.id,
       commentId,
       dto.likeStatus,
     );
@@ -100,7 +101,7 @@ export class CommentsController {
   @UseGuards(AuthBearerGuard)
   async deleteCommentById(
     @Param('id') commentId: string,
-    @Req() req: Request,
+    @User() user: UserDBModel
   ) {
     const comment = await this.commentsService.getCommentById(commentId);
 
@@ -108,7 +109,7 @@ export class CommentsController {
       throw new NotFoundException();
     }
 
-    if (comment.userId !== req.user.id) {
+    if (comment.userId !== user.id) {
       throw new ForbiddenException(); //	If try edit the comment that is not your own
     }
 
