@@ -1,6 +1,6 @@
 import { PostDBModel } from '../modules/posts/infrastructure/entity/postDB.model';
 
-export const postOutputBeforeCreate = (postsBD: PostDBModel) => {
+export const toPostOutputBeforeCreate = (postsBD: PostDBModel) => {
   return {
     id: postsBD.id,
     title: postsBD.title,

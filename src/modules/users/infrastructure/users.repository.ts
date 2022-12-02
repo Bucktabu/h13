@@ -10,7 +10,7 @@ export class UsersRepository {
   async getUserByIdOrLoginOrEmail(
     IdOrLoginOrEmail: string,
   ): Promise<UserDBModel | null> {
-    return UserScheme.findOne(
+    return  UserScheme.findOne(
       {
         $or: [
           { id: IdOrLoginOrEmail },
@@ -19,7 +19,7 @@ export class UsersRepository {
         ],
       },
       { _id: false, __v: false },
-    );
+    )
   }
 
   async getUsers(query: QueryParametersDTO): Promise<UserDBModel[]> {

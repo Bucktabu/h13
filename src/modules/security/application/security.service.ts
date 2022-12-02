@@ -4,7 +4,7 @@ import { SecurityRepository } from '../infrastructure/security.repository';
 import { DeviceSecurityModel } from '../infrastructure/entity/deviceSecurity.model';
 import { TokenPayloadModel } from '../../../global-model/token-payload.model';
 import { UserDeviceModel } from '../infrastructure/entity/userDevice.model';
-import { activeSessionsViewModel } from '../../../data-mapper/to-active-session-view.model';
+import { toActiveSessionsViewModel } from '../../../data-mapper/to-active-session-view.model';
 import UserAgent from 'user-agents';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class SecurityService {
     }
 
     return activeSessions.map((activeSession) =>
-      activeSessionsViewModel(activeSession),
+      toActiveSessionsViewModel(activeSession),
     );
   }
 

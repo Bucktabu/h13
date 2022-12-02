@@ -7,13 +7,15 @@ import {
   HttpCode,
   NotFoundException,
   Param,
-  Req,
-} from '@nestjs/common';
+  Req, UseGuards
+} from "@nestjs/common";
 import { SecurityService } from '../application/security.service';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
+import { RefreshTokenValidationGuard } from "../../../guards/refresh-token-validation.guard";
 import { Request } from "express";
 
 @Controller('security')
+@UseGuards(RefreshTokenValidationGuard)
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 

@@ -8,7 +8,7 @@ import { ContentPageModel } from '../../../global-model/contentPage.model';
 import { CommentViewModel } from '../api/dto/commentView.model';
 import { QueryInputModel } from '../../users/api/dto/queryInput.model';
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
-import { commentOutputBeforeCreate } from '../../../data-mapper/to-comment-view-before-create.model';
+import { toCommentOutputBeforeCreate } from '../../../data-mapper/to-comment-view-before-create.model';
 import { paginationContentPage } from '../../../helper.functions';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
@@ -78,7 +78,7 @@ export class CommentsService {
       return null;
     }
 
-    return commentOutputBeforeCreate(newComment);
+    return toCommentOutputBeforeCreate(newComment);
   }
 
   async updateComment(commentId: string, comment: string): Promise<boolean> {

@@ -11,7 +11,7 @@ import { PostDBModel } from '../infrastructure/entity/postDB.model';
 import { PostDTO, PostWithBlogIdDTO } from "../api/dto/postDTO";
 import { PostViewModel } from '../api/dto/postsView.model';
 import { paginationContentPage } from '../../../helper.functions';
-import { postOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
+import { toPostOutputBeforeCreate } from '../../../data-mapper/to-post-view-before-create.model';
 import { v4 as uuidv4 } from 'uuid';
 import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 
@@ -91,7 +91,7 @@ export class PostsService {
       return null;
     }
 
-    return postOutputBeforeCreate(createdPost);
+    return toPostOutputBeforeCreate(createdPost);
   }
 
   async getBlogName(blogId: string): Promise<string> {

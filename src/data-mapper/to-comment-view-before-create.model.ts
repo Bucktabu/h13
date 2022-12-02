@@ -1,7 +1,7 @@
 import { CommentBDModel } from '../modules/comments/infrastructure/entity/commentDB.model';
 import { CommentViewModel } from '../modules/comments/api/dto/commentView.model';
 
-export const commentOutputBeforeCreate = (
+export const toCommentOutputBeforeCreate = (
   comment: CommentBDModel,
 ): CommentViewModel => {
   return {

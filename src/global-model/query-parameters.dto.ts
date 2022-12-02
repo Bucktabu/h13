@@ -1,34 +1,36 @@
-import { IsEnum, IsOptional, Validate } from "class-validator";
-import { SortByValidation } from "../validations/sort-by.validation";
-import { SortDirectionsValidation } from "../validations/sort-directions.validation";
-import { PageNumberValidation } from "../validations/page-number.validation";
-import { PageSizeValidation } from "../validations/page-size.validation";
-import { SearchLoginTermValidation } from "../validations/search-login-term.validation";
-import { SearchNameTermValidation } from "../validations/search-name.validation";
-import { SearchEmailTermValidation } from "../validations/search-email.term";
-import { SortParametersModel } from "./sort-parameters.model";
+import { IsEnum, IsNumber, IsOptional, IsString } from "class-validator";
+import { Transform, TransformFnParams } from "class-transformer";
+import { SortDirections, SortParametersModel } from "./sort-parameters.model";
 
 export class QueryParametersDTO {
-  @Validate(SortByValidation)
   @IsEnum(SortParametersModel)
   @IsOptional()
   sortBy: string = SortParametersModel.CreatedAt
 
-  @Validate(SortDirectionsValidation)
-  sortDirection: number
+  @IsEnum(SortDirections)
+  @IsOptional()
+  sortDirection: string = SortDirections.Distending
 
-  @Validate(PageNumberValidation)
-  pageNumber: number
+  @IsNumber()
+  @IsOptional()
+  pageNumber: number = 1
 
-  @Validate(PageSizeValidation)
-  pageSize: number
+  @IsNumber()
+  @IsOptional()
+  pageSize: number = 10
 
-  @Validate(SearchNameTermValidation)
-  searchNameTerm: string
+  @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsOptional()
+  searchNameTerm: string = ''
 
-  @Validate(SearchLoginTermValidation)
-  searchLoginTerm: string
+  @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsOptional()
+  searchLoginTerm: string = ''
 
-  @Validate(SearchEmailTermValidation)
-  searchEmailTerm: string
+  @IsString()
+  @Transform(({ value }: TransformFnParams) => value?.trim())
+  @IsOptional()
+  searchEmailTerm: string = ''
 }

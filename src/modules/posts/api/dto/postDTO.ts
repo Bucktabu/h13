@@ -1,7 +1,7 @@
 import { IsString, Length, Validate } from "class-validator";
 import { Transform, TransformFnParams } from "class-transformer";
 import { Optional } from "@nestjs/common";
-import { BlogExistValidation } from "../../../../validations/blogExist.validation";
+import { BlogExistValidationPipe } from "../../../../pipe/blog-exist-validation.pipe";
 
 export class PostDTO {
   @IsString()
@@ -37,6 +37,6 @@ export class PostWithBlogIdDTO {
   content: string;
 
   @Optional()
-  @Validate(BlogExistValidation)
+  @Validate(BlogExistValidationPipe)
   blogId: string;
 }

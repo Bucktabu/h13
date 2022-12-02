@@ -3,7 +3,7 @@ import { BlogsRepository } from "../modules/blogs/infrastructure/blogs.repositor
 import { ValidationArguments, ValidatorConstraintInterface } from "class-validator";
 
 @Injectable()
-export class BlogExistValidation implements ValidatorConstraintInterface {
+export class BlogExistValidationPipe implements ValidatorConstraintInterface {
   constructor(protected blogsRepository: BlogsRepository) {}
 
   async validate(blogId: string) {

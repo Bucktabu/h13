@@ -9,15 +9,14 @@ import {
   Post,
   Put,
   Query, Req,
-  UseGuards, UsePipes
+  UseGuards
 } from "@nestjs/common";
 import { BlogsService } from '../application/blogs.service';
 import { PostsService } from '../../posts/application/posts.service';
 import { AuthBasicGuard } from '../../../guards/auth.basic.guard';
 import { BlogDTO } from './dto/blogDTO';
 import { BlogViewModel } from './dto/blogView.model';
-import { QueryInputModel } from '../../users/api/dto/queryInput.model';
-import { PostDTO, PostWithBlogIdDTO } from "../../posts/api/dto/postDTO";
+import { PostWithBlogIdDTO } from "../../posts/api/dto/postDTO";
 import { Request } from "express";
 import { QueryParametersDTO } from "../../../global-model/query-parameters.dto";
 

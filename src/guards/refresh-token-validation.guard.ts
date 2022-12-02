@@ -1,18 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, PipeTransform, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from '../modules/auth/application/jwt.service';
 import { UsersService } from '../modules/users/application/users.service';
-import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
-export class RefreshTokenValidation {
+export class RefreshTokenValidationGuard implements CanActivate {
   constructor(
     protected jwtService: JwtService,
     protected usersService: UsersService,
   ) {}
 
-  async use(req: Request, res: Response, next: NextFunction) {
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const req = context.switchToHttp().getRequest();
+
     if (!req.cookies.refreshToken) {
-      return res.sendStatus(401);
+      throw new UnauthorizedException();
     }
 
     const tokenInBlackList = await this.jwtService.checkTokenInBlackList(
@@ -20,7 +21,7 @@ export class RefreshTokenValidation {
     );
 
     if (tokenInBlackList) {
-      return res.sendStatus(401);
+      throw new UnauthorizedException();
     }
 
     const tokenPayload = await this.jwtService.getTokenPayload(
@@ -28,7 +29,7 @@ export class RefreshTokenValidation {
     );
 
     if (!tokenPayload) {
-      return res.sendStatus(401);
+      throw new UnauthorizedException();
     }
 
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
@@ -36,11 +37,11 @@ export class RefreshTokenValidation {
     );
 
     if (!user) {
-      return res.sendStatus(401);
+      throw new UnauthorizedException();
     }
 
     req.user = user;
     req.tokenPayload = tokenPayload;
-    next();
+    return true
   }
 }

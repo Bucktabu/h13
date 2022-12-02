@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AuthController } from "./modules/auth/api/auth.controller";
 import { BlogsController } from "./modules/blogs/api/blogs.controller";
 import { CommentsController } from "./modules/comments/api/comments.controller";
@@ -25,21 +25,12 @@ import { LikesRepository } from "./modules/likes/infrastructure/likes.repository
 import { PostsRepository } from "./modules/posts/infrastructure/posts.repository";
 import { SecurityRepository } from "./modules/security/infrastructure/security.repository";
 import { UsersRepository } from "./modules/users/infrastructure/users.repository";
-import { CheckCredential } from "./middleware/checkCredential";
-import { ConfirmationCodeValidation } from "./middleware/confirmationCode.validation";
-import { ConfirmationEmailValidation } from "./middleware/confirmationEmail.validation";
-import { LoginOrEmailExistValidation } from "./middleware/loginOrEmailExist.validation";
-import { ResendingConfirmationValidation } from "./middleware/resendingConfirmation.validation";
-import { RefreshTokenValidation } from "./middleware/refreshToken.validation";
-import { BlogExistValidation } from "./validations/blogExist.validation";
-import { SortByValidation } from "./validations/sort-by.validation";
-import { PageNumberValidation } from "./validations/page-number.validation";
-import { PageSizeValidation } from "./validations/page-size.validation";
-import { SearchNameTermValidation } from "./validations/search-name.validation";
-import { SearchLoginTermValidation } from "./validations/search-login-term.validation";
-import { SearchEmailTermValidation } from "./validations/search-email.term";
-import { RegistrationConfirmationValidation } from "./validations/registration-confirmation.validation";
-import { RegistrationEmailResendingValidation } from "./validations/registration-email-resending.validation";
+import { BlogExistValidationPipe } from "./pipe/blog-exist-validation.pipe";
+import { ConfirmationCodeValidationPipe } from "./pipe/confirmation-code-validation.pipe";
+import { EmailResendingValidationPipe } from "./pipe/email-resending.pipe";
+import { EmailExistValidationPipe } from "./pipe/email-exist-validation.pipe";
+import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
+
 
 @Module({
   imports: [],
@@ -74,49 +65,17 @@ import { RegistrationEmailResendingValidation } from "./validations/registration
     SecurityService,
     UsersService,
 
-    BlogExistValidation,
-    PageNumberValidation,
-    PageSizeValidation,
-    RegistrationConfirmationValidation,
-    RegistrationEmailResendingValidation,
-    SearchEmailTermValidation,
-    SearchLoginTermValidation,
-    SearchNameTermValidation,
-    SortByValidation,
+    BlogExistValidationPipe,
+    ConfirmationCodeValidationPipe,
+    EmailExistValidationPipe,
+    EmailResendingValidationPipe,
+    LoginExistValidationPipe
   ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    consumer
-      .apply(CheckCredential)
-      .forRoutes({ path: '/auth/login', method: RequestMethod.POST });
     // consumer
-    //   .apply(ConfirmationCodeValidation)
-    //   .forRoutes({ path: '/auth/new-password', method: RequestMethod.POST });
-    consumer
-      .apply(LoginOrEmailExistValidation)
-      .forRoutes({path: '/auth/registration', method: RequestMethod.POST});
-    // consumer
-    //   .apply(ConfirmationEmailValidation)
-    //   .forRoutes({
-    //     path: '/auth/registration-confirmation',
-    //     method: RequestMethod.POST});
-    // consumer
-    //   .apply(ResendingConfirmationValidation)
-    //   .forRoutes({
-    //     path: '/auth/registration-email-resending',
-    //     method: RequestMethod.POST});
-    consumer
-      .apply(RefreshTokenValidation)
-      .forRoutes({ path: '/auth/refresh-token', method: RequestMethod.POST });
-    consumer
-      .apply(RefreshTokenValidation)
-      .forRoutes({ path: '/security', method: RequestMethod.ALL });
-    consumer
-      .apply(RefreshTokenValidation)
-      .forRoutes({path: '/auth/logout', method: RequestMethod.POST});
-    consumer
-      .apply(LoginOrEmailExistValidation)
-      .forRoutes({ path: '/posts/registration', method: RequestMethod.POST });
-  } // TODO переписать на guards and pipe
+    //   .apply()
+    //   .forRoutes({ path:, method: });
+  }
 }
