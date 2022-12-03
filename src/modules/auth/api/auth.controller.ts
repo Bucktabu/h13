@@ -126,6 +126,7 @@ export class AuthController {
   }
 
   @Post('registration')
+  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async registration(@Body() dto: UserDTO) {
     const createdUser = await this.usersService.createUser(dto);

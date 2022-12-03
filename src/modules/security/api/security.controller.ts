@@ -28,7 +28,6 @@ export class SecurityController {
   }
 
   @Delete('devices')
-  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async deleteActiveSessions(@Req() req: Request) {
     const result = await this.securityService.deleteAllActiveSessions(
@@ -44,7 +43,6 @@ export class SecurityController {
   }
 
   @Delete('devices/:id')
-  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async deleteActiveSessionsById(
     @Param('id') deviceId: string,
