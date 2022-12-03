@@ -32,6 +32,7 @@ import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model'
 import { v4 as uuidv4 } from 'uuid';
 import { AuthDTO } from './dto/authDTO';
 import { User } from "../../../decorator/user.decorator";
+import { IpAddressLimiter } from "../../../guards/ipAddressLimiter/ipAddressLimiter";
 
 @Controller('auth')
 export class AuthController {
@@ -51,7 +52,8 @@ export class AuthController {
   }
 
   @Post('login')
-  @UseGuards(CheckCredentialGuard)
+  @UseGuards(CheckCredentialGuard,
+             IpAddressLimiter)
   async createUser(
     @Body() dto: AuthDTO, // TODO Если я использую пайп внутри скобок боди, то у меня пропадает валидация входных параметров, а если я применяю пайп ко всему ендпоинту, то я не могу получить пользователя
     @Ip() ipAddress,
@@ -141,6 +143,7 @@ export class AuthController {
   }
 
   @Post('registration-confirmation')
+  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async registrationConfirmation(
     @Body(ConfirmationCodeValidationPipe)
@@ -158,6 +161,7 @@ export class AuthController {
   }
 
   @Post('registration-email-resending')
+  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async registrationEmailResending(
     @Body(EmailResendingValidationPipe) user: UserDBModel,
