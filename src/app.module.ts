@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
 import { AuthController } from "./modules/auth/api/auth.controller";
 import { BlogsController } from "./modules/blogs/api/blogs.controller";
 import { CommentsController } from "./modules/comments/api/comments.controller";
@@ -33,6 +33,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { BlogExistValidator } from "./pipe/blog-exist.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
+import { IpAddressLimiter } from "./middleware/ipAddressLimiter/ipAddressLimiter";
 
 @Module({
   imports: [
@@ -80,8 +81,8 @@ import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repositor
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): any {
-    // consumer
-    //   .apply()
-    //   .forRoutes({ path:, method: });
+    consumer
+      .apply(IpAddressLimiter)
+      .forRoutes({ path: '/auth', method: RequestMethod.ALL});
   }
 }
