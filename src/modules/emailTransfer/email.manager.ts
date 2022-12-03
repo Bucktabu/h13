@@ -21,6 +21,6 @@ export class EmailManager {
                          <a href='https://somesite.com/password-recovery?recoveryCode=${recoveryCode}'>recovery password</a>
                          </p>`;
 
-    return await this.emailAdapters.sendEmail(email, subject, message);
+    return this.emailAdapters.sendEmail(email, subject, message);
   }
 }

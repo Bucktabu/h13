@@ -126,8 +126,8 @@ export class AuthController {
   }
 
   @Post('registration')
-  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
+  @UseGuards(IpAddressLimiter)
   async registration(@Body() dto: UserDTO) {
     const createdUser = await this.usersService.createUser(dto);
 
@@ -135,7 +135,7 @@ export class AuthController {
       throw new NotImplementedException();
     }
 
-    await this.emailManager.sendConfirmationEmail(
+    this.emailManager.sendConfirmationEmail(
       createdUser.email,
       createdUser.code,
     );
