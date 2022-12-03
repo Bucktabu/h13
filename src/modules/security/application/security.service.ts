@@ -18,8 +18,8 @@ export class SecurityService {
     const activeSessions = await this.securityRepository.getAllActiveSessions(
       userId,
     );
-
-    if (!activeSessions) {
+    console.log('---> activeSessions:', activeSessions);
+    if (!activeSessions.length) {
       return null;
     }
 

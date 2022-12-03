@@ -16,6 +16,7 @@ export class RefreshTokenValidationGuard implements CanActivate {
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
+    console.log('1');
     const req = context.switchToHttp().getRequest();
 
     if (!req.cookies.refreshToken) {
@@ -41,7 +42,7 @@ export class RefreshTokenValidationGuard implements CanActivate {
     const user = await this.usersService.getUserByIdOrLoginOrEmail(
       tokenPayload.userId,
     );
-
+    console.log(user)
     if (!user) {
       throw new UnauthorizedException();
     }

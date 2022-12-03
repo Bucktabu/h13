@@ -1,5 +1,4 @@
 import {
-  Body,
   Controller,
   Delete,
   ForbiddenException,
@@ -23,6 +22,7 @@ export class SecurityController {
 
   @Get('devices')
   getAllActiveSessions(@User() user: UserDBModel) {
+    console.log(user);
     return this.securityService.getAllActiveSessions(user.id);
   }
 

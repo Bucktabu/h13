@@ -34,6 +34,7 @@ import { ConfigModule } from "@nestjs/config";
 import { BlogExistValidator } from "./pipe/blog-exist.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
 import { IpAddressLimiter } from "./middleware/ipAddressLimiter/ipAddressLimiter";
+import { SecurityController } from "./modules/security/api/security.controller";
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { IpAddressLimiter } from "./middleware/ipAddressLimiter/ipAddressLimiter
     BlogsController,
     CommentsController,
     PostsController,
+    SecurityController,
     TestingController,
     UsersController
   ],
