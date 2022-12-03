@@ -28,6 +28,11 @@ export class CommentsService {
     token?: string,
   ): Promise<ContentPageModel | null> {
     const commentsDB = await this.commentsRepository.getComments(query, postId);
+
+    if (!commentsDB.length) {
+      return null
+    }
+
     const totalCount = await this.commentsRepository.getTotalCount(postId);
     const userId = await this.jwtService.getUserIdViaToken(token);
     const comments = await Promise.all(
