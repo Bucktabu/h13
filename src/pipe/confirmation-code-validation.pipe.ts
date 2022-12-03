@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
+import { Injectable, PipeTransform } from '@nestjs/common';
 import { EmailConfirmationRepository } from '../modules/users/infrastructure/emailConfirmation.repository';
 
 @Injectable()

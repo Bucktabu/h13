@@ -3,6 +3,7 @@ import { AuthController } from "./modules/auth/api/auth.controller";
 import { BlogsController } from "./modules/blogs/api/blogs.controller";
 import { CommentsController } from "./modules/comments/api/comments.controller";
 import { PostsController } from "./modules/posts/api/posts.controller";
+import { SecurityController } from "./modules/security/api/security.controller";
 import { TestingController } from "./modules/testing/testingController";
 import { UsersController } from "./modules/users/api/users.controller";
 import { AuthService } from "./modules/auth/application/auth.service";
@@ -31,10 +32,9 @@ import { EmailExistValidationPipe } from "./pipe/email-exist-validation.pipe";
 import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
-import { BlogExistValidator } from "./pipe/blog-exist.validator";
+import { BlogExistValidator } from "./validation/blog-exist.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
-import { IpAddressLimiter } from "./middleware/ipAddressLimiter/ipAddressLimiter";
-import { SecurityController } from "./modules/security/api/security.controller";
+import { IpAddressLimiter } from "./guards/ipAddressLimiter/ipAddressLimiter";
 
 @Module({
   imports: [
@@ -78,13 +78,9 @@ import { SecurityController } from "./modules/security/api/security.controller";
     LikesService,
     PostsService,
     SecurityService,
-    UsersService
+    UsersService,
   ]
 })
 export class AppModule implements NestModule {
-  configure(consumer: MiddlewareConsumer): any {
-    consumer
-      .apply(IpAddressLimiter)
-      .forRoutes({ path: '/auth', method: RequestMethod.ALL});
-  }
+  configure(consumer: MiddlewareConsumer): any {}
 }

@@ -1,10 +1,14 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, NestMiddleware } from "@nestjs/common";
 import { IpAddressScheme } from './ipAddress.scheme';
-import { NextFunction, Request, Response } from 'express';
+import { ThrottlerException } from "@nestjs/throttler";
 
 @Injectable()
-export class IpAddressLimiter implements NestMiddleware {
-  async use(req: Request, res: Response, next: NextFunction) {
+export class IpAddressLimiter implements CanActivate {
+  async canActivate(
+    context: ExecutionContext,
+  ): Promise<boolean> {
+    const req = context.switchToHttp().getRequest();
+
     const ip = req.ip;
     const endpoint = req.url;
     const connectionAt = Date.now();
@@ -17,9 +21,9 @@ export class IpAddressLimiter implements NestMiddleware {
     });
 
     if (connectionsCount > 5) {
-      return res.sendStatus(429);
+      throw new ThrottlerException()
     }
 
-    return next();
+    return true;
   }
 }
