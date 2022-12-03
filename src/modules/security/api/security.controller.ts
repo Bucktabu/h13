@@ -17,17 +17,18 @@ import { User } from "../../../decorator/user.decorator";
 import { IpAddressLimiter } from "../../../guards/ipAddressLimiter/ipAddressLimiter";
 
 @Controller('security')
-@UseGuards(IpAddressLimiter,
-           RefreshTokenValidationGuard)
+@UseGuards(RefreshTokenValidationGuard)
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
   @Get('devices')
+  @UseGuards(IpAddressLimiter)
   getAllActiveSessions(@User() user: UserDBModel) {
     return this.securityService.getAllActiveSessions(user.id);
   }
 
   @Delete('devices')
+  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async deleteActiveSessions(@Req() req: Request) {
     const result = await this.securityService.deleteAllActiveSessions(
@@ -43,6 +44,7 @@ export class SecurityController {
   }
 
   @Delete('devices/:id')
+  @UseGuards(IpAddressLimiter)
   @HttpCode(204)
   async deleteActiveSessionsById(
     @Param('id') deviceId: string,
