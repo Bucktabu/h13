@@ -34,7 +34,6 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { BlogExistValidator } from "./validation/blog-exist.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
-import { IpAddressLimiter } from "./guards/ipAddressLimiter/ipAddressLimiter";
 
 @Module({
   imports: [

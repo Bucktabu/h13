@@ -12,13 +12,13 @@ export class IpAddressLimiter implements CanActivate {
 
     const ip = req.ip;
     const endpoint = req.url;
-    const connectionAt = Date.now();
+    const connectionAt = Date.now() - Number(settings.CONNECTION_TIME_LIMIT);
 
     await IpAddressScheme.create({ ipAddress: ip, endpoint, connectionAt });
     const connectionsCount = await IpAddressScheme.countDocuments({
       ipAddress: ip,
       endpoint,
-      connectionAt: { $gte: connectionAt - Number(settings.CONNECTION_TIME_LIMIT)},
+      connectionAt: { $gte: connectionAt},
     });
 
     if (connectionsCount > Number(settings.CONNECTION_COUNT_LIMIT)) {
