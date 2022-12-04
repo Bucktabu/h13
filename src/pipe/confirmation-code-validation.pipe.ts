@@ -9,6 +9,7 @@ export class ConfirmationCodeValidationPipe implements PipeTransform {
 
   async transform(dto, metadata) {
     const code = dto.code;
+
     const emailConfirmation =
       await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(
         code,

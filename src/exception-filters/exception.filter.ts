@@ -26,7 +26,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       //   timestamp: new Date().toISOString(),
       //   path: request.url,
       // });
-      console.log(status, response);
+      //console.log(status, response);
       response.sendStatus(status);
     }
   }

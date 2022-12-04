@@ -14,15 +14,13 @@ import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
 import { Request } from 'express';
 import { User } from "../../../decorator/user.decorator";
-import { IpAddressLimiter } from "../../../guards/ipAddressLimiter/ipAddressLimiter";
-import { Throttle, ThrottlerGuard } from "@nestjs/throttler";
+import {  ThrottlerGuard } from "@nestjs/throttler";
 
 @Controller('security')
 @UseGuards(RefreshTokenValidationGuard)
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
-  //@Throttle(5, 10)
   @UseGuards(ThrottlerGuard)
   @Get('devices')
   getAllActiveSessions(@User() user: UserDBModel) {

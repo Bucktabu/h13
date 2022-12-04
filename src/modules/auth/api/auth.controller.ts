@@ -9,8 +9,8 @@ import {
   Post,
   Req,
   Res,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards, UsePipes
+} from "@nestjs/common";
 import { Request, Response } from 'express';
 import { AuthService } from '../application/auth.service';
 import { EmailConfirmationService } from '../../users/application/emailConfirmation.service';
@@ -54,7 +54,7 @@ export class AuthController {
   @UseGuards(ThrottlerGuard, CheckCredentialGuard)
   @Post('login')
   async createUser(
-    @Body() dto: AuthDTO, // TODO Если я использую пайп внутри скобок боди, то у меня пропадает валидация входных параметров, а если я применяю пайп ко всему ендпоинту, то я не могу получить пользователя
+    @Body() dto: AuthDTO,
     @Ip() ipAddress,
     @User() user: UserDBModel,
     @Res() res: Response,
@@ -143,14 +143,15 @@ export class AuthController {
   }
 
   @UseGuards(ThrottlerGuard)
+  @UsePipes(ConfirmationCodeValidationPipe)
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(
-    @Body(ConfirmationCodeValidationPipe)
-    emailConfirmation: EmailConfirmationModel,
+    @Body('code') code: string,
   ) {
+    console.log(code);
     const result = await this.emailConfirmationService.updateConfirmationInfo(
-      emailConfirmation.confirmationCode,
+      code,
     );
 
     if (!result) {
