@@ -20,7 +20,7 @@ import {  ThrottlerGuard } from "@nestjs/throttler";
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
-  @UseGuards(ThrottlerGuard, RefreshTokenValidationGuard)
+  @UseGuards(RefreshTokenValidationGuard)
   @Get('devices')
   getAllActiveSessions(@User() user: UserDBModel) {
     return this.securityService.getAllActiveSessions(user.id);
