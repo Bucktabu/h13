@@ -32,7 +32,7 @@ import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model'
 import { v4 as uuidv4 } from 'uuid';
 import { AuthDTO } from './dto/authDTO';
 import { User } from "../../../decorator/user.decorator";
-import { IpAddressLimiter } from "../../../guards/ipAddressLimiter/ipAddressLimiter";
+import { ThrottlerGuard } from "@nestjs/throttler";
 
 @Controller('auth')
 export class AuthController {
@@ -51,7 +51,7 @@ export class AuthController {
     return toAboutMeViewModel(user);
   }
 
-  @UseGuards(IpAddressLimiter, CheckCredentialGuard)
+  @UseGuards(ThrottlerGuard, CheckCredentialGuard)
   @Post('login')
   async createUser(
     @Body() dto: AuthDTO, // TODO Если я использую пайп внутри скобок боди, то у меня пропадает валидация входных параметров, а если я применяю пайп ко всему ендпоинту, то я не могу получить пользователя
@@ -124,7 +124,7 @@ export class AuthController {
     return;
   }
 
-  @UseGuards(IpAddressLimiter)
+  @UseGuards(ThrottlerGuard)
   @Post('registration')
   @HttpCode(204)
   async registration(@Body() dto: UserDTO) {
@@ -142,7 +142,7 @@ export class AuthController {
     return;
   }
 
-  @UseGuards(IpAddressLimiter)
+  @UseGuards(ThrottlerGuard)
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(
@@ -160,7 +160,7 @@ export class AuthController {
     return;
   }
 
-  @UseGuards(IpAddressLimiter)
+  @UseGuards(ThrottlerGuard)
   @Post('registration-email-resending')
   @HttpCode(204)
   async registrationEmailResending(

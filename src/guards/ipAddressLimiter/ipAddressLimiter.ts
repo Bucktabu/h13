@@ -1,4 +1,4 @@
-import { CanActivate, ExecutionContext, Injectable, NestMiddleware } from "@nestjs/common";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { IpAddressScheme } from './ipAddress.scheme';
 import { ThrottlerException } from "@nestjs/throttler";
 import { settings } from "../../settings";
@@ -24,6 +24,10 @@ export class IpAddressLimiter implements CanActivate {
     if (connectionsCount > Number(settings.CONNECTION_COUNT_LIMIT)) {
       throw new ThrottlerException()
     }
+
+    // setTimeout(async function() {
+    //   await IpAddressScheme.deleteOne({ connectionAt });
+    // }), 11000)
 
     return true;
   }

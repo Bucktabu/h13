@@ -39,8 +39,9 @@ import { ThrottlerModule } from "@nestjs/throttler";
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URI)],
-    //ThrottlerModule.forRoot({ttl: 10, limit: 5}),
+    MongooseModule.forRoot(process.env.MONGO_URI),
+    ThrottlerModule.forRoot({ttl: 10, limit: 5}),
+  ],
   controllers: [
     AuthController,
     BlogsController,
