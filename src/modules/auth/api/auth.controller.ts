@@ -51,9 +51,8 @@ export class AuthController {
     return toAboutMeViewModel(user);
   }
 
+  @UseGuards(IpAddressLimiter, CheckCredentialGuard)
   @Post('login')
-  @UseGuards(CheckCredentialGuard,
-             IpAddressLimiter)
   async createUser(
     @Body() dto: AuthDTO, // TODO Если я использую пайп внутри скобок боди, то у меня пропадает валидация входных параметров, а если я применяю пайп ко всему ендпоинту, то я не могу получить пользователя
     @Ip() ipAddress,
@@ -125,9 +124,9 @@ export class AuthController {
     return;
   }
 
+  @UseGuards(IpAddressLimiter)
   @Post('registration')
   @HttpCode(204)
-  @UseGuards(IpAddressLimiter)
   async registration(@Body() dto: UserDTO) {
     const createdUser = await this.usersService.createUser(dto);
 
@@ -143,8 +142,8 @@ export class AuthController {
     return;
   }
 
-  @Post('registration-confirmation')
   @UseGuards(IpAddressLimiter)
+  @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(
     @Body(ConfirmationCodeValidationPipe)
@@ -161,8 +160,8 @@ export class AuthController {
     return;
   }
 
-  @Post('registration-email-resending')
   @UseGuards(IpAddressLimiter)
+  @Post('registration-email-resending')
   @HttpCode(204)
   async registrationEmailResending(
     @Body(EmailResendingValidationPipe) user: UserDBModel,

@@ -15,14 +15,16 @@ import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-valid
 import { Request } from 'express';
 import { User } from "../../../decorator/user.decorator";
 import { IpAddressLimiter } from "../../../guards/ipAddressLimiter/ipAddressLimiter";
+import { Throttle } from "@nestjs/throttler";
 
 @Controller('security')
 @UseGuards(RefreshTokenValidationGuard)
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
-  @Get('devices')
+  //@Throttle(5, 10)
   @UseGuards(IpAddressLimiter)
+  @Get('devices')
   getAllActiveSessions(@User() user: UserDBModel) {
     return this.securityService.getAllActiveSessions(user.id);
   }

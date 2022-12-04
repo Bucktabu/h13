@@ -34,11 +34,13 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { BlogExistValidator } from "./validation/blog-exist.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.MONGO_URI)],
+    //ThrottlerModule.forRoot({ttl: 10, limit: 5}),
   controllers: [
     AuthController,
     BlogsController,
