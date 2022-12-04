@@ -17,16 +17,16 @@ import { User } from "../../../decorator/user.decorator";
 import {  ThrottlerGuard } from "@nestjs/throttler";
 
 @Controller('security')
-@UseGuards(RefreshTokenValidationGuard)
 export class SecurityController {
   constructor(protected securityService: SecurityService) {}
 
-  @UseGuards(ThrottlerGuard)
+  @UseGuards(ThrottlerGuard, RefreshTokenValidationGuard)
   @Get('devices')
   getAllActiveSessions(@User() user: UserDBModel) {
     return this.securityService.getAllActiveSessions(user.id);
   }
 
+  @UseGuards( RefreshTokenValidationGuard)
   @Delete('devices')
   @HttpCode(204)
   async deleteActiveSessions(@Req() req: Request) {
@@ -42,6 +42,7 @@ export class SecurityController {
     return;
   }
 
+  @UseGuards( RefreshTokenValidationGuard)
   @Delete('devices/:id')
   @HttpCode(204)
   async deleteActiveSessionsById(
