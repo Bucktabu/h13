@@ -63,7 +63,7 @@ export class AuthController {
     const tokenPayload = await this.jwsService.getTokenPayload(
       token.refreshToken,
     );
-
+    console.log(ipAddress, 'ip address from controller');
     await this.securityService.createUserDevice(tokenPayload, ipAddress);
     // console.log('refreshToken=' + token.refreshToken);
     return res
@@ -178,8 +178,8 @@ export class AuthController {
     );
   }
 
-  @Post('refresh-token')
   @UseGuards(RefreshTokenValidationGuard)
+  @Post('refresh-token')
   async createRefreshToken(@Req() req: Request, @Res() res: Response) {
     const token = await this.securityService.createNewRefreshToken(
       req.cookies.refreshToken,
