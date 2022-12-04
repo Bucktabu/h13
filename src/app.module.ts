@@ -26,13 +26,13 @@ import { LikesRepository } from "./modules/likes/infrastructure/likes.repository
 import { PostsRepository } from "./modules/posts/infrastructure/posts.repository";
 import { SecurityRepository } from "./modules/security/infrastructure/security.repository";
 import { UsersRepository } from "./modules/users/infrastructure/users.repository";
-import { ConfirmationCodeValidationPipe } from "./pipe/confirmation-code-validation.pipe";
 import { EmailResendingValidationPipe } from "./pipe/email-resending.pipe";
 import { EmailExistValidationPipe } from "./pipe/email-exist-validation.pipe";
 import { LoginExistValidationPipe } from "./pipe/login-exist-validation,pipe";
 import { MongooseModule } from "@nestjs/mongoose";
 import { ConfigModule } from "@nestjs/config";
 import { BlogExistValidator } from "./validation/blog-exist.validator";
+import { ConfirmationCodeValidator } from "./validation/confirmation-code.validator";
 import { IBlogsRepository } from "./modules/blogs/infrastructure/blogs-repository.interface";
 import { ThrottlerModule } from "@nestjs/throttler";
 
@@ -53,7 +53,8 @@ import { ThrottlerModule } from "@nestjs/throttler";
   ],
   providers: [
     BlogExistValidator,
-    ConfirmationCodeValidationPipe,
+    ConfirmationCodeValidator,
+
     EmailExistValidationPipe,
     EmailResendingValidationPipe,
     LoginExistValidationPipe,

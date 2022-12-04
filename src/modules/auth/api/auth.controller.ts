@@ -21,18 +21,17 @@ import { EmailManager } from '../../emailTransfer/email.manager';
 import { AuthBearerGuard } from '../../../guards/auth.bearer.guard';
 import { CheckCredentialGuard } from '../../../guards/check-credential.guard';
 import { RefreshTokenValidationGuard } from '../../../guards/refresh-token-validation.guard';
-import { ConfirmationCodeValidationPipe } from '../../../pipe/confirmation-code-validation.pipe';
+import { ThrottlerGuard } from "@nestjs/throttler";
 import { EmailResendingValidationPipe } from '../../../pipe/email-resending.pipe';
+import { User } from "../../../decorator/user.decorator";
 import { EmailDTO } from './dto/emailDTO';
 import { NewPasswordDTO } from './dto/newPasswordDTO';
-import { EmailConfirmationModel } from '../../users/infrastructure/entity/emailConfirmation.model';
+import { RegistrationConfirmationDTO } from "./dto/registration-confirmation.dto";
 import { UserDBModel } from '../../users/infrastructure/entity/userDB.model';
 import { UserDTO } from '../../users/api/dto/userDTO';
 import { toAboutMeViewModel } from '../../../data-mapper/to-about-me-view.model';
 import { v4 as uuidv4 } from 'uuid';
 import { AuthDTO } from './dto/authDTO';
-import { User } from "../../../decorator/user.decorator";
-import { ThrottlerGuard } from "@nestjs/throttler";
 
 @Controller('auth')
 export class AuthController {
@@ -143,15 +142,13 @@ export class AuthController {
   }
 
   @UseGuards(ThrottlerGuard)
-  @UsePipes(ConfirmationCodeValidationPipe)
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(
-    @Body('code') code: string,
+    @Body('code') dto: RegistrationConfirmationDTO,
   ) {
-    console.log(code);
     const result = await this.emailConfirmationService.updateConfirmationInfo(
-      code,
+      dto.code,
     );
 
     if (!result) {

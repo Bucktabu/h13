@@ -1,15 +1,15 @@
 import { Injectable, PipeTransform } from '@nestjs/common';
 import { EmailConfirmationRepository } from '../modules/users/infrastructure/emailConfirmation.repository';
+import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 
+@ValidatorConstraint({ name: 'ConfirmationCodeValid', async: true })
 @Injectable()
-export class ConfirmationCodeValidationPipe implements PipeTransform {
+export class ConfirmationCodeValidator implements ValidatorConstraintInterface {
   constructor(
     protected emailConfirmationRepository: EmailConfirmationRepository,
   ) {}
 
-  async transform(dto, metadata) {
-    const code = dto.code;
-
+  async validate(code: string) {
     const emailConfirmation =
       await this.emailConfirmationRepository.getEmailConfirmationByCodeOrId(
         code,
@@ -27,6 +27,10 @@ export class ConfirmationCodeValidationPipe implements PipeTransform {
       return false;
     }
 
-    return emailConfirmation;
+    return true;
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return "Confirmation code is not valid";
   }
 }

@@ -1,5 +1,5 @@
 import { IsString, Length, Validate } from 'class-validator';
-import { ConfirmationCodeValidationPipe } from '../../../../pipe/confirmation-code-validation.pipe';
+import { ConfirmationCodeValidator } from "../../../../validation/confirmation-code.validator";
 
 export class NewPasswordDTO {
   @IsString()
@@ -7,6 +7,6 @@ export class NewPasswordDTO {
   newPassword: string;
 
   @IsString()
-  @Validate(ConfirmationCodeValidationPipe)
+  @Validate(ConfirmationCodeValidator)
   recoveryCode: string;
 }
